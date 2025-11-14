@@ -1,6 +1,6 @@
-import brainwave from "./brainwave.svg";
+import brainwave from "./mikayla.png";
 import check from "./check.svg";
-import brainwaveSymbol from "./brainwave-symbol.svg";
+import brainwaveSymbol from "./logo.png";
 import brainwaveWhiteSymbol from "./brainwave-symbol-white.svg";
 import play from "./play.svg";
 import gradient from "./gradient.png";
@@ -9,6 +9,16 @@ import grid from "./grid.png";
 import check2 from "./check-02.svg";
 import loading1 from "./loading-01.svg";
 import yourlogo from "./yourlogo.svg";
+import onlyfans from "./logos/onlyfans.png";
+import of from "./collaboration/of.svg";
+import fansly from "./logos/fansly.png";
+import fa from "./collaboration/fa.png";
+import patreon from "./logos/patreon.png";
+import pa from "./collaboration/pa.png";
+import herohero from "./logos/herohero.png";
+import hh from "./collaboration/hh.png";
+import buy from "./collaboration/buy.png";
+import jf from "./collaboration/jf.png";
 import homeSmile from "./home-smile.svg";
 import file02 from "./file-02.svg";
 import searchMd from "./search-md.svg";
@@ -22,7 +32,7 @@ import loading from "./loading.png";
 import background from "./background.jpg";
 
 import curve from "./hero/curve.png";
-import robot from "./hero/robot.jpg";
+import robot from "./hero/mika.png";
 import heroBackground from "./hero/hero-background.jpg";
 
 import curve1 from "./collaboration/curve-1.svg";
@@ -87,6 +97,16 @@ export {
   smallSphere,
   grid,
   yourlogo,
+  onlyfans,
+  of,
+  fansly,
+  fa,
+  patreon,
+  pa,
+  herohero,
+  hh,
+  buy,
+  jf,
   homeSmile,
   file02,
   searchMd,

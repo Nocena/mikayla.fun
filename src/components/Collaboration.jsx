@@ -6,80 +6,188 @@ import { LeftCurve, RightCurve } from "./design/Collaboration";
 
 const Collaboration = () => {
   return (
-    <Section crosses>
-      <div className="container lg:flex">
-        <div className="max-w-[25rem]">
-          <h2 className="h2 mb-4 md:mb-8">
-            AI Chat App for seamless collaboration
-          </h2>
+    <>
+      <style>{`
+        @keyframes float-icon {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
 
-          <ul className="max-w-[22rem] mb-10 md:mb-14">
-            {collabContent.map((item) => (
-              <li className="mb-3 py-3" key={item.id}>
-                <div className="flex items-center">
-                  <img src={check} width={24} height={24} alt="check" />
-                  <h6 className="body-2 ml-5">{item.title}</h6>
-                </div>
-                {item.text && (
-                  <p className="body-2 mt-3 text-n-4">{item.text}</p>
-                )}
-              </li>
-            ))}
-          </ul>
+        @keyframes pulse-ring {
+          0% {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 0.3;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+        }
 
-          <Button>Try it now</Button>
-        </div>
+        @keyframes rotate-gradient {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
 
-        <div className="lg:ml-auto xl:w-[38rem] mt-4">
-          <p className="body-2 mb-8 text-n-4 md:mb-16 lg:mb-32 lg:w-[22rem] lg:mx-auto">
-            {collabText}
-          </p>
+        .animate-float-icon {
+          animation: float-icon 3s ease-in-out infinite;
+        }
 
-          <div className="relative left-1/2 flex w-[22rem] aspect-square border border-n-6 rounded-full -translate-x-1/2 scale:75 md:scale-100">
-            <div className="flex w-60 aspect-square m-auto border border-n-6 rounded-full">
-              <div className="w-[6rem] aspect-square m-auto p-[0.2rem] bg-conic-gradient rounded-full">
-                <div className="flex items-center justify-center w-full h-full bg-n-8 rounded-full">
-                  <img
-                    src={brainwaveSymbol}
-                    width={48}
-                    height={48}
-                    alt="brainwave"
-                  />
-                </div>
-              </div>
-            </div>
+        .animate-pulse-ring {
+          animation: pulse-ring 2s ease-in-out infinite;
+        }
 
-            <ul>
-              {collabApps.map((app, index) => (
-                <li
-                  key={app.id}
-                  className={`absolute top-0 left-1/2 h-1/2 -ml-[1.6rem] origin-bottom rotate-${
-                    index * 45
-                  }`}
+        .animate-rotate-gradient {
+          animation: rotate-gradient 8s linear infinite;
+        }
+      `}</style>
+
+      <Section crosses>
+        <div className="container lg:flex lg:gap-12">
+          {/* Left Content Section - WIDER & Enhanced */}
+          <div className="max-w-[35rem] lg:max-w-[40rem]">
+            <h2 className="h2 mb-6 md:mb-10 bg-gradient-to-r from-n-1 to-n-3 bg-clip-text text-transparent leading-tight">
+              Purpose-built for the adult creator economy
+            </h2>
+
+            {/* Enhanced Feature List - Better Spacing */}
+            <ul className="mb-12 md:mb-16 space-y-1">
+              {collabContent.map((item, index) => (
+                <li 
+                  className="py-4 px-4 -mx-4 group hover:bg-n-7/30 rounded-2xl transition-all duration-300" 
+                  key={item.id}
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div
-                    className={`relative -top-[1.6rem] flex w-[3.2rem] h-[3.2rem] bg-n-7 border border-n-1/15 rounded-xl -rotate-${
-                      index * 45
-                    }`}
-                  >
-                    <img
-                      className="m-auto"
-                      width={app.width}
-                      height={app.height}
-                      alt={app.title}
-                      src={app.icon}
-                    />
+                  <div className="flex items-center mb-2">
+                    {/* Enhanced Check Icon */}
+                    <div className="relative flex-shrink-0">
+                      <div className="absolute inset-0 bg-color-1/30 blur-md rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
+                      <img 
+                        src={check} 
+                        width={24} 
+                        height={24} 
+                        alt="check"
+                        className="relative transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </div>
+                    <h6 className="body-2 ml-5 font-bold transition-colors duration-300 group-hover:text-n-1">
+                      {item.title}
+                    </h6>
                   </div>
+                  {item.text && (
+                    <p className="body-2 ml-11 text-n-4 transition-colors duration-300 group-hover:text-n-3 leading-relaxed">
+                      {item.text}
+                    </p>
+                  )}
                 </li>
               ))}
             </ul>
 
-            <LeftCurve />
-            <RightCurve />
+            {/* Enhanced Button */}
+            <Button href="https://cyreneai.com/">
+              Launched token
+            </Button>
+          </div>
+
+          {/* Right Content Section - Enhanced Circular Layout */}
+          <div className="lg:ml-auto xl:w-[38rem] mt-12 lg:mt-4">
+            <p className="body-2 mb-8 text-n-4 md:mb-16 lg:mb-32 lg:w-[22rem] lg:mx-auto text-center lg:text-left">
+              {collabText}
+            </p>
+
+            {/* Enhanced Circular Container */}
+            <div className="relative left-1/2 flex w-[22rem] aspect-square border border-n-6 rounded-full -translate-x-1/2 scale-75 md:scale-100 group/circle">
+              {/* Outer glow effect */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-color-1/10 via-transparent to-color-2/10 opacity-0 group-hover/circle:opacity-100 transition-opacity duration-700 blur-xl" />
+              
+              {/* Pulsing ring effect */}
+              <div className="absolute inset-0 rounded-full border border-color-1/20 animate-pulse-ring" />
+
+              {/* Inner Circle */}
+              <div className="flex w-60 aspect-square m-auto border border-n-6 rounded-full relative overflow-hidden group/inner hover:border-color-1/30 transition-all duration-500">
+                {/* Inner circle glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-color-1/5 to-color-2/5 opacity-0 group-hover/inner:opacity-100 transition-opacity duration-500" />
+                
+                {/* Center Logo with Enhanced Gradient */}
+                <div className="relative w-[6rem] aspect-square m-auto p-[0.2rem] bg-conic-gradient rounded-full group-hover/inner:shadow-2xl transition-shadow duration-500">
+                  {/* Rotating gradient border effect */}
+                  <div className="absolute inset-0 rounded-full bg-conic-gradient opacity-0 group-hover/inner:opacity-100 animate-rotate-gradient blur-sm" />
+                  
+                  <div className="relative flex items-center justify-center w-full h-full bg-n-8 rounded-full">
+                    <img
+                      src={brainwaveSymbol}
+                      width={48}
+                      height={48}
+                      alt="brainwave"
+                      className="transition-transform duration-500 group-hover/inner:scale-110"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Enhanced App Icons - FIXED FOR 6 ICONS with inline styles */}
+              <ul>
+                {collabApps.map((app, index) => {
+                  const rotation = index * 60; // 360 / 6 = 60 degrees per icon
+                  
+                  return (
+                    <li
+                      key={app.id}
+                      className="absolute top-0 left-1/2 h-1/2 -ml-[1.6rem] origin-bottom"
+                      style={{ 
+                        transform: `rotate(${rotation}deg)`,
+                        animationDelay: `${index * 0.1}s`,
+                        zIndex: 10 
+                      }}
+                    >
+                      <div
+                        className="relative -top-[1.6rem] flex w-[3.2rem] h-[3.2rem] bg-n-7 border border-n-1/15 rounded-xl group/app cursor-pointer transition-all duration-300 hover:bg-n-6 hover:border-color-1/30 hover:scale-110 hover:shadow-xl animate-float-icon"
+                        style={{ 
+                          transform: `rotate(-${rotation}deg)`,
+                          animationDelay: `${index * 0.2}s`,
+                          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+                        }}
+                      >
+                        {/* Icon glow on hover */}
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-color-1/20 to-color-2/20 opacity-0 group-hover/app:opacity-100 transition-opacity duration-300" />
+                        
+                        <img
+                          className="m-auto relative z-10 transition-transform duration-300 group-hover/app:scale-110"
+                          width={app.width}
+                          height={app.height}
+                          alt={app.title}
+                          src={app.icon}
+                        />
+                        
+                        {/* Tooltip on hover */}
+                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-n-6 rounded text-xs font-code whitespace-nowrap opacity-0 group-hover/app:opacity-100 transition-opacity duration-300 pointer-events-none border border-n-1/10">
+                          {app.title}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <LeftCurve />
+              <RightCurve />
+            </div>
           </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+    </>
   );
 };
 

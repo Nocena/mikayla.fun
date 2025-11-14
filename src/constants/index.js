@@ -9,7 +9,6 @@ import {
   discord,
   discordBlack,
   facebook,
-  figma,
   file02,
   framer,
   homeSmile,
@@ -33,7 +32,15 @@ import {
   sliders04,
   telegram,
   twitter,
-  yourlogo,
+  of,
+  onlyfans,
+  pa,
+  fa,
+  hh,
+  jf,
+  fansly,
+  patreon,
+  herohero
 } from "../assets";
 
 export const navigation = [
@@ -44,13 +51,13 @@ export const navigation = [
   },
   {
     id: "1",
-    title: "Pricing",
-    url: "#pricing",
+    title: "How to use",
+    url: "#how-to-use",
   },
   {
     id: "2",
-    title: "How to use",
-    url: "#how-to-use",
+    title: "Tokenomics",
+    url: "#tokenomics",
   },
   {
     id: "3",
@@ -59,14 +66,14 @@ export const navigation = [
   },
   {
     id: "4",
-    title: "New account",
+    title: "Dex",
     url: "#signup",
     onlyMobile: true,
   },
   {
     id: "5",
-    title: "Sign in",
-    url: "#login",
+    title: "Launchpad",
+    url: "https://cyreneai.com/",
     onlyMobile: true,
   },
 ];
@@ -75,12 +82,12 @@ export const heroIcons = [homeSmile, file02, searchMd, plusSquare];
 
 export const notificationImages = [notification4, notification3, notification2];
 
-export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
+export const companyLogos = [onlyfans, fansly, patreon, herohero];
 
 export const brainwaveServices = [
-  "Photo generating",
-  "Photo enhance",
-  "Seamless Integration",
+  "Context-aware responses",
+  "Safe & compliant",
+  "Revenue-focused",
 ];
 
 export const brainwaveServicesIcons = [
@@ -94,112 +101,101 @@ export const brainwaveServicesIcons = [
 export const roadmap = [
   {
     id: "0",
-    title: "Voice recognition",
-    text: "Enable the chatbot to understand and respond to voice commands, making it easier for users to interact with the app hands-free.",
-    date: "May 2023",
+    title: "Deep industry experience",
+    text: "Our team combines years of hands-on experience: former OnlyFans chatters who understand fan psychology, developers who built OF alternatives, AI engineers from deep learning backgrounds, and crypto veterans who've launched successful tokens.",
+    date: "2018-2024",
     status: "done",
     imageUrl: roadmap1,
     colorful: true,
   },
   {
     id: "1",
-    title: "Gamification",
-    text: "Add game-like elements, such as badges or leaderboards, to incentivize users to engage with the chatbot more frequently.",
-    date: "May 2023",
+    title: "Token launch",
+    text: "Launch Mikayla to established OnlyFans agencies, helping them scale their chatter teams with AI assistance. Beta platform with multi-account management, personality modes, and real-time AI suggestions.",
+    date: "Q4 2025",
     status: "progress",
     imageUrl: roadmap2,
   },
   {
     id: "2",
-    title: "Chatbot customization",
-    text: "Allow users to customize the chatbot's appearance and behavior, making it more engaging and fun to interact with.",
-    date: "May 2023",
-    status: "done",
+    title: "Direct creator platform",
+    text: "Expand beyond agencies to serve independent creators directly. Launch self-service platform where individual models can train Mikayla on their personality and manage fan conversations themselves.",
+    date: "2026",
+    status: "progress",
     imageUrl: roadmap3,
   },
   {
     id: "3",
-    title: "Integration with APIs",
-    text: "Allow the chatbot to access external data sources, such as weather APIs or news APIs, to provide more relevant recommendations.",
-    date: "May 2023",
+    title: "Full AI model ecosystem",
+    text: "Build entirely AI-powered OnlyFans models on crypto-native platforms. Explore autonomous AI creators that can generate content, manage fan relationships, and operate on decentralized OF alternatives - the ultimate vision.",
+    date: "2027",
     status: "progress",
     imageUrl: roadmap4,
   },
 ];
 
 export const collabText =
-  "With smart automation and top-notch security, it's the perfect solution for teams looking to work smarter.";
+  "With smart automation and top-notch security, it's the perfect solution for agencies looking to work smarter";
+  
+export const collabText2 =
+  "Handle dozens of model accounts from one dashboard";
 
 export const collabContent = [
   {
     id: "0",
-    title: "Seamless Integration",
-    text: collabText,
+    title: "Multi-account management",
+    text: collabText2,
   },
   {
     id: "1",
-    title: "Smart Automation",
+    title: "Smart AI assistant",
   },
   {
     id: "2",
-    title: "Top-notch Security",
+    title: "Revenue optimization",
   },
 ];
 
 export const collabApps = [
   {
     id: "0",
-    title: "Figma",
-    icon: figma,
+    title: "OnlyFans",
+    icon: of,
     width: 26,
     height: 36,
   },
   {
     id: "1",
-    title: "Notion",
-    icon: notion,
-    width: 34,
-    height: 36,
-  },
-  {
-    id: "2",
     title: "Discord",
     icon: discord,
     width: 36,
     height: 28,
   },
   {
-    id: "3",
-    title: "Slack",
-    icon: slack,
+    id: "2",
+    title: "Patreon",
+    icon: pa,
     width: 34,
-    height: 35,
+    height: 34,
+  },
+  {
+    id: "3",
+    title: "HeroHero",
+    icon: hh,
+    width: 34,
+    height: 34,
   },
   {
     id: "4",
-    title: "Photoshop",
-    icon: photoshop,
-    width: 34,
-    height: 34,
-  },
-  {
-    id: "5",
-    title: "Protopie",
-    icon: protopie,
-    width: 34,
-    height: 34,
-  },
-  {
-    id: "6",
-    title: "Framer",
-    icon: framer,
+    title: "JustForFans",
+    icon: jf,
     width: 26,
     height: 34,
   },
   {
-    id: "7",
-    title: "Raindrop",
-    icon: raindrop,
+    id: "5",
+    title: "Fansly",
+    icon: fa,
     width: 38,
     height: 32,
   },
@@ -244,8 +240,8 @@ export const pricing = [
 export const benefits = [
   {
     id: "0",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "AI-enhanced chatting",
+    text: "Mikayla gives chatters real-time suggestions for better engagement and higher conversion rates, allowing them to keep convesations going longer",
     backgroundUrl: "./src/assets/benefits/card-1.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
@@ -253,7 +249,7 @@ export const benefits = [
   {
     id: "1",
     title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
+    text: "Mikayla is going to only get better each day with more data it gets to interact with picking up on trends faster then any human ever could",
     backgroundUrl: "./src/assets/benefits/card-2.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
@@ -261,16 +257,16 @@ export const benefits = [
   },
   {
     id: "2",
-    title: "Connect everywhere",
-    text: "Connect with the AI chatbot from anywhere, on any device, making it more accessible and convenient.",
+    title: "24/7 Revenue",
+    text: "Mikayla handles routine responses during off-hours while best performing chatters can focus on high-value conversations that drive PPV sales",
     backgroundUrl: "./src/assets/benefits/card-3.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
     id: "3",
-    title: "Fast responding",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Model personalities",
+    text: "Mikayla comes with multiple basic personalities that we know drive converion on OnlyFans. However you can prompt your own ideas into live and compare real results",
     backgroundUrl: "./src/assets/benefits/card-4.svg",
     iconUrl: benefitIcon4,
     imageUrl: benefitImage2,
@@ -278,16 +274,16 @@ export const benefits = [
   },
   {
     id: "4",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Token buybacks",
+    text: "10% of all the revenue generated by Mikayla will be directly used for token buybacks creating a constant buying preassure and strong analysis benchmark for price-discovery",
     backgroundUrl: "./src/assets/benefits/card-5.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
   },
   {
     id: "5",
-    title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
+    title: "Compliance & safety",
+    text: "AUtomatic content filtering and protection mechanisms for everyone involved, from models to chatters to customers and agencies implementing Mikayla",
     backgroundUrl: "./src/assets/benefits/card-6.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
