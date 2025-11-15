@@ -296,15 +296,15 @@ const Tokenomics = () => {
 
                 <ul>
                   <li className="flex items-start py-5 border-t border-n-6">
-                    <img src="/src/assets/check.svg" width={24} height={24} />
+                    <img src="/assets/check.svg" width={24} height={24} />
                     <p className="body-2 ml-4">Constant buying pressure</p>
                   </li>
                   <li className="flex items-start py-5 border-t border-n-6">
-                    <img src="/src/assets/check.svg" width={24} height={24} />
+                    <img src="/assets/check.svg" width={24} height={24} />
                     <p className="body-2 ml-4">Executed weekly on-chain</p>
                   </li>
                   <li className="flex items-start py-5 border-t border-n-6">
-                    <img src="/src/assets/check.svg" width={24} height={24} />
+                    <img src="/assets/check.svg" width={24} height={24} />
                     <p className="body-2 ml-4">Transparent data for price-discovery</p>
                   </li>
                 </ul>
@@ -331,15 +331,15 @@ const Tokenomics = () => {
 
               <ul>
                 <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/src/assets/check.svg" width={24} height={24} />
+                  <img src="/assets/check.svg" width={24} height={24} />
                   <p className="body-2 ml-4">Exclusive content on private Discord</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/src/assets/check.svg" width={24} height={24} />
+                  <img src="/assets/check.svg" width={24} height={24} />
                   <p className="body-2 ml-4">Governance voting rights on new models</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/src/assets/check.svg" width={24} height={24} />
+                  <img src="/assets/check.svg" width={24} height={24} />
                   <p className="body-2 ml-4">More projects coming</p>
                 </li>
               </ul>
