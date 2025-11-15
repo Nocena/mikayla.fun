@@ -256,15 +256,15 @@ const Tokenomics = () => {
 
               <ul>
                 <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/src/assets/check.svg" width={24} height={24} />
+                  <img src="/assets/check.svg" width={24} height={24} />
                   <p className="body-2 ml-4">Monthly SaaS subscriptions</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/src/assets/check.svg" width={24} height={24} />
+                  <img src="/assets/check.svg" width={24} height={24} />
                   <p className="body-2 ml-4">Pay-per-message AI usage</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/src/assets/check.svg" width={24} height={24} />
+                  <img src="/assets/check.svg" width={24} height={24} />
                   <p className="body-2 ml-4">Enterprise contracts</p>
                 </li>
               </ul>
