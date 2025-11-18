@@ -66,7 +66,7 @@ const Hero = () => {
 
             {/* Enhanced Description */}
             <p className="body-1 max-w-3xl mx-auto mb-8 text-n-2 lg:mb-10 leading-relaxed">
-              The first AI assistant for OnlyFans chatters with our own Solana token to help degens like us who support us early on profit from our journey
+              The first AI assistant for OnlyFans chatters that features its own Solana token, designed to help degens who support us early profit alongside us.
             </p>
             
             {/* Enhanced & Desktop/Mobile-Responsive Token CA */}
