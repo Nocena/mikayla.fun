@@ -14,7 +14,7 @@ const Hero = () => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyCA = () => {
-    const ca = "C15AhpLTjjVBLLPq5xqH9ewXscSN4DcpkePmHg7geTa6";
+    const ca = "cjng4fc3wuizyym4mznkduuxq9v9bs6junk7xyszcjyb";
     navigator.clipboard.writeText(ca);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -84,7 +84,7 @@ const Hero = () => {
                   
                   {/* CA Code - Better mobile & desktop handling */}
                   <code className="text-xs md:text-sm font-mono text-n-1/90 tracking-tight break-all md:break-normal text-center md:text-left leading-relaxed px-2 md:px-0">
-                    C15AhpLTjjVBLLPq5xqH9ewXscSN4DcpkePmHg7geTa6
+                    cjng4fc3wuizyym4mznkduuxq9v9bs6junk7xyszcjyb
                   </code>
                 </div>
                 
