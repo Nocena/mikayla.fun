@@ -301,7 +301,7 @@ const Tokenomics = () => {
                   </li>
                   <li className="flex items-start py-5 border-t border-n-6">
                     <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Executed weekly on-chain</p>
+                    <p className="body-2 ml-4">Executed regulary on-chain</p>
                   </li>
                   <li className="flex items-start py-5 border-t border-n-6">
                     <img src="/assets/check.svg" width={24} height={24} />

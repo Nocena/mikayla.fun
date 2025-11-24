@@ -68,7 +68,7 @@ const Header = () => {
         </nav>
 
         <a
-          href="https://dexscreener.com/solana/dc5ls1yrcwrf99d5twa8msp3jkuigxtkn1b8ei6zkiru"
+          href="https://dexscreener.com/solana/cjng4fc3wuizyym4mznkduuxq9v9bs6junk7xyszcjyb"
           className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
         >
           DEX
