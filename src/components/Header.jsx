@@ -71,9 +71,9 @@ const Header = () => {
           href="https://dexscreener.com/solana/cjng4fc3wuizyym4mznkduuxq9v9bs6junk7xyszcjyb"
           className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
         >
-          DEX
+          Token DEX
         </a>
-        <Button className="hidden lg:flex" href="https://cyreneai.com/">
+        <Button className="hidden lg:flex" href="https://mikayla.cyreneai.com/explore-projects">
           Launchpad
         </Button>
 

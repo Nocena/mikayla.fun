@@ -26,7 +26,7 @@ const Notification = ({ className, title }) => {
 
         <div className="flex-1 min-w-0">
           <h6 className="mb-1 font-semibold text-base transition-colors duration-300 group-hover:text-n-1">
-            {title}
+            Token launching
           </h6>
 
           <div className="flex items-center justify-between gap-2">

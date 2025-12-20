@@ -49,7 +49,7 @@ const Hero = () => {
           <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
             {/* Enhanced Heading */}
             <h1 className="h1 mb-6">
-              Say hello to {` `}
+              #1 SCM launchpad {` `}
               <span className="inline-block relative">
                 <span className="bg-gradient-to-r from-n-1 via-color-1 to-n-1 bg-clip-text text-transparent animate-gradient-shift-hero">
                   Mikayla
@@ -66,7 +66,7 @@ const Hero = () => {
 
             {/* Enhanced Description */}
             <p className="body-1 max-w-3xl mx-auto mb-8 text-n-2 lg:mb-10 leading-relaxed">
-              The first AI assistant for OnlyFans chatters that features its own Solana token, designed to help degens who support us early profit alongside us.
+              The SCM (Sex Capital Market) in crypto is completely untapped yet. We are the first SCM launchpad in the world on Solana, empowering real creators with a brand new tool and the give their communitites unique access.
             </p>
             
             {/* Enhanced & Desktop/Mobile-Responsive Token CA */}
@@ -177,7 +177,7 @@ const Hero = () => {
             <BackgroundCircles />
           </div>
 
-          <CompanyLogos className="hidden relative z-10 mt-20 lg:block" />
+          {/*<CompanyLogos className="hidden relative z-10 mt-20 lg:block" />*/}
         </div>
 
         <BottomLine />

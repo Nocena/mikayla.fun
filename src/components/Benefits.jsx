@@ -1,7 +1,6 @@
 import { benefits } from "../constants";
 import Heading from "./Heading";
 import Section from "./Section";
-import Arrow from "../assets/svg/Arrow";
 import { GradientLight } from "./design/Benefits";
 import ClipPath from "../assets/svg/ClipPath";
 
@@ -10,40 +9,20 @@ const Benefits = () => {
     <>
       <style>{`
         @keyframes float-up {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
         }
-
         @keyframes shimmer-benefit {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
         }
-
         @keyframes pulse-icon {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.05);
-          }
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
         }
-
-        .animate-float-up {
-          animation: float-up 3s ease-in-out infinite;
-        }
-
         .animate-shimmer-benefit {
           animation: shimmer-benefit 2s infinite;
         }
-
         .animate-pulse-icon {
           animation: pulse-icon 2s ease-in-out infinite;
         }
@@ -51,9 +30,10 @@ const Benefits = () => {
 
       <Section id="features">
         <div className="container relative z-2">
+          {/* UPDATED HEADING FOR LAUNCHPAD CONTEXT */}
           <Heading
             className="md:max-w-md lg:max-w-2xl"
-            title="Tool developed directly for OnlyFans Agency"
+            title="Infrastructure built for the SCM Economy"
           />
 
           <div className="flex flex-wrap gap-10 mb-10 justify-center">
@@ -66,12 +46,12 @@ const Benefits = () => {
                 }}
                 key={item.id}
               >
-                {/* Hover glow effect around the card */}
+                {/* Hover glow effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                   <div className="absolute inset-0 bg-gradient-to-br from-color-1/20 via-transparent to-color-2/20 blur-xl" />
                 </div>
 
-                {/* Shimmer effect on hover */}
+                {/* Shimmer effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden pointer-events-none">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer-benefit" />
                 </div>
@@ -84,9 +64,8 @@ const Benefits = () => {
                     {item.text}
                   </p>
                   
-                  {/* Enhanced bottom section with animated icon and tags */}
                   <div className="flex items-center mt-auto gap-3">
-                    {/* Animated icon with glow */}
+                    {/* Icon */}
                     <div className="relative flex-shrink-0 group-hover:animate-pulse-icon">
                       <div className="absolute inset-0 bg-color-1/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       <img
@@ -98,17 +77,11 @@ const Benefits = () => {
                       />
                     </div>
 
-                    {/* Feature tags instead of "Explore more" */}
+                    {/* UPDATED TAGS LOGIC: Reads directly from item.tag */}
                     <div className="flex flex-wrap gap-2 ml-auto pointer-events-auto">
-                      {/* Primary tag based on card type */}
                       <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-n-6/50 border border-n-1/10 text-xs font-code font-bold uppercase tracking-wider transition-all duration-300 group-hover:bg-n-6 group-hover:border-color-1/30 group-hover:scale-105">
                         <span className="w-1.5 h-1.5 rounded-full bg-color-1 mr-2 animate-pulse" />
-                        {index === 0 ? "AI-Powered" : 
-                         index === 1 ? "Analytics" :
-                         index === 2 ? "Automation" :
-                         index === 3 ? "Customizable" :
-                         index === 4 ? "Revenue+" :
-                         "Secure"}
+                        {item.tag} 
                       </span>
                     </div>
                   </div>

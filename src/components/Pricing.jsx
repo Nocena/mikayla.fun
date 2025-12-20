@@ -2,15 +2,14 @@ import { useState } from "react";
 import Section from "./Section";
 import { smallSphere, stars } from "../assets";
 import Heading from "./Heading";
-import { LeftLine, RightLine } from "./design/Pricing";
 
+// UPDATED: Launchpad-focused allocation (High Liquidity + Community)
 const tokenAllocation = [
-  { name: "Public sale", percentage: 10.0, amount: "100,000,000", color: "color-4", description: "Fair public launch - no vesting" },
-  { name: "Team", percentage: 15.0, amount: "150,000,000", color: "color-5", description: "Core team allocation - 3 year vesting" },
-  { name: "Advisors", percentage: 5.0, amount: "50,000,000", color: "color-6", description: "Strategic advisors - 1 year vesting" },
-  { name: "Reserve", percentage: 20.0, amount: "200,000,000", color: "color-1", description: "Treasury reserve - 3 years vesting" },
-  { name: "Marketing", percentage: 30.0, amount: "300,000,000", color: "color-2", description: "Growth & marketing - 2 years vesting" },
-  { name: "Liquidity", percentage: 20.0, amount: "200,000,000", color: "color-3", description: "DEX liquidity pools - 2 years vesting" },
+  { name: "Public Liquidity", percentage: 45.0, amount: "450,000,000", color: "color-4", description: "100% unlocked for trading liquidity" },
+  { name: "Community", percentage: 20.0, amount: "200,000,000", color: "color-5", description: "Airdrops for top traders & creators" },
+  { name: "Team", percentage: 15.0, amount: "150,000,000", color: "color-1", description: "Locked for 1 year, linear vesting" },
+  { name: "CEX Listings", percentage: 10.0, amount: "100,000,000", color: "color-2", description: "Reserved for Tier 1 Exchange listings" },
+  { name: "Treasury", percentage: 10.0, amount: "100,000,000", color: "color-3", description: "Future development & partnerships" },
 ];
 
 const colorMap = {
@@ -27,14 +26,12 @@ const PieChart = ({ data, activeIndex, onHover }) => {
 
   return (
     <div className="relative w-full h-full">
-      {/* Outer glow effect */}
       <div className="absolute inset-0 rounded-full blur-3xl opacity-30">
         <div className="w-full h-full rounded-full bg-gradient-to-br from-color-1 via-color-2 to-color-3 animate-pulse" />
       </div>
       
       <svg viewBox="0 0 200 200" className="relative w-full h-full drop-shadow-2xl">
         <defs>
-          {/* Gradient definitions for each slice */}
           {data.map((item, index) => (
             <linearGradient key={`gradient-${index}`} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={colorMap[item.color]} stopOpacity="1" />
@@ -42,7 +39,6 @@ const PieChart = ({ data, activeIndex, onHover }) => {
             </linearGradient>
           ))}
           
-          {/* Filter for 3D effect */}
           <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
             <feOffset dx="0" dy="2" result="offsetblur"/>
@@ -55,7 +51,6 @@ const PieChart = ({ data, activeIndex, onHover }) => {
             </feMerge>
           </filter>
 
-          {/* Inner shadow for depth */}
           <filter id="innerShadow">
             <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
             <feOffset in="blur" dx="0" dy="1" result="offsetBlur"/>
@@ -65,17 +60,14 @@ const PieChart = ({ data, activeIndex, onHover }) => {
           </filter>
         </defs>
 
-        {/* Render pie slices */}
         {data.map((item, index) => {
           const percentage = item.percentage;
           const startAngle = (cumulativePercentage / 100) * 360;
           const endAngle = ((cumulativePercentage + percentage) / 100) * 360;
-          
           cumulativePercentage += percentage;
 
           const startAngleRad = (startAngle - 90) * (Math.PI / 180);
           const endAngleRad = (endAngle - 90) * (Math.PI / 180);
-          
           const outerRadius = 85;
           const innerRadius = 45;
           
@@ -83,14 +75,12 @@ const PieChart = ({ data, activeIndex, onHover }) => {
           const y1 = 100 + outerRadius * Math.sin(startAngleRad);
           const x2 = 100 + outerRadius * Math.cos(endAngleRad);
           const y2 = 100 + outerRadius * Math.sin(endAngleRad);
-          
           const x3 = 100 + innerRadius * Math.cos(endAngleRad);
           const y3 = 100 + innerRadius * Math.sin(endAngleRad);
           const x4 = 100 + innerRadius * Math.cos(startAngleRad);
           const y4 = 100 + innerRadius * Math.sin(startAngleRad);
           
           const largeArcFlag = percentage > 50 ? 1 : 0;
-          
           const pathData = [
             `M ${x1} ${y1}`,
             `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
@@ -102,8 +92,6 @@ const PieChart = ({ data, activeIndex, onHover }) => {
           const isActive = activeIndex === index;
           const scale = isActive ? 1.05 : 1;
           const opacity = activeIndex === null || isActive ? 1 : 0.4;
-
-          // Calculate center point for transform origin
           const midAngle = ((startAngle + endAngle) / 2 - 90) * (Math.PI / 180);
           const centerX = 100 + ((outerRadius + innerRadius) / 2) * Math.cos(midAngle);
           const centerY = 100 + ((outerRadius + innerRadius) / 2) * Math.sin(midAngle);
@@ -124,7 +112,6 @@ const PieChart = ({ data, activeIndex, onHover }) => {
                   filter: isActive ? 'brightness(1.2) drop-shadow(0 0 8px currentColor)' : 'brightness(1)',
                 }}
               />
-              {/* Subtle border for each slice */}
               {isActive && (
                 <path
                   d={pathData}
@@ -142,23 +129,8 @@ const PieChart = ({ data, activeIndex, onHover }) => {
           );
         })}
 
-        {/* Center circle with glassmorphism effect */}
-        <circle 
-          cx="100" 
-          cy="100" 
-          r="42" 
-          fill="#15131D" 
-          filter="url(#innerShadow)"
-        />
-        <circle 
-          cx="100" 
-          cy="100" 
-          r="42" 
-          fill="url(#centerGradient)" 
-          opacity="0.1"
-        />
-        
-        {/* Center decoration */}
+        <circle cx="100" cy="100" r="42" fill="#15131D" filter="url(#innerShadow)"/>
+        <circle cx="100" cy="100" r="42" fill="url(#centerGradient)" opacity="0.1"/>
         <defs>
           <radialGradient id="centerGradient">
             <stop offset="0%" stopColor="#AC6AFF" />
@@ -196,16 +168,15 @@ const Tokenomics = () => {
           </div>
         </div>
 
+        {/* UPDATED HEADING */}
         <Heading
-          tag="Real Revenue. Real Buybacks."
-          title="$MIKA tokenomics"
+          tag="Volume Driven. Deflationary."
+          title="The $MIKA Economy"
         />
 
         <div className="relative">
-          {/* Modified lines to point at pricing boxes above */}
           <div className="absolute top-0 left-0 w-full pointer-events-none">
             <svg className="w-full h-32" viewBox="0 0 1200 128" preserveAspectRatio="none">
-              {/* Left line pointing up to Revenue Model */}
               <path
                 d="M 100 128 Q 150 64, 200 0"
                 stroke="url(#leftGradient)"
@@ -213,7 +184,6 @@ const Tokenomics = () => {
                 fill="none"
                 opacity="0.3"
               />
-              {/* Right line pointing up to Token Benefits */}
               <path
                 d="M 1100 128 Q 1050 64, 1000 0"
                 stroke="url(#rightGradient)"
@@ -234,121 +204,118 @@ const Tokenomics = () => {
             </svg>
           </div>
 
-          {/* Three column layout - Buyback Mechanism */}
           <div className="flex gap-[1rem] mb-10 max-lg:flex-wrap pt-8">
-            {/* Revenue Model */}
+            {/* LEFT CARD: Protocol Revenue */}
             <div className="w-full h-full px-6 bg-n-8 border border-n-6 rounded-[2rem] lg:w-auto even:py-14 odd:py-8 odd:my-4 [&>h4]:first:text-color-2 [&>h4]:even:text-color-1 [&>h4]:last:text-color-3 hover:border-color-2 transition-all duration-300">
-              <h4 className="h4 mb-4">Revenue Model</h4>
+              <h4 className="h4 mb-4">Protocol Revenue</h4>
 
               <p className="body-2 min-h-[4rem] mb-3 text-n-1/50">
-                Predictable B2B SaaS revenue from agencies
+                A standard fee is applied to every trade on the launchpad.
               </p>
 
               <div className="flex items-center h-[5.5rem] mb-6">
                 <div className="text-[3.5rem] leading-none font-bold">
-                  10%
+                  1%
                 </div>
               </div>
 
               <button className="w-full mb-6 py-3 px-4 bg-n-8 border border-n-6 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-n-7 hover:border-color-2 transition-colors">
-                Platform Fees
+                Trading Fees
               </button>
 
               <ul>
                 <li className="flex items-start py-5 border-t border-n-6">
                   <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Monthly SaaS subscriptions</p>
+                  <p className="body-2 ml-4">Collected in $SOL</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
                   <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Pay-per-message AI usage</p>
+                  <p className="body-2 ml-4">Creation Fees (0.02 SOL)</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
                   <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Enterprise contracts</p>
+                  <p className="body-2 ml-4">Raydium Migration Fees</p>
                 </li>
               </ul>
             </div>
 
-            {/* Buyback Mechanism - Highlighted */}
+            {/* MIDDLE CARD: Buyback & Burn */}
             <div className="w-full h-full px-6 bg-n-8 border border-n-6 rounded-[2rem] lg:w-auto even:py-14 odd:py-8 odd:my-4 [&>h4]:first:text-color-2 [&>h4]:even:text-color-1 [&>h4]:last:text-color-3 relative group">
-              {/* Animated gradient border */}
               <div className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-color-1 via-color-2 to-color-3 animate-gradient-xy blur-sm" />
               </div>
               <div className="absolute inset-0.5 bg-conic-gradient rounded-[2rem] opacity-20 pointer-events-none" />
               <div className="relative">
-                <h4 className="h4 mb-4">Automatic Buyback</h4>
+                <h4 className="h4 mb-4">Buyback & Burn</h4>
 
                 <p className="body-2 min-h-[4rem] mb-3 text-n-1/50">
-                  10% of ALL revenue automatically buys back $MIKA tokens
+                  50% of all protocol fees are used to buy $MIKA from the open market and burn it.
                 </p>
 
                 <div className="flex items-center h-[5.5rem] mb-6">
                   <div className="text-[3.5rem] leading-none font-bold bg-gradient-to-r from-color-1 to-color-2 bg-clip-text text-transparent">
-                    Forever
+                    Daily
                   </div>
                 </div>
 
                 <button className="w-full mb-6 py-3 px-4 bg-n-8 border border-color-1 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-gradient-to-r hover:from-color-1/10 hover:to-color-2/10 transition-all">
-                  On-Chain Transparent
+                  Deflationary
                 </button>
 
                 <ul>
                   <li className="flex items-start py-5 border-t border-n-6">
                     <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Constant buying pressure</p>
+                    <p className="body-2 ml-4">Constant Buy Pressure</p>
                   </li>
                   <li className="flex items-start py-5 border-t border-n-6">
                     <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Executed regulary on-chain</p>
+                    <p className="body-2 ml-4">Reducing Total Supply</p>
                   </li>
                   <li className="flex items-start py-5 border-t border-n-6">
                     <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Transparent data for price-discovery</p>
+                    <p className="body-2 ml-4">Verifiable on-chain</p>
                   </li>
                 </ul>
               </div>
             </div>
 
-            {/* Token Utility */}
+            {/* RIGHT CARD: Staking/Yield */}
             <div className="w-full h-full px-6 bg-n-8 border border-n-6 rounded-[2rem] lg:w-auto even:py-14 odd:py-8 odd:my-4 [&>h4]:first:text-color-2 [&>h4]:even:text-color-1 [&>h4]:last:text-color-3 hover:border-color-3 transition-all duration-300">
-              <h4 className="h4 mb-4">Token Benefits</h4>
+              <h4 className="h4 mb-4">Real Yield Staking</h4>
 
               <p className="body-2 min-h-[4rem] mb-3 text-n-1/50">
-                HODL $MIKA = enjoy your benefits and grow with Mikayla
+                Stake your $MIKA to earn the other 50% of trading fees.
               </p>
 
               <div className="flex items-center h-[5.5rem] mb-6">
                 <div className="text-[3.5rem] leading-none font-bold">
-                  Utility
+                  Yield
                 </div>
               </div>
 
               <button className="w-full mb-6 py-3 px-4 bg-n-8 border border-n-6 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-n-7 hover:border-color-3 transition-colors">
-                More than investment
+                Earn Passive Income
               </button>
 
               <ul>
                 <li className="flex items-start py-5 border-t border-n-6">
                   <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Exclusive content on private Discord</p>
+                  <p className="body-2 ml-4">Paid in $SOL or $USDC</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
                   <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Governance voting rights on new models</p>
+                  <p className="body-2 ml-4">Early access to new launches</p>
                 </li>
                 <li className="flex items-start py-5 border-t border-n-6">
                   <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">More projects coming</p>
+                  <p className="body-2 ml-4">Governance on platform rules</p>
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* Token Allocation Chart Section - Enhanced Design */}
+          {/* Token Allocation Chart Section */}
           <div className="relative p-8 bg-gradient-to-b from-n-8 to-n-7 border border-n-6 rounded-[2rem] mb-10 overflow-hidden">
-            {/* Background animated gradient */}
             <div className="absolute inset-0 opacity-5">
               <div className="absolute inset-0 bg-gradient-to-br from-color-1 via-transparent to-color-2 animate-gradient-xy" />
             </div>
@@ -359,7 +326,6 @@ const Tokenomics = () => {
               </h4>
               
               <div className="grid lg:grid-cols-2 gap-12 items-center">
-                {/* 3D Pie Chart */}
                 <div className="flex justify-center">
                   <div className="w-[320px] h-[320px] md:w-[420px] md:h-[420px] relative">
                     <PieChart 
@@ -368,7 +334,6 @@ const Tokenomics = () => {
                       onHover={setActiveSlice}
                     />
                     
-                    {/* Center text overlay */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <div className="text-center">
                         <div className="text-4xl font-bold bg-gradient-to-r from-color-1 to-color-2 bg-clip-text text-transparent">
@@ -380,7 +345,6 @@ const Tokenomics = () => {
                   </div>
                 </div>
 
-                {/* Enhanced Legend */}
                 <div className="space-y-3">
                   {tokenAllocation.map((item, index) => (
                     <div
@@ -399,7 +363,6 @@ const Tokenomics = () => {
                         boxShadow: activeSlice === index ? `0 0 30px ${colorMap[item.color]}40` : undefined,
                       }}
                     >
-                      {/* Subtle gradient background */}
                       {activeSlice === index && (
                         <div 
                           className="absolute inset-0 rounded-2xl opacity-10"
@@ -439,23 +402,20 @@ const Tokenomics = () => {
           </div>
         </div>
 
-        {/* Enhanced footer link with better mobile support */}
+        {/* Footer Link */}
         <div className="flex justify-center mt-10 px-4">
           <a
             className="group relative inline-block text-center"
             href="https://cyreneai.com/"
           >
-            {/* Gradient glow on hover */}
             <div className="absolute inset-0 bg-gradient-to-r from-color-1/20 via-color-2/20 to-color-3/20 rounded-lg opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
             
-            {/* Text content */}
             <span className="relative inline-block text-xs md:text-sm font-code font-bold tracking-wider uppercase border-b-2 border-n-3 group-hover:border-color-1 transition-all duration-300 pb-1 px-2">
               <span className="bg-gradient-to-r from-n-1 to-n-3 group-hover:from-color-1 group-hover:to-color-2 bg-clip-text transition-all duration-300">
-                So far only 10% of the token supply is live - rest ready to push project to new heights
+                Fair Launch: No VCs, No Pre-sale, Just Community
               </span>
             </span>
             
-            {/* Small arrow indicator */}
             <svg 
               className="inline-block ml-2 w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" 
               fill="none" 
@@ -471,14 +431,9 @@ const Tokenomics = () => {
 
       <style>{`
         @keyframes gradient-xy {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
-
         .animate-gradient-xy {
           background-size: 200% 200%;
           animation: gradient-xy 3s ease infinite;

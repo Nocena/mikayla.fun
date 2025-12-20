@@ -30,6 +30,11 @@ import chromecast from "./chrome-cast.svg";
 import sliders04 from "./sliders-04.svg";
 import loading from "./loading.png";
 import background from "./background.jpg";
+import idea from "./idea.png";
+import rocket from "./rocket.png";
+import data from "./data.png";
+import stream from "./stream.png";
+import salary from "./salary.png";
 
 import curve from "./hero/curve.png";
 import robot from "./hero/mika.png";
@@ -45,6 +50,11 @@ import photoshop from "./collaboration/photoshop.png";
 import protopie from "./collaboration/protopie.png";
 import raindrop from "./collaboration/raindrop.png";
 import slack from "./collaboration/slack.png";
+import leverage from "./collaboration/leverage.png";
+import curve3 from "./collaboration/curve.png";
+import drop from "./collaboration/drop.png";
+import token from "./collaboration/token.png";
+import phantom from "./collaboration/phantom.webp";
 
 import service1 from "./services/service-1.png";
 import service2 from "./services/service-2.png";
@@ -164,4 +174,14 @@ export {
   instagram,
   telegram,
   twitter,
+  leverage,
+  curve3,
+  drop,
+  token,
+  phantom,
+  idea,
+  rocket,
+  data,
+  stream,
+  salary
 };
