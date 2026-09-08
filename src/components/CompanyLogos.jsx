@@ -131,7 +131,7 @@ const CompanyLogos = ({ className }) => {
                 {/* Status badge on hover - uses rainbow gradient */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-n-7 border rounded-full text-xs font-code font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none shadow-xl shadow-n-9/50">
                   <span className={`${isIntegrated ? 'bg-gradient-to-r from-color-1 to-color-3 bg-clip-text text-transparent border-color-1/50' : 'text-n-3 border-n-1/20'}`}>
-                    {isIntegrated ? '✓ Integrated' : 'Coming Soon'}
+                    {isIntegrated ? 'Integrated' : 'Coming Soon'}
                   </span>
                 </div>
               </li>

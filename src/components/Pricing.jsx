@@ -1,65 +1,60 @@
 import { useState } from "react";
-import Section from "./Section";
-import { smallSphere, stars } from "../assets";
-import Heading from "./Heading";
+import { logo } from "../assets";
+import SpotlightCard from "./react-bits/SpotlightCard";
+import ShinyText from "./react-bits/ShinyText";
+import CountUp from "./react-bits/CountUp";
 
-// UPDATED: Launchpad-focused allocation (High Liquidity + Community)
 const tokenAllocation = [
-  { name: "Public Liquidity", percentage: 45.0, amount: "450,000,000", color: "color-4", description: "100% unlocked for trading liquidity" },
-  { name: "Community", percentage: 20.0, amount: "200,000,000", color: "color-5", description: "Airdrops for top traders & creators" },
-  { name: "Team", percentage: 15.0, amount: "150,000,000", color: "color-1", description: "Locked for 1 year, linear vesting" },
-  { name: "CEX Listings", percentage: 10.0, amount: "100,000,000", color: "color-2", description: "Reserved for Tier 1 Exchange listings" },
-  { name: "Treasury", percentage: 10.0, amount: "100,000,000", color: "color-3", description: "Future development & partnerships" },
+  {
+    name: "Public Bonding Curve",
+    percentage: 45.0,
+    amount: "450,000,000",
+    color: "#d4fc50",
+    status: "100% Unlocked",
+    description: "Available for public trading on Robinhood Chain fair-launch bonding curve.",
+  },
+  {
+    name: "Community & Creators",
+    percentage: 20.0,
+    amount: "200,000,000",
+    color: "#a8c3a0",
+    status: "Airdrop & Ecosystem",
+    description: "Incentives for high-volume creator models, early traders, and liquidity providers.",
+  },
+  {
+    name: "Core Development",
+    percentage: 15.0,
+    amount: "150,000,000",
+    color: "#f4f4f2",
+    status: "1-Year Cliff · Linear",
+    description: "Smart contract locked. 12-month cliff followed by 24-month linear vesting.",
+  },
+  {
+    name: "Tier-1 CEX Listings",
+    percentage: 10.0,
+    amount: "100,000,000",
+    color: "#5d85ff",
+    status: "Multi-Sig Locked",
+    description: "Reserved for institutional market-making and centralized exchange liquidity.",
+  },
+  {
+    name: "Protocol Treasury",
+    percentage: 10.0,
+    amount: "100,000,000",
+    color: "#ffc876",
+    status: "DAO Governed",
+    description: "Grants for upcoming creators, AI chat infrastructure, and security audits.",
+  },
 ];
-
-const colorMap = {
-  "color-1": "#AC6AFF",
-  "color-2": "#FFC876",
-  "color-3": "#FF776F",
-  "color-4": "#7ADB78",
-  "color-5": "#858DFF",
-  "color-6": "#FF98E2",
-};
 
 const PieChart = ({ data, activeIndex, onHover }) => {
   let cumulativePercentage = 0;
 
   return (
-    <div className="relative w-full h-full">
-      <div className="absolute inset-0 rounded-full blur-3xl opacity-30">
-        <div className="w-full h-full rounded-full bg-gradient-to-br from-color-1 via-color-2 to-color-3 animate-pulse" />
-      </div>
-      
-      <svg viewBox="0 0 200 200" className="relative w-full h-full drop-shadow-2xl">
-        <defs>
-          {data.map((item, index) => (
-            <linearGradient key={`gradient-${index}`} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor={colorMap[item.color]} stopOpacity="1" />
-              <stop offset="100%" stopColor={colorMap[item.color]} stopOpacity="0.7" />
-            </linearGradient>
-          ))}
-          
-          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-            <feOffset dx="0" dy="2" result="offsetblur"/>
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.5"/>
-            </feComponentTransfer>
-            <feMerge>
-              <feMergeNode/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
+    <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[380px] mx-auto">
+      <div className="absolute inset-0 rounded-full bg-[#d4fc50]/[0.05] blur-2xl pointer-events-none" />
 
-          <filter id="innerShadow">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
-            <feOffset in="blur" dx="0" dy="1" result="offsetBlur"/>
-            <feFlood floodColor="#000000" floodOpacity="0.3" result="offsetColor"/>
-            <feComposite in="offsetColor" in2="offsetBlur" operator="in" result="offsetBlur"/>
-            <feBlend in="SourceGraphic" in2="offsetBlur" mode="normal"/>
-          </filter>
-        </defs>
-
+      <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-xl overflow-visible">
         {data.map((item, index) => {
           const percentage = item.percentage;
           const startAngle = (cumulativePercentage / 100) * 360;
@@ -68,9 +63,11 @@ const PieChart = ({ data, activeIndex, onHover }) => {
 
           const startAngleRad = (startAngle - 90) * (Math.PI / 180);
           const endAngleRad = (endAngle - 90) * (Math.PI / 180);
-          const outerRadius = 85;
-          const innerRadius = 45;
-          
+
+          const isHovered = activeIndex === index;
+          const outerRadius = isHovered ? 88 : 82;
+          const innerRadius = isHovered ? 46 : 50;
+
           const x1 = 100 + outerRadius * Math.cos(startAngleRad);
           const y1 = 100 + outerRadius * Math.sin(startAngleRad);
           const x2 = 100 + outerRadius * Math.cos(endAngleRad);
@@ -79,368 +76,247 @@ const PieChart = ({ data, activeIndex, onHover }) => {
           const y3 = 100 + innerRadius * Math.sin(endAngleRad);
           const x4 = 100 + innerRadius * Math.cos(startAngleRad);
           const y4 = 100 + innerRadius * Math.sin(startAngleRad);
-          
-          const largeArcFlag = percentage > 50 ? 1 : 0;
-          const pathData = [
-            `M ${x1} ${y1}`,
-            `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-            `L ${x3} ${y3}`,
-            `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4}`,
-            `Z`
-          ].join(' ');
 
-          const isActive = activeIndex === index;
-          const scale = isActive ? 1.05 : 1;
-          const opacity = activeIndex === null || isActive ? 1 : 0.4;
-          const midAngle = ((startAngle + endAngle) / 2 - 90) * (Math.PI / 180);
-          const centerX = 100 + ((outerRadius + innerRadius) / 2) * Math.cos(midAngle);
-          const centerY = 100 + ((outerRadius + innerRadius) / 2) * Math.sin(midAngle);
+          const largeArcFlag = percentage > 50 ? 1 : 0;
+          const pathData = `M ${x1} ${y1} A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`;
 
           return (
-            <g key={index}>
-              <path
-                d={pathData}
-                fill={`url(#gradient-${index})`}
-                opacity={opacity}
-                filter="url(#shadow)"
-                className="cursor-pointer transition-all duration-300 ease-out"
-                onMouseEnter={() => onHover(index)}
-                onMouseLeave={() => onHover(null)}
-                style={{
-                  transform: `scale(${scale})`,
-                  transformOrigin: `${centerX}px ${centerY}px`,
-                  filter: isActive ? 'brightness(1.2) drop-shadow(0 0 8px currentColor)' : 'brightness(1)',
-                }}
-              />
-              {isActive && (
-                <path
-                  d={pathData}
-                  fill="none"
-                  stroke={colorMap[item.color]}
-                  strokeWidth="1.5"
-                  opacity="0.8"
-                  style={{
-                    transform: `scale(${scale})`,
-                    transformOrigin: `${centerX}px ${centerY}px`,
-                  }}
-                />
-              )}
-            </g>
+            <path
+              key={index}
+              d={pathData}
+              fill={item.color}
+              stroke="#080808"
+              strokeWidth="2"
+              className="cursor-pointer transition-all duration-300"
+              opacity={activeIndex === null || isHovered ? 1 : 0.4}
+              onMouseEnter={() => onHover(index)}
+              onMouseLeave={() => onHover(null)}
+            />
           );
         })}
-
-        <circle cx="100" cy="100" r="42" fill="#15131D" filter="url(#innerShadow)"/>
-        <circle cx="100" cy="100" r="42" fill="url(#centerGradient)" opacity="0.1"/>
-        <defs>
-          <radialGradient id="centerGradient">
-            <stop offset="0%" stopColor="#AC6AFF" />
-            <stop offset="100%" stopColor="#858DFF" />
-          </radialGradient>
-        </defs>
       </svg>
+
+      <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-[#121412] border border-white/10 flex flex-col items-center justify-center pointer-events-none text-center shadow-lg">
+        <span className="text-[10px] font-mono uppercase text-white/50">
+          {activeIndex !== null ? data[activeIndex].name.split(" ")[0] : "Supply"}
+        </span>
+        <strong className="text-sm font-bold font-mono text-white">
+          {activeIndex !== null ? `${data[activeIndex].percentage}%` : "1.00 B"}
+        </strong>
+        <span className="text-[9px] font-mono text-[#d4fc50]">$MIKA</span>
+      </div>
     </div>
   );
 };
 
-const Tokenomics = () => {
-  const [activeSlice, setActiveSlice] = useState(null);
+const Pricing = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
 
   return (
-    <>
-      <Section className="overflow-hidden" id="tokenomics">
-      <div className="container relative z-2">
-        <div className="hidden relative justify-center mb-[6.5rem] lg:flex">
-          <img
-            src={smallSphere}
-            className="relative z-1"
-            width={255}
-            height={255}
-            alt="Sphere"
-          />
-          <div className="absolute top-1/2 left-1/2 w-[60rem] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <img
-              src={stars}
-              className="w-full"
-              width={950}
-              height={400}
-              alt="Stars"
-            />
+    <section id="pricing" className="relative py-20 lg:py-28 bg-[#080808] border-t border-white/5 overflow-hidden">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 mb-4 font-mono text-xs uppercase tracking-widest text-[#a8c3a0]">
+            <span className="w-2 h-2 rounded-full bg-[#d4fc50]" />
+            <ShinyText text="ON-CHAIN TOKENOMICS & TREASURY" speed={3} className="text-[#a8c3a0]" />
           </div>
+          <h2 className="text-3xl sm:text-5xl font-serif text-white tracking-tight">
+            The Mikayla Cap Table
+          </h2>
+          <p className="text-white/60 text-sm sm:text-base mt-3">
+            Fixed 1,000,000,000 $MIKA supply deployed on Robinhood Chain L2. 0% inflation, automated
+            buyback & burn from platform trading fees.
+          </p>
         </div>
 
-        {/* UPDATED HEADING */}
-        <Heading
-          tag="Volume Driven. Deflationary."
-          title="The $MIKA Economy"
-        />
-
-        <div className="relative">
-          <div className="absolute top-0 left-0 w-full pointer-events-none">
-            <svg className="w-full h-32" viewBox="0 0 1200 128" preserveAspectRatio="none">
-              <path
-                d="M 100 128 Q 150 64, 200 0"
-                stroke="url(#leftGradient)"
-                strokeWidth="2"
-                fill="none"
-                opacity="0.3"
-              />
-              <path
-                d="M 1100 128 Q 1050 64, 1000 0"
-                stroke="url(#rightGradient)"
-                strokeWidth="2"
-                fill="none"
-                opacity="0.3"
-              />
-              <defs>
-                <linearGradient id="leftGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#AC6AFF" stopOpacity="0" />
-                  <stop offset="100%" stopColor="#AC6AFF" stopOpacity="1" />
-                </linearGradient>
-                <linearGradient id="rightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#FF98E2" stopOpacity="0" />
-                  <stop offset="100%" stopColor="#FF98E2" stopOpacity="1" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-
-          <div className="flex gap-[1rem] mb-10 max-lg:flex-wrap pt-8">
-            {/* LEFT CARD: Protocol Revenue */}
-            <div className="w-full h-full px-6 bg-n-8 border border-n-6 rounded-[2rem] lg:w-auto even:py-14 odd:py-8 odd:my-4 [&>h4]:first:text-color-2 [&>h4]:even:text-color-1 [&>h4]:last:text-color-3 hover:border-color-2 transition-all duration-300">
-              <h4 className="h4 mb-4">Protocol Revenue</h4>
-
-              <p className="body-2 min-h-[4rem] mb-3 text-n-1/50">
-                A standard fee is applied to every trade on the launchpad.
-              </p>
-
-              <div className="flex items-center h-[5.5rem] mb-6">
-                <div className="text-[3.5rem] leading-none font-bold">
-                  1%
-                </div>
-              </div>
-
-              <button className="w-full mb-6 py-3 px-4 bg-n-8 border border-n-6 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-n-7 hover:border-color-2 transition-colors">
-                Trading Fees
-              </button>
-
-              <ul>
-                <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Collected in $SOL</p>
-                </li>
-                <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Creation Fees (0.02 SOL)</p>
-                </li>
-                <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Raydium Migration Fees</p>
-                </li>
-              </ul>
-            </div>
-
-            {/* MIDDLE CARD: Buyback & Burn */}
-            <div className="w-full h-full px-6 bg-n-8 border border-n-6 rounded-[2rem] lg:w-auto even:py-14 odd:py-8 odd:my-4 [&>h4]:first:text-color-2 [&>h4]:even:text-color-1 [&>h4]:last:text-color-3 relative group">
-              <div className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-color-1 via-color-2 to-color-3 animate-gradient-xy blur-sm" />
-              </div>
-              <div className="absolute inset-0.5 bg-conic-gradient rounded-[2rem] opacity-20 pointer-events-none" />
-              <div className="relative">
-                <h4 className="h4 mb-4">Buyback & Burn</h4>
-
-                <p className="body-2 min-h-[4rem] mb-3 text-n-1/50">
-                  50% of all protocol fees are used to buy $MIKA from the open market and burn it.
-                </p>
-
-                <div className="flex items-center h-[5.5rem] mb-6">
-                  <div className="text-[3.5rem] leading-none font-bold bg-gradient-to-r from-color-1 to-color-2 bg-clip-text text-transparent">
-                    Daily
-                  </div>
-                </div>
-
-                <button className="w-full mb-6 py-3 px-4 bg-n-8 border border-color-1 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-gradient-to-r hover:from-color-1/10 hover:to-color-2/10 transition-all">
-                  Deflationary
-                </button>
-
-                <ul>
-                  <li className="flex items-start py-5 border-t border-n-6">
-                    <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Constant Buy Pressure</p>
-                  </li>
-                  <li className="flex items-start py-5 border-t border-n-6">
-                    <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Reducing Total Supply</p>
-                  </li>
-                  <li className="flex items-start py-5 border-t border-n-6">
-                    <img src="/assets/check.svg" width={24} height={24} />
-                    <p className="body-2 ml-4">Verifiable on-chain</p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* RIGHT CARD: Staking/Yield */}
-            <div className="w-full h-full px-6 bg-n-8 border border-n-6 rounded-[2rem] lg:w-auto even:py-14 odd:py-8 odd:my-4 [&>h4]:first:text-color-2 [&>h4]:even:text-color-1 [&>h4]:last:text-color-3 hover:border-color-3 transition-all duration-300">
-              <h4 className="h4 mb-4">Real Yield Staking</h4>
-
-              <p className="body-2 min-h-[4rem] mb-3 text-n-1/50">
-                Stake your $MIKA to earn the other 50% of trading fees.
-              </p>
-
-              <div className="flex items-center h-[5.5rem] mb-6">
-                <div className="text-[3.5rem] leading-none font-bold">
-                  Yield
-                </div>
-              </div>
-
-              <button className="w-full mb-6 py-3 px-4 bg-n-8 border border-n-6 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-n-7 hover:border-color-3 transition-colors">
-                Earn Passive Income
-              </button>
-
-              <ul>
-                <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Paid in $SOL or $USDC</p>
-                </li>
-                <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Early access to new launches</p>
-                </li>
-                <li className="flex items-start py-5 border-t border-n-6">
-                  <img src="/assets/check.svg" width={24} height={24} />
-                  <p className="body-2 ml-4">Governance on platform rules</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Token Allocation Chart Section */}
-          <div className="relative p-8 bg-gradient-to-b from-n-8 to-n-7 border border-n-6 rounded-[2rem] mb-10 overflow-hidden">
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0 bg-gradient-to-br from-color-1 via-transparent to-color-2 animate-gradient-xy" />
-            </div>
-
-            <div className="relative z-10">
-              <h4 className="h4 mb-12 text-center bg-gradient-to-r from-n-1 to-n-3 bg-clip-text text-transparent">
-                Token Allocation
-              </h4>
-              
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div className="flex justify-center">
-                  <div className="w-[320px] h-[320px] md:w-[420px] md:h-[420px] relative">
-                    <PieChart 
-                      data={tokenAllocation} 
-                      activeIndex={activeSlice}
-                      onHover={setActiveSlice}
-                    />
-                    
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="text-center">
-                        <div className="text-4xl font-bold bg-gradient-to-r from-color-1 to-color-2 bg-clip-text text-transparent">
-                          1B
-                        </div>
-                        <div className="text-sm text-n-3 mt-1">Total Supply</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  {tokenAllocation.map((item, index) => (
-                    <div
-                      key={index}
-                      onMouseEnter={() => setActiveSlice(index)}
-                      onMouseLeave={() => setActiveSlice(null)}
-                      className={`
-                        group relative p-5 rounded-2xl cursor-pointer transition-all duration-300
-                        ${activeSlice === index 
-                          ? 'bg-n-6 border-2 scale-105 shadow-2xl' 
-                          : 'bg-n-7/50 border border-n-6 hover:bg-n-6/50'
-                        }
-                      `}
-                      style={{
-                        borderColor: activeSlice === index ? colorMap[item.color] : undefined,
-                        boxShadow: activeSlice === index ? `0 0 30px ${colorMap[item.color]}40` : undefined,
-                      }}
-                    >
-                      {activeSlice === index && (
-                        <div 
-                          className="absolute inset-0 rounded-2xl opacity-10"
-                          style={{
-                            background: `linear-gradient(135deg, ${colorMap[item.color]}20 0%, transparent 100%)`
-                          }}
-                        />
-                      )}
-                      
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <div 
-                              className="w-5 h-5 rounded-lg shadow-lg transition-transform group-hover:scale-110"
-                              style={{ 
-                                backgroundColor: colorMap[item.color],
-                                boxShadow: `0 0 15px ${colorMap[item.color]}60`
-                              }}
-                            />
-                            <span className="font-bold text-lg">{item.name}</span>
-                          </div>
-                          <span 
-                            className="text-xl font-bold transition-all"
-                            style={{ color: activeSlice === index ? colorMap[item.color] : undefined }}
-                          >
-                            {item.percentage}%
-                          </span>
-                        </div>
-                        <p className="text-sm text-n-3 ml-8 mb-2">{item.description}</p>
-                        <p className="text-xs text-n-4 ml-8 font-mono">{item.amount} tokens</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Link */}
-        <div className="flex justify-center mt-10 px-4">
-          <a
-            className="group relative inline-block text-center"
-            href="https://cyreneai.com/"
+        {/* 2-Column Layout: Left Donut Chart, Right Allocations */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left: Donut Chart Frame (5 Cols) wrapped in SpotlightCard */}
+          <SpotlightCard
+            className="lg:col-span-5 p-6 sm:p-8 flex flex-col items-center justify-center border border-white/15"
+            spotlightColor="rgba(212, 252, 80, 0.15)"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-color-1/20 via-color-2/20 to-color-3/20 rounded-lg opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
-            
-            <span className="relative inline-block text-xs md:text-sm font-code font-bold tracking-wider uppercase border-b-2 border-n-3 group-hover:border-color-1 transition-all duration-300 pb-1 px-2">
-              <span className="bg-gradient-to-r from-n-1 to-n-3 group-hover:from-color-1 group-hover:to-color-2 bg-clip-text transition-all duration-300">
-                Fair Launch: No VCs, No Pre-sale, Just Community
+            <PieChart data={tokenAllocation} activeIndex={activeIndex} onHover={setActiveIndex} />
+
+            <div className="w-full mt-6 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-mono text-white/50">
+              <span>
+                Token Standard: <strong className="text-white">ERC-20 (Robinhood L2)</strong>
               </span>
+              <span>
+                Total Supply:{" "}
+                <strong className="text-[#d4fc50]">
+                  <CountUp to={1000000000} separator="," duration={2.5} />
+                </strong>
+              </span>
+            </div>
+          </SpotlightCard>
+
+          {/* Right: Breakdown Cards (7 Cols) */}
+          <div className="lg:col-span-7 space-y-3">
+            {tokenAllocation.map((item, index) => {
+              const isSelected = activeIndex === index;
+              return (
+                <SpotlightCard
+                  key={index}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(null)}
+                  className={`p-4 sm:p-5 cursor-pointer transition-all duration-300 ${
+                    isSelected
+                      ? "bg-[#141614] border-[#d4fc50]/50 shadow-lg scale-[1.01]"
+                      : "bg-[#0a0c0a] border-white/10 hover:border-white/20"
+                  }`}
+                  spotlightColor={item.color === "#d4fc50" ? "rgba(212, 252, 80, 0.2)" : "rgba(255, 255, 255, 0.08)"}
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className="w-3 h-3 rounded-full shrink-0"
+                        style={{ backgroundColor: item.color }}
+                      />
+                      <h4 className="text-sm sm:text-base font-bold text-white">{item.name}</h4>
+                      <span className="text-xs font-mono font-bold text-[#d4fc50]">
+                        {item.percentage}%
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs font-mono">
+                      <span className="text-white/40">{item.amount} $MIKA</span>
+                      <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5 text-[10px] text-[#a8c3a0]">
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-white/60 leading-relaxed pl-5">{item.description}</p>
+                </SpotlightCard>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Degen Utility & Liquidity Architecture Cards */}
+        <div className="mt-14 pt-12 border-t border-white/10">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#d4fc50] font-bold">
+              WHY DEGENS HOLD $MIKA
             </span>
-            
-            <svg 
-              className="inline-block ml-2 w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
+            <h3 className="text-2xl sm:text-3xl font-serif text-white tracking-tight mt-1">
+              Protocol Token Utility & Value Accrual
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <SpotlightCard
+              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
+              spotlightColor="rgba(212, 252, 80, 0.15)"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-[#d4fc50]/15 border border-[#d4fc50]/30 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-[#d4fc50]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                  </svg>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">Guaranteed Drop Access</h4>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  Stakers receive guaranteed Tier-1 allocations for every curated weekly drop: <strong>Friday ($ARIA), Sunday ($KIRA), Tuesday ($LUNA)</strong>.
+                </p>
+              </div>
+              <span className="mt-4 text-[10px] font-mono text-[#d4fc50] bg-[#d4fc50]/10 px-2 py-1 rounded border border-[#d4fc50]/20">
+                Tier-1 Whitelist Active
+              </span>
+            </SpotlightCard>
+
+            <SpotlightCard
+              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
+              spotlightColor="rgba(212, 252, 80, 0.15)"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-[#ff007f]/15 border border-[#ff007f]/30 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-[#ff007f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                  </svg>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">1% Auto Buyback & Burn</h4>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  1% of all trading volume across every creator token on Robinhood Chain is automatically routed to market-buy $MIKA and burn it forever.
+                </p>
+              </div>
+              <span className="mt-4 text-[10px] font-mono text-[#ff007f] bg-[#ff007f]/10 px-2 py-1 rounded border border-[#ff007f]/20">
+                Deflationary Volume Sink
+              </span>
+            </SpotlightCard>
+
+            <SpotlightCard
+              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
+              spotlightColor="rgba(212, 252, 80, 0.15)"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-[#00f2ff]/15 border border-[#00f2ff]/30 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-[#00f2ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">100% LP Burned to 0x...dead</h4>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  Upon graduating bonding curve at 4.20 ETH, 100% of liquidity is migrated to Uniswap V4 with LP keys irreversibly destroyed. Zero rugs possible.
+                </p>
+              </div>
+              <span className="mt-4 text-[10px] font-mono text-[#00f2ff] bg-[#00f2ff]/10 px-2 py-1 rounded border border-[#00f2ff]/20">
+                Provably Non-Ruggable
+              </span>
+            </SpotlightCard>
+
+            <SpotlightCard
+              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
+              spotlightColor="rgba(212, 252, 80, 0.15)"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-[#ffc876]/15 border border-[#ffc876]/30 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-[#ffc876]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">2.5x Yield & Burn Boost</h4>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  Holding $MIKA amplifies your streaming USDC dividends and unlocks fee discounts when burning creator tokens for $5, $10, and $25 exclusive drops.
+                </p>
+              </div>
+              <span className="mt-4 text-[10px] font-mono text-[#ffc876] bg-[#ffc876]/10 px-2 py-1 rounded border border-[#ffc876]/20">
+                Continuous Cashflow Boost
+              </span>
+            </SpotlightCard>
+          </div>
+        </div>
+
+        {/* Proof of Reserves / Contract Link Bar */}
+        <div className="mt-12 p-4 sm:p-5 rounded-2xl bg-[#0e100e] border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-pulse" />
+            <div>
+              <div className="text-xs font-mono text-white font-semibold">
+                Autonomous Buyback & Burn Engine Live
+              </div>
+              <p className="text-[11px] text-white/50 font-mono">
+                1% of all launchpad trading fees are automatically routed into TWAP buybacks and
+                sent to the 0x000...dead address.
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="https://robinhood.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-[#d4fc50] font-bold uppercase tracking-wider transition-colors shrink-0"
+          >
+            Verify On-Chain Explorer ↗
           </a>
         </div>
       </div>
-    </Section>
-
-      <style>{`
-        @keyframes gradient-xy {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-xy {
-          background-size: 200% 200%;
-          animation: gradient-xy 3s ease infinite;
-        }
-      `}</style>
-    </>
+    </section>
   );
 };
 
-export default Tokenomics;
+export default Pricing;

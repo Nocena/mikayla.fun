@@ -56,35 +56,28 @@ import {
 export const navigation = [
   {
     id: "0",
-    title: "Features",
-    url: "#features",
+    title: "Explore",
+    url: "#explore",
   },
   {
     id: "1",
-    title: "How to use",
-    url: "#how-to-use",
+    title: "Trading",
+    url: "#trading",
   },
   {
     id: "2",
-    title: "Tokenomics",
-    url: "#tokenomics",
+    title: "Protocol",
+    url: "#how-it-works",
   },
   {
     id: "3",
-    title: "Roadmap",
-    url: "#roadmap",
+    title: "Cap Table",
+    url: "#tokenomics",
   },
   {
     id: "4",
-    title: "Dex",
-    url: "#signup",
-    onlyMobile: true,
-  },
-  {
-    id: "5",
-    title: "Launchpad",
-    url: "https://cyreneai.com/",
-    onlyMobile: true,
+    title: "Roadmap",
+    url: "#roadmap",
   },
 ];
 
