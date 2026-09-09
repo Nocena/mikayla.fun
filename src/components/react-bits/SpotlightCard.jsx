@@ -7,15 +7,37 @@ const SpotlightCard = ({
   onClick,
 }) => {
   const divRef = useRef(null);
+  const rectRef = useRef(null);
+  const rafIdRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
-  const handleMouseMove = (e) => {
-    if (!divRef.current || isFocused) return;
+  const handleMouseEnter = () => {
+    if (divRef.current) {
+      rectRef.current = divRef.current.getBoundingClientRect();
+    }
+    setOpacity(0.7);
+  };
 
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  const handleMouseMove = (e) => {
+    if (!divRef.current || isFocused || rafIdRef.current) return;
+
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    rafIdRef.current = requestAnimationFrame(() => {
+      if (!rectRef.current && divRef.current) {
+        rectRef.current = divRef.current.getBoundingClientRect();
+      }
+      if (rectRef.current) {
+        setPosition({
+          x: clientX - rectRef.current.left,
+          y: clientY - rectRef.current.top,
+        });
+      }
+      rafIdRef.current = null;
+    });
   };
 
   const handleFocus = () => {
@@ -28,12 +50,13 @@ const SpotlightCard = ({
     setOpacity(0);
   };
 
-  const handleMouseEnter = () => {
-    setOpacity(0.7);
-  };
-
   const handleMouseLeave = () => {
     setOpacity(0);
+    rectRef.current = null;
+    if (rafIdRef.current) {
+      cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
+    }
   };
 
   return (
@@ -45,10 +68,10 @@ const SpotlightCard = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      className={`relative rounded-3xl border border-white/10 bg-[#0a0c0a]/85 overflow-hidden transition-all duration-300 hover:border-white/20 backdrop-blur-xl ${className}`}
+      className={`relative rounded-3xl border border-white/10 bg-[#0a0c0a]/90 md:bg-[#0a0c0a]/85 overflow-hidden transition-all duration-300 hover:border-white/20 backdrop-blur-sm md:backdrop-blur-xl ${className}`}
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out z-0"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out z-0 hidden sm:block"
         style={{
           opacity,
           background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`,

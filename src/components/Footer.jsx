@@ -49,17 +49,14 @@ const Footer = () => {
               </div>
 
               <p className="text-sm text-white/60 font-sans leading-relaxed max-w-md mb-6">
-                The premier decentralized creator token launchpad on Robinhood Chain. Mathematical
-                fair-launch bonding curves, zero creator pre-mine, automated Uniswap V4 liquidity
-                burns, and native 3.2x perpetual leverage.
+                The premier SCM launchpad originating on Solana and expanding to Robinhood Chain.
+                Fair bonding curves, zero creator pre-mine, dual holder & burn utility, and a permanent
+                50% platform profit burn sink for $MIKA.
               </p>
 
               {/* Network Status Badge */}
               <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-white/80 mb-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
-                </span>
+                <span className="w-2 h-2 rounded-full bg-[#10b981]" />
                 <span>Robinhood L2 Mainnet: 99.99% Uptime</span>
                 <span className="text-white/30">|</span>
                 <span className="text-[#a8c3a0]">Gas &lt;$0.001</span>
@@ -116,18 +113,18 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#collaboration" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Robinhood Leverage (3.2x)
+                  <a href="#upcoming-drops" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    Upcoming Drops (Fri/Sun/Tue)
                   </a>
                 </li>
                 <li>
                   <a href="#pricing" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Cap Table & Tokenomics
+                    $MIKA & 50% Profit Burn
                   </a>
                 </li>
                 <li>
                   <a href="#roadmap" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Execution Roadmap
+                    SCM Evolution Roadmap
                   </a>
                 </li>
               </ul>
@@ -144,27 +141,27 @@ const Footer = () => {
                     onClick={handleLaunchClick}
                     className="text-[#d4fc50] font-semibold hover:underline text-left"
                   >
-                    Launch in 60s →
+                    Apply for Drops →
                   </button>
                 </li>
                 <li>
                   <a href="#services" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Zero Pre-Mine Rules
+                    Dual Utility Engine
                   </a>
                 </li>
                 <li>
-                  <a href="#collaboration" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    OnlyFans & Fansly Sync
+                  <a href="#benefits" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    Agency & Model Network
                   </a>
                 </li>
                 <li>
-                  <a href="#pricing" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Streaming Revenue Splits
+                  <a href="#content-vault" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    $50 Holder Gate & Burns
                   </a>
                 </li>
                 <li>
                   <a href="#roadmap" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Autonomous AI Agents
+                    Chatbot Monetization
                   </a>
                 </li>
               </ul>

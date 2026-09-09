@@ -1,22 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
-  Home,
+  Rocket,
   Sparkles,
   Flame,
   Activity,
   TrendingUp,
-  Coins,
-  Compass,
+  PieChart,
+  Milestone,
   Search,
   ArrowUpRight,
   ArrowUp,
-  PanelLeft,
-  PanelLeftClose,
 } from "lucide-react";
 
 const FloatingSideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [hoveredId, setHoveredId] = useState(null);
   const hoverTimeoutRef = useRef(null);
 
   const handleMouseEnter = () => {
@@ -27,7 +26,8 @@ const FloatingSideMenu = () => {
   const handleMouseLeave = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 180);
+      setHoveredId(null);
+    }, 160);
   };
 
   const scrollToSection = (id) => {
@@ -51,75 +51,106 @@ const FloatingSideMenu = () => {
     setActiveSection("hero");
   };
 
-  // Track active section on scroll
+  // Track active section using IntersectionObserver (zero scroll layout reflows)
   useEffect(() => {
     const sections = [
       "hero",
       "upcoming-drops",
       "content-vault",
       "benefits",
-      "collaboration",
       "pricing",
       "roadmap",
     ];
 
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 260;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
-        }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0,
       }
-    };
+    );
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
-  const menuItems = [
+  // Section navigation items with meticulously tailored icons
+  const sectionItems = [
     {
       id: "hero",
       label: "Protocol & $MIKA",
-      icon: <Home className="w-4 h-4" />,
+      icon: <Rocket className="w-4 h-4" />,
       action: () => scrollToSection("hero"),
     },
     {
       id: "upcoming-drops",
-      label: "Curated Drops",
+      label: "Curated Launchpad",
       icon: <Sparkles className="w-4 h-4" />,
       action: () => scrollToSection("upcoming-drops"),
     },
     {
       id: "content-vault",
-      label: "Burn-to-Unlock Vault",
+      label: "Content Vault & Utility",
       icon: <Flame className="w-4 h-4" />,
       action: () => scrollToSection("content-vault"),
     },
     {
       id: "benefits",
-      label: "Robinhood Telemetry",
+      label: "SCM Thesis & Agency",
       icon: <Activity className="w-4 h-4" />,
       action: () => scrollToSection("benefits"),
     },
     {
-      id: "collaboration",
-      label: "3.2x Perp Leverage",
-      icon: <TrendingUp className="w-4 h-4" />,
-      action: () => scrollToSection("collaboration"),
-    },
-    {
       id: "pricing",
       label: "$MIKA Tokenomics",
-      icon: <Coins className="w-4 h-4" />,
+      icon: <PieChart className="w-4 h-4" />,
       action: () => scrollToSection("pricing"),
     },
     {
       id: "roadmap",
       label: "Protocol Roadmap",
-      icon: <Compass className="w-4 h-4" />,
+      icon: <Milestone className="w-4 h-4" />,
       action: () => scrollToSection("roadmap"),
+    },
+  ];
+
+  // Secondary utility items (1-to-1 vertical match between rail & drawer)
+  const utilityItems = [
+    {
+      id: "search",
+      label: "Search Drops",
+      icon: <Search className="w-4 h-4" />,
+      badge: (
+        <kbd className="px-1.5 py-0.5 text-[9px] font-mono bg-white/10 rounded text-slate-400 border border-white/10">
+          ⌘K
+        </kbd>
+      ),
+      action: handleOpenSearch,
+    },
+    {
+      id: "apply",
+      label: "Apply for Cohort",
+      icon: <ArrowUpRight className="w-4 h-4" />,
+      badge: <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />,
+      action: handleOpenLaunch,
+      accent: true,
+    },
+    {
+      id: "top",
+      label: "Back to Top",
+      icon: <ArrowUp className="w-4 h-4" />,
+      badge: <span className="text-[10px] text-slate-500 font-mono">↑</span>,
+      action: scrollToTop,
     },
   ];
 
@@ -128,145 +159,134 @@ const FloatingSideMenu = () => {
       aria-label="Side Quick Navigation"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="fixed left-4 sm:left-6 top-1/2 -translate-y-1/2 z-50 flex items-center select-none"
+      className="fixed left-4 sm:left-6 top-1/2 -translate-y-1/2 z-50 flex items-start select-none transition-all duration-300"
     >
-      {/* 1. SLENDER FLOATING CAPSULE RAIL (Minimal Anygoo Style) */}
-      <div className="w-12 sm:w-14 py-5 px-1.5 rounded-full bg-[#080a08]/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-col items-center justify-between min-h-[460px] transition-all">
-        {/* Top Flyout Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-        >
-          {isOpen ? (
-            <PanelLeftClose className="w-4 h-4 text-[#d4fc50]" />
-          ) : (
-            <PanelLeft className="w-4 h-4" />
-          )}
-        </button>
+      {/* 1. SLENDER FLOATING ARCHITECTURAL RAIL (Apple Translucent Chrome) */}
+      <div className="w-12 sm:w-13 p-1.5 bg-[#080a08]/90 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_20px_50px_rgba(0,0,0,0.85)] flex flex-col items-center gap-1.5 transition-all rounded-full">
+        {/* Section Icons with Instant Tactile Feedback */}
+        {sectionItems.map((item) => {
+          const isActive = activeSection === item.id;
+          const isHovered = hoveredId === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={item.action}
+              onMouseEnter={() => setHoveredId(item.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              title={item.label}
+              aria-label={item.label}
+              className={`icon-tactile w-9 h-9 flex items-center justify-center cursor-pointer rounded-full ${
+                isActive
+                  ? "bg-[#d4fc50] text-black font-semibold shadow-[0_0_14px_rgba(212,252,80,0.4)]"
+                  : isHovered
+                  ? "bg-white/10 text-white"
+                  : "text-slate-400 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              {item.icon}
+            </button>
+          );
+        })}
 
-        {/* Vertical Section Icons */}
-        <div className="flex flex-col items-center gap-3.5 my-auto">
-          {menuItems.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={item.action}
-                title={item.label}
-                aria-label={item.label}
-                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
-                  isActive
-                    ? "bg-[#d4fc50] text-black shadow-lg shadow-[#d4fc50]/30 scale-105"
-                    : "text-slate-400 hover:text-white hover:bg-white/10 hover:scale-105"
-                }`}
-              >
-                {item.icon}
-              </button>
-            );
-          })}
+        {/* Hairline Divider */}
+        <div className="w-5 h-[1px] bg-white/15 my-0.5 shrink-0" />
 
-          <div className="w-[1px] h-6 bg-white/15 my-0.5" />
-
-          {/* Quick Search */}
-          <button
-            onClick={handleOpenSearch}
-            title="Search Launchpad (⌘K)"
-            aria-label="Search Launchpad"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-          >
-            <Search className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Bottom Back-to-Top */}
-        <button
-          onClick={scrollToTop}
-          title="Scroll to Top"
-          aria-label="Scroll to Top"
-          className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-        >
-          <ArrowUp className="w-4 h-4" />
-        </button>
+        {/* Utility Icons with Instant Tactile Feedback */}
+        {utilityItems.map((item) => {
+          const isHovered = hoveredId === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={item.action}
+              onMouseEnter={() => setHoveredId(item.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              title={item.label}
+              aria-label={item.label}
+              className={`icon-tactile w-9 h-9 flex items-center justify-center cursor-pointer rounded-full ${
+                item.accent
+                  ? isHovered
+                    ? "bg-[#d4fc50]/20 text-[#d4fc50]"
+                    : "text-[#d4fc50] hover:bg-[#d4fc50]/15"
+                  : isHovered
+                  ? "bg-white/10 text-white"
+                  : "text-slate-400 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              {item.icon}
+            </button>
+          );
+        })}
       </div>
 
-      {/* 2. AIRY, SPACIOUS FLYOUT DRAWER (Anygoo Design Language) */}
+      {/* 2. AIRY, SPACIOUS FLYOUT DRAWER (Apple Spring Easing Curve) */}
       <div
-        className={`ml-3 transition-all duration-200 ease-out origin-left ${
+        className={`ml-2.5 transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] origin-left ${
           isOpen
             ? "opacity-100 scale-100 translate-x-0 pointer-events-auto"
             : "opacity-0 scale-95 -translate-x-2 pointer-events-none"
         }`}
       >
-        <div className="w-[245px] p-4.5 rounded-[26px] bg-[#080a08]/95 backdrop-blur-3xl border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.9)] text-white space-y-3.5">
-          {/* Header */}
-          <div className="flex items-center justify-between px-1 pb-2.5 border-b border-white/10 text-slate-400">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-pulse" />
-              <span className="text-[11px] font-semibold tracking-wider uppercase text-slate-300">
-                Mikayla Protocol
-              </span>
-            </div>
-            <span className="text-[9px] font-mono text-slate-500 uppercase">
-              V2.4
-            </span>
-          </div>
-
-          {/* Clean Navigation List */}
-          <div className="space-y-1">
-            {menuItems.map((item) => {
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    item.action();
-                    // optional keep or auto-dismiss
-                  }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-150 cursor-pointer text-left ${
-                    isActive
-                      ? "bg-[#d4fc50] text-black font-semibold shadow-md shadow-[#d4fc50]/25"
-                      : "text-slate-300 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <div className={isActive ? "text-black" : "text-slate-400"}>
-                    {item.icon}
-                  </div>
-                  <span className="truncate">{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
+        <div className="w-[230px] p-1.5 bg-[#080a08]/95 backdrop-blur-3xl border-t border-white/25 border-x border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_30px_70px_rgba(0,0,0,0.9)] text-white flex flex-col gap-1.5 rounded-[22px]">
+          {/* Section Navigation Rows */}
+          {sectionItems.map((item) => {
+            const isActive = activeSection === item.id;
+            const isHovered = hoveredId === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={item.action}
+                onMouseEnter={() => setHoveredId(item.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                className={`btn-tactile w-full h-9 px-3 flex items-center gap-2.5 cursor-pointer text-left rounded-xl ${
+                  isActive
+                    ? "bg-[#d4fc50] text-black font-semibold shadow-[0_0_12px_rgba(212,252,80,0.35)]"
+                    : isHovered
+                    ? "bg-white/10 text-white"
+                    : "text-slate-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <div className={`w-4 h-4 flex items-center justify-center shrink-0 ${isActive ? "text-black" : isHovered ? "text-white" : "text-slate-400"}`}>
+                  {item.icon}
+                </div>
+                <span className="text-xs font-medium truncate flex-1">
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
 
           {/* Hairline Divider */}
-          <div className="w-full h-[1px] bg-white/10 my-1" />
+          <div className="w-full h-[1px] bg-white/15 my-0.5 shrink-0" />
 
-          {/* Quick Secondary Actions */}
-          <div className="space-y-1 pt-0.5">
-            <button
-              onClick={handleOpenSearch}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-300 hover:text-white hover:bg-white/5 transition-colors cursor-pointer text-left"
-            >
-              <div className="flex items-center gap-2.5">
-                <Search className="w-3.5 h-3.5 text-slate-400" />
-                <span>Search Drops</span>
-              </div>
-              <kbd className="px-1.5 py-0.5 text-[9px] font-mono bg-white/10 rounded text-slate-400 border border-white/10">
-                ⌘K
-              </kbd>
-            </button>
-
-            <button
-              onClick={handleOpenLaunch}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-[#d4fc50] bg-[#d4fc50]/10 hover:bg-[#d4fc50]/15 border border-[#d4fc50]/20 transition-all cursor-pointer text-left font-medium"
-            >
-              <div className="flex items-center gap-2.5">
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#d4fc50]" />
-                <span>Apply for Cohort</span>
-              </div>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
-            </button>
-          </div>
+          {/* Utility Rows */}
+          {utilityItems.map((item) => {
+            const isHovered = hoveredId === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={item.action}
+                onMouseEnter={() => setHoveredId(item.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                className={`btn-tactile w-full h-9 px-3 flex items-center gap-2.5 cursor-pointer text-left rounded-xl ${
+                  item.accent
+                    ? isHovered
+                      ? "bg-[#d4fc50]/20 text-[#d4fc50]"
+                      : "text-[#d4fc50] bg-[#d4fc50]/10 hover:bg-[#d4fc50]/15 border border-[#d4fc50]/20"
+                    : isHovered
+                    ? "bg-white/10 text-white"
+                    : "text-slate-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                  {item.icon}
+                </div>
+                <span className="text-xs font-medium truncate flex-1">
+                  {item.label}
+                </span>
+                {item.badge}
+              </button>
+            );
+          })}
         </div>
       </div>
     </nav>

@@ -208,100 +208,99 @@ const Pricing = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <SpotlightCard
-              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
-              spotlightColor="rgba(212, 252, 80, 0.15)"
+              className="p-5 border border-white/10 bg-[#0d0d0d] flex flex-col justify-between rounded-xl"
+              spotlightColor="rgba(212, 252, 80, 0.08)"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-[#d4fc50]/15 border border-[#d4fc50]/30 flex items-center justify-center mb-3">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-3">
                   <svg className="w-5 h-5 text-[#d4fc50]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                   </svg>
                 </div>
                 <h4 className="text-sm font-bold text-white mb-1.5 font-mono">Guaranteed Drop Access</h4>
-                <p className="text-xs text-white/60 leading-relaxed">
-                  Stakers receive guaranteed Tier-1 allocations for every curated weekly drop: <strong>Friday ($ARIA), Sunday ($KIRA), Tuesday ($LUNA)</strong>.
+                <p className="text-xs text-white/60 leading-relaxed font-sans">
+                  Token holders receive early alerts and guaranteed allocations for every upcoming creator launch: <strong>Friday (Drop #01), Sunday (Drop #02), Tuesday (Drop #03)</strong>.
                 </p>
               </div>
-              <span className="mt-4 text-[10px] font-mono text-[#d4fc50] bg-[#d4fc50]/10 px-2 py-1 rounded border border-[#d4fc50]/20">
-                Tier-1 Whitelist Active
+              <span className="mt-4 text-[10px] font-mono text-[#d4fc50] bg-white/[0.04] px-2 py-1 rounded border border-white/10">
+                Priority Whitelist Active
               </span>
             </SpotlightCard>
 
             <SpotlightCard
-              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
-              spotlightColor="rgba(212, 252, 80, 0.15)"
+              className="p-5 border border-[#d4fc50]/30 bg-[#0d0d0d] flex flex-col justify-between rounded-xl"
+              spotlightColor="rgba(212, 252, 80, 0.12)"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-[#ff007f]/15 border border-[#ff007f]/30 flex items-center justify-center mb-3">
-                  <svg className="w-5 h-5 text-[#ff007f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-10 h-10 rounded-xl bg-[#d4fc50]/15 border border-[#d4fc50]/30 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-[#d4fc50]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
                   </svg>
                 </div>
-                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">1% Auto Buyback & Burn</h4>
-                <p className="text-xs text-white/60 leading-relaxed">
-                  1% of all trading volume across every creator token on Robinhood Chain is automatically routed to market-buy $MIKA and burn it forever.
+                <h4 className="text-sm font-bold text-[#d4fc50] mb-1.5 font-mono">50% Platform Profit Burn</h4>
+                <p className="text-xs text-white/70 leading-relaxed font-sans">
+                  50% of all platform and launch profits generated from every creator coin are routed directly on-chain to buy back and burn $MIKA supply forever.
                 </p>
               </div>
-              <span className="mt-4 text-[10px] font-mono text-[#ff007f] bg-[#ff007f]/10 px-2 py-1 rounded border border-[#ff007f]/20">
-                Deflationary Volume Sink
+              <span className="mt-4 text-[10px] font-mono text-[#d4fc50] bg-[#d4fc50]/15 px-2 py-1 rounded border border-[#d4fc50]/30">
+                50% Profit Burn Sink
               </span>
             </SpotlightCard>
 
             <SpotlightCard
-              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
-              spotlightColor="rgba(212, 252, 80, 0.15)"
+              className="p-5 border border-white/10 bg-[#0d0d0d] flex flex-col justify-between rounded-xl"
+              spotlightColor="rgba(212, 252, 80, 0.08)"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-[#00f2ff]/15 border border-[#00f2ff]/30 flex items-center justify-center mb-3">
-                  <svg className="w-5 h-5 text-[#00f2ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">100% LP Burned to 0x...dead</h4>
-                <p className="text-xs text-white/60 leading-relaxed">
-                  Upon graduating bonding curve at 4.20 ETH, 100% of liquidity is migrated to Uniswap V4 with LP keys irreversibly destroyed. Zero rugs possible.
+                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">100% LP Burned On-Chain</h4>
+                <p className="text-xs text-white/60 leading-relaxed font-sans">
+                  Upon completing primary bonding, 100% of liquidity is permanently migrated into Uniswap V4 with LP keys irrevocably destroyed to 0x0...dead.
                 </p>
               </div>
-              <span className="mt-4 text-[10px] font-mono text-[#00f2ff] bg-[#00f2ff]/10 px-2 py-1 rounded border border-[#00f2ff]/20">
+              <span className="mt-4 text-[10px] font-mono text-white/80 bg-white/[0.04] px-2 py-1 rounded border border-white/10">
                 Provably Non-Ruggable
               </span>
             </SpotlightCard>
 
             <SpotlightCard
-              className="p-5 border-white/10 bg-[#0c0e0c] flex flex-col justify-between"
-              spotlightColor="rgba(212, 252, 80, 0.15)"
+              className="p-5 border border-white/10 bg-[#0d0d0d] flex flex-col justify-between rounded-xl"
+              spotlightColor="rgba(212, 252, 80, 0.08)"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-[#ffc876]/15 border border-[#ffc876]/30 flex items-center justify-center mb-3">
-                  <svg className="w-5 h-5 text-[#ffc876]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-3">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">2.5x Yield & Burn Boost</h4>
-                <p className="text-xs text-white/60 leading-relaxed">
-                  Holding $MIKA amplifies your streaming USDC dividends and unlocks fee discounts when burning creator tokens for $5, $10, and $25 exclusive drops.
+                <h4 className="text-sm font-bold text-white mb-1.5 font-mono">Deflationary Ecosystem</h4>
+                <p className="text-xs text-white/60 leading-relaxed font-sans">
+                  Both $MIKA and creator coins feature native supply reduction sinks through on-site content burns and platform buybacks.
                 </p>
               </div>
-              <span className="mt-4 text-[10px] font-mono text-[#ffc876] bg-[#ffc876]/10 px-2 py-1 rounded border border-[#ffc876]/20">
-                Continuous Cashflow Boost
+              <span className="mt-4 text-[10px] font-mono text-white/80 bg-white/[0.04] px-2 py-1 rounded border border-white/10">
+                Compounding Scarcity
               </span>
             </SpotlightCard>
           </div>
         </div>
 
-        {/* Proof of Reserves / Contract Link Bar */}
-        <div className="mt-12 p-4 sm:p-5 rounded-2xl bg-[#0e100e] border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Proof of Reserves / Contract Link Bar (Apple Specular Chrome) */}
+        <div className="mt-12 p-4 sm:p-5 rounded-2xl bg-[#0e100e] border-t border-white/20 border-x border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.7)] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#d4fc50]" />
             <div>
               <div className="text-xs font-mono text-white font-semibold">
-                Autonomous Buyback & Burn Engine Live
+                Autonomous Buyback & Burn Engine Active
               </div>
-              <p className="text-[11px] text-white/50 font-mono">
-                1% of all launchpad trading fees are automatically routed into TWAP buybacks and
-                sent to the 0x000...dead address.
-              </p>
+              <div className="text-[11px] font-mono text-white/50">
+                50% platform profit burn executing on Robinhood Chain L2
+              </div>
             </div>
           </div>
 
@@ -309,7 +308,7 @@ const Pricing = () => {
             href="https://robinhood.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-[#d4fc50] font-bold uppercase tracking-wider transition-colors shrink-0"
+            className="btn-tactile px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-[#d4fc50] font-bold uppercase tracking-wider shrink-0"
           >
             Verify On-Chain Explorer ↗
           </a>

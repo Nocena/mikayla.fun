@@ -43,8 +43,10 @@ const LightRays = ({
     let animationId;
 
     try {
+      const isMobile = window.innerWidth < 768;
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.25);
       renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio || 1, 2),
+        dpr,
         alpha: true,
       });
 
@@ -202,9 +204,22 @@ void main() {
         animationId = requestAnimationFrame(loop);
       };
 
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+        } else if (!animationId) {
+          animationId = requestAnimationFrame(loop);
+        }
+      };
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
       animationId = requestAnimationFrame(loop);
 
       return () => {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
         window.removeEventListener("resize", handleResize);
         if (followMouse) window.removeEventListener("mousemove", handleMouseMove);
         if (animationId) cancelAnimationFrame(animationId);

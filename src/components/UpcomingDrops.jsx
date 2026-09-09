@@ -1,321 +1,524 @@
 import React, { useState, useEffect } from "react";
-import SpotlightCard from "./react-bits/SpotlightCard";
+import {
+  Search,
+  Copy,
+  Check,
+  Flame,
+  Clock,
+  CheckCircle2,
+  ArrowUpRight,
+  Calendar,
+} from "lucide-react";
 import ShinyText from "./react-bits/ShinyText";
-import DecryptedText from "./react-bits/DecryptedText";
-import CountUp from "./react-bits/CountUp";
+import SpotlightCard from "./react-bits/SpotlightCard";
 
-// Calculate countdown to upcoming Friday, Sunday, Tuesday at 20:00 UTC
-const calculateTimeRemaining = (targetDayOffset) => {
-  const totalSeconds = targetDayOffset * 86400 + 14400; 
-  return {
-    days: Math.floor(totalSeconds / 86400),
-    hours: Math.floor((totalSeconds % 86400) / 3600),
-    minutes: Math.floor((totalSeconds % 3600) / 60),
-    seconds: Math.floor(totalSeconds % 60),
-  };
-};
+const MIKA_CA = "0x71C25860d5Fa7F602B734a6C31208639F45e42b0";
 
-const dropsData = [
+// Upcoming creator launches planned for Friday, Sunday, and Tuesday
+// Upcoming creator launches planned for Friday, Sunday, and Tuesday
+const CREATOR_DROPS = [
   {
-    id: "aria",
-    dropNumber: "DROP 01",
-    day: "FRIDAY",
-    time: "8:00 PM UTC",
-    dayOffset: 2,
-    status: "WHITELIST ACTIVE",
-    name: "Aria Brooks",
-    ticker: "$ARIA",
-    image: "/creators/aria.jpg",
-    category: "Haute Boudoir & Runway · OF Top 0.05%",
-    monthlyRevenue: "$72,000 / mo",
-    revenueAudit: "Verified Stripe & OF Escrow",
-    secretWhisper: "You want to know what happens when the cameras turn off? Hold my token, burn the key, and find out.",
-    burnUtility: "$5 35mm Roll · $10 4K Suite Film · $25 Direct Line",
-    cashflowShare: "20% Content Revenue to Holders",
-    isFirst: true,
+    id: "drop-friday",
+    dropNumber: "PROJECT ARIA · DROP #01",
+    codename: "$ARIA",
+    creatorRank: "TOP 0.05% ONLYFANS",
+    dayLabel: "THIS FRIDAY",
+    scheduleText: "Launching Friday · T-2 Days",
+    targetMs: 2 * 86400 * 1000 + 4 * 3600 * 1000 + 18 * 60 * 1000 + 32 * 1000,
+    category: "High-Fashion & Boudoir Muse · Miami",
+    metrics: {
+      reach: "1.4M+ Verified Fans",
+      monthlyGmv: "$185k/mo Revenue",
+      status: "Contract Locked",
+    },
+    targetMcapGate: "$100k Market Cap",
+    holderGatePerk: "Exclusive Milan Penthouse 35mm Leica Negatives (24 Photos)",
+    burnPerk: "12-Min ProRes 4K Master Video + 3 AM Audio Note",
+    teaser: "Tier-1 agency-represented OnlyFans supermodel. Smart contract parameters and liquidity lock pre-audited.",
+    whitelistedCount: 1482,
+    accentColor: "#d4fc50",
   },
   {
-    id: "kira",
-    dropNumber: "DROP 02",
-    day: "SUNDAY",
-    time: "8:00 PM UTC",
-    dayOffset: 4,
-    status: "LAUNCHES SUNDAY",
-    name: "Kira Fox",
-    ticker: "$KIRA",
-    image: "/creators/kira.jpg",
-    category: "Tokyo & Berlin Underground DJ",
-    monthlyRevenue: "$58,200 / mo",
-    revenueAudit: "Audited Nightlife & Subscriptions",
-    secretWhisper: "Tokyo at 4 AM, Berlin at midnight. No PR filters, no fake AI bullshit. Just me in the dark.",
-    burnUtility: "$5 Tokyo 35mm Scans · $10 4K Suite Video · $25 Guestlist & Custom PPV",
-    cashflowShare: "Private Midnight Drops in USDC",
-    isFirst: false,
+    id: "drop-sunday",
+    dropNumber: "PROJECT KIRA · DROP #02",
+    codename: "$KIRA",
+    creatorRank: "TOP 0.02% ONLYFANS",
+    dayLabel: "THIS SUNDAY",
+    scheduleText: "Launching Sunday · T-4 Days",
+    targetMs: 4 * 86400 * 1000 + 12 * 3600 * 1000 + 45 * 60 * 1000 + 10 * 1000,
+    category: "Viral Alt-Glamour & Boudoir Sensation · LA",
+    metrics: {
+      reach: "2.2M+ Verified Fans",
+      monthlyGmv: "$340k/mo Revenue",
+      status: "Escrow Audited",
+    },
+    targetMcapGate: "$150k Market Cap",
+    holderGatePerk: "30 Uncut Sunset Hills Penthouse 35mm Raw Photos",
+    burnPerk: "15-Min 4K Studio Film + Private Binaural Note",
+    teaser: "Apex-tier adult creator with high recurring subscriber retention. All due diligence & smart contract locks complete.",
+    whitelistedCount: 1890,
+    accentColor: "#d4fc50",
   },
   {
-    id: "luna",
-    dropNumber: "DROP 03",
-    day: "TUESDAY",
-    time: "8:00 PM UTC",
-    dayOffset: 6,
-    status: "LAUNCHES TUESDAY",
-    name: "Luna St. Claire",
-    ticker: "$LUNA",
-    image: "/creators/luna.jpg",
-    category: "Nocturnal Cinema · Fansly Top 0.01%",
-    monthlyRevenue: "$94,000 / mo",
-    revenueAudit: "Swiss Legal Escrow & Trust",
-    secretWhisper: "The velvet room isn't for spectators. When you burn the tokens, the door locks behind you.",
-    burnUtility: "$5 Paris 35mm Vault · $10 Nocturnal Film · $25 Private Stream & Key",
-    cashflowShare: "25% Backstage PPV Split",
-    isFirst: false,
+    id: "drop-tuesday",
+    dropNumber: "PROJECT LUNA · DROP #03",
+    codename: "$LUNA",
+    creatorRank: "TOP 0.01% ONLYFANS",
+    dayLabel: "NEXT TUESDAY",
+    scheduleText: "Launching Tuesday · T-6 Days",
+    targetMs: 6 * 86400 * 1000 + 8 * 3600 * 1000 + 20 * 60 * 1000,
+    category: "Platinum Erotic Muse & Runaway Star · Paris",
+    metrics: {
+      reach: "3.6M+ Verified Fans",
+      monthlyGmv: "$520k/mo Revenue",
+      status: "Pre-Mine 0.0%",
+    },
+    targetMcapGate: "$200k Market Cap",
+    holderGatePerk: "45 Uncut 4K HDR Studio Gallery + Paris Hotel Archive",
+    burnPerk: "20-Min Cinematic 4K Master Roll + Signed Canvas",
+    teaser: "Global top-ranking erotic creator with multi-million dollar verified annual revenue. Launching on Robinhood Chain.",
+    whitelistedCount: 2420,
+    accentColor: "#d4fc50",
   },
 ];
 
-const CountdownWidget = ({ dayOffset }) => {
-  const [timeLeft, setTimeLeft] = useState(() => calculateTimeRemaining(dayOffset));
+const CountdownClock = ({ initialRemainingMs }) => {
+  const [remaining, setRemaining] = useState(initialRemainingMs);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeRemaining(dayOffset));
+    const start = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const next = Math.max(0, initialRemainingMs - elapsed);
+      setRemaining(next);
     }, 1000);
-    return () => clearInterval(timer);
-  }, [dayOffset]);
+    return () => clearInterval(interval);
+  }, [initialRemainingMs]);
+
+  const days = Math.floor(remaining / (86400 * 1000));
+  const hours = Math.floor((remaining % (86400 * 1000)) / (3600 * 1000));
+  const minutes = Math.floor((remaining % (3600 * 1000)) / (60 * 1000));
+  const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
 
   return (
-    <div className="flex items-center gap-1.5 font-mono text-center text-xs">
-      <div className="bg-black/60 border border-white/10 rounded-lg px-2 py-1 min-w-[36px]">
-        <span className="text-xs font-bold text-white block leading-none">{timeLeft.days}</span>
-        <span className="text-[8px] text-white/40 uppercase">d</span>
-      </div>
-      <span className="text-white/30 font-bold">:</span>
-      <div className="bg-black/60 border border-white/10 rounded-lg px-2 py-1 min-w-[36px]">
-        <span className="text-xs font-bold text-white block leading-none">{String(timeLeft.hours).padStart(2, "0")}</span>
-        <span className="text-[8px] text-white/40 uppercase">h</span>
-      </div>
-      <span className="text-white/30 font-bold">:</span>
-      <div className="bg-black/60 border border-white/10 rounded-lg px-2 py-1 min-w-[36px]">
-        <span className="text-xs font-bold text-white block leading-none">{String(timeLeft.minutes).padStart(2, "0")}</span>
-        <span className="text-[8px] text-white/40 uppercase">m</span>
-      </div>
-      <span className="text-white/30 font-bold">:</span>
-      <div className="bg-black/60 border border-white/10 rounded-lg px-2 py-1 min-w-[36px]">
-        <span className="text-xs font-bold text-[#d4fc50] block leading-none">{String(timeLeft.seconds).padStart(2, "0")}</span>
-        <span className="text-[8px] text-[#d4fc50]/60 uppercase">s</span>
-      </div>
+    <div className="flex items-center gap-1 font-mono text-[11px]">
+      <span className="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-white font-medium">
+        {String(days).padStart(2, "0")}d
+      </span>
+      <span className="text-white/30">:</span>
+      <span className="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-white font-medium">
+        {String(hours).padStart(2, "0")}h
+      </span>
+      <span className="text-white/30">:</span>
+      <span className="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-white font-medium">
+        {String(minutes).padStart(2, "0")}m
+      </span>
+      <span className="text-white/30">:</span>
+      <span className="px-2 py-0.5 rounded bg-black/60 border border-[#d4fc50]/30 text-[#d4fc50] font-semibold">
+        {String(seconds).padStart(2, "0")}s
+      </span>
     </div>
   );
 };
 
 const UpcomingDrops = () => {
-  const [alertToast, setAlertToast] = useState(null);
-  const [activeWhisper, setActiveWhisper] = useState(null);
+  const [copiedCA, setCopiedCA] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterTab, setFilterTab] = useState("all");
+  const [whitelisted, setWhitelisted] = useState({});
+  const [toastMessage, setToastMessage] = useState(null);
 
-  const handleAction = (drop) => {
-    setAlertToast(`Whitelisted for ${drop.name} (${drop.ticker})! Drop alert sent to your connected wallet.`);
-    setTimeout(() => setAlertToast(null), 4000);
+  const handleCopy = (e) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(MIKA_CA);
+    setCopiedCA(true);
+    setToastMessage("Copied $MIKA Contract Address to clipboard");
+    setTimeout(() => {
+      setCopiedCA(false);
+      setToastMessage(null);
+    }, 3000);
   };
 
-  const toggleWhisper = (dropId) => {
-    setActiveWhisper(activeWhisper === dropId ? null : dropId);
+  const handleWhitelist = (dropId, title) => {
+    setWhitelisted((prev) => ({ ...prev, [dropId]: true }));
+    setToastMessage(`Notification alert set for ${title}`);
+    setTimeout(() => setToastMessage(null), 3000);
   };
+
+  const filteredDrops = CREATOR_DROPS.filter((drop) => {
+    if (filterTab === "genesis") return false;
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      drop.dropNumber.toLowerCase().includes(q) ||
+      drop.category.toLowerCase().includes(q) ||
+      drop.dayLabel.toLowerCase().includes(q) ||
+      drop.teaser.toLowerCase().includes(q)
+    );
+  });
+
+  const showMikaCard =
+    filterTab === "all" || filterTab === "genesis" || !searchQuery || "mika".includes(searchQuery.toLowerCase());
 
   return (
-    <section id="upcoming-drops" className="relative py-24 lg:py-32 bg-[#080908] border-t border-white/10 overflow-hidden">
-      {/* Clean ambient glow consistent with Hero */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-[#d4fc50]/[0.03] blur-[160px] rounded-full pointer-events-none" />
+    <section id="upcoming-drops" className="relative py-20 lg:py-24 bg-[#080808] border-t border-white/[0.08]">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-20 right-6 z-50 px-4 py-2.5 rounded-lg bg-[#111111] border border-white/20 text-xs font-mono text-white flex items-center gap-2 shadow-xl backdrop-blur-xl animate-fadeIn">
+          <CheckCircle2 className="w-4 h-4 text-[#d4fc50]" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
-      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-pulse" />
-            <ShinyText
-              text="CURATED CREATOR DROPS · ROBINHOOD CHAIN"
-              className="text-xs font-mono uppercase tracking-widest text-[#d4fc50]"
-              speed={3}
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 relative z-10">
+
+        {/* 1. CLEAN SYSTEM BAR (Apple Translucent Chrome) */}
+        <div className="mb-6 px-4 py-3 rounded-xl bg-black/50 border-t border-white/20 border-x border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] text-xs font-mono flex flex-col sm:flex-row items-center justify-between gap-3 text-white/70">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="font-semibold text-white uppercase tracking-wider text-[11px]">
+              Sex Capital Markets · Curated Launchpad
+            </span>
+            <span className="text-white/20 hidden sm:inline">/</span>
+            <span className="text-white/50 text-[11px]">
+              Originating on Solana · Now expanding to Robinhood Chain L2
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-[11px] text-white/40 font-mono">Contract:</span>
+            <code className="text-[11px] text-white/80 font-mono">
+              0x71C2...42b0
+            </code>
+            <button
+              onClick={handleCopy}
+              className="btn-tactile px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-[10px] font-mono font-medium text-white cursor-pointer flex items-center gap-1.5"
+            >
+              {copiedCA ? <Check className="w-3 h-3 text-[#d4fc50]" /> : <Copy className="w-3 h-3" />}
+              <span>{copiedCA ? "Copied" : "Copy CA"}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 2. SEARCH & FILTER TOOLBAR */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+            <input
+              type="text"
+              placeholder="Search launches or dates..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 rounded-lg bg-black/60 border border-white/15 focus:border-[#d4fc50]/50 focus:outline-none text-xs font-mono text-white placeholder:text-white/40 transition-colors"
             />
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-serif text-white tracking-tight leading-tight">
-            Upcoming Creator Launches
-          </h2>
-
-          <p className="text-white/60 text-sm sm:text-base mt-3 max-w-2xl mx-auto leading-relaxed font-sans">
-            Selective, verified human creator tokens. Every drop undergoes institutional identity due diligence,
-            12-month revenue audits, and locked LP covenants on Robinhood Chain L2.
-          </p>
+          <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+            <button
+              onClick={() => setFilterTab("all")}
+              className={`btn-tactile px-3.5 py-1.5 rounded-lg text-xs font-mono cursor-pointer shrink-0 ${
+                filterTab === "all"
+                  ? "bg-[#d4fc50] text-black font-semibold shadow-[0_0_12px_rgba(212,252,80,0.3)]"
+                  : "bg-black/50 border border-white/10 text-white/60 hover:text-white"
+              }`}
+            >
+              All Drops [4]
+            </button>
+            <button
+              onClick={() => setFilterTab("genesis")}
+              className={`btn-tactile px-3.5 py-1.5 rounded-lg text-xs font-mono cursor-pointer shrink-0 ${
+                filterTab === "genesis"
+                  ? "bg-[#d4fc50] text-black font-semibold shadow-[0_0_12px_rgba(212,252,80,0.3)]"
+                  : "bg-black/50 border border-white/10 text-white/60 hover:text-white"
+              }`}
+            >
+              Today: $MIKA
+            </button>
+            <button
+              onClick={() => setFilterTab("creators")}
+              className={`btn-tactile px-3.5 py-1.5 rounded-lg text-xs font-mono cursor-pointer shrink-0 ${
+                filterTab === "creators"
+                  ? "bg-[#d4fc50] text-black font-semibold shadow-[0_0_12px_rgba(212,252,80,0.3)]"
+                  : "bg-black/50 border border-white/10 text-white/60 hover:text-white"
+              }`}
+            >
+              Upcoming Creators (3)
+            </button>
+          </div>
         </div>
 
-        {/* Toast Feedback */}
-        {alertToast && (
-          <div className="mb-8 max-w-xl mx-auto p-3.5 rounded-2xl bg-[#d4fc50]/15 border border-[#d4fc50]/40 text-xs font-mono text-[#d4fc50] flex items-center justify-between animate-fadeIn shadow-xl">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-ping" />
-              {alertToast}
-            </span>
-            <span className="text-white/50 text-[11px]">Robinhood L2 Priority</span>
+        {/* 3. MAIN LAUNCHPAD WRAPPER */}
+        <div className="rounded-2xl border-t border-white/20 border-x border-b border-white/10 bg-[#0d0d0d] p-5 sm:p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_60px_rgba(0,0,0,0.85)]">
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-5 mb-6 border-b border-white/[0.08]">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-serif text-white tracking-display">
+                Curated Launch Schedule
+              </h2>
+              <p className="text-xs font-mono text-white/50 mt-1">
+                Direct agency-represented creators · 50% of all launch & platform profits burn $MIKA
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-white/50">
+              <span className="w-2 h-2 rounded-full bg-[#d4fc50]" />
+              <span>Next Drops: Friday · Sunday · Tuesday</span>
+            </div>
           </div>
-        )}
 
-        {/* 3-Card Editorial Drops Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          {dropsData.map((drop) => (
-            <SpotlightCard
-              key={drop.id}
-              className={`relative min-h-[690px] h-full p-6 sm:p-8 flex flex-col justify-between overflow-hidden group border transition-all duration-500 ${
-                drop.isFirst
-                  ? "border-[#d4fc50]/40 shadow-2xl shadow-[#d4fc50]/10 bg-[#0a0c0a]"
-                  : "border-white/10 hover:border-[#d4fc50]/30 bg-[#0a0c0a]"
-              }`}
-              spotlightColor="rgba(212, 252, 80, 0.15)"
-            >
-              {/* Big Editorial Photographic Background with Veily Translucent Overlay */}
-              <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <img
-                  src={drop.image}
-                  alt={drop.name}
-                  className="w-full h-full object-cover object-top filter brightness-[0.7] contrast-[1.08] saturate-[0.9] group-hover:scale-105 group-hover:brightness-[0.82] transition-all duration-700 ease-out"
-                />
-                {/* Smoky Veily Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070907] via-[#070907]/80 to-[#070907]/25 backdrop-blur-[1.5px] group-hover:backdrop-blur-none transition-all duration-700" />
-                {/* Subtle Radial Glow */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,252,80,0.12)_0%,transparent_65%)] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
+          {/* Grid of 4 Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-              {/* TOP: Date Tag & Status Pill (Floating over the veil) */}
-              <div className="relative z-10 flex items-center justify-between pb-3 border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-pulse" />
-                  <span className="text-xs font-mono font-bold text-white tracking-wider uppercase">
-                    {drop.dropNumber} · {drop.day} {drop.time}
-                  </span>
+            {/* ========================================================= */}
+            {/* CARD 1: $MIKA PROTOCOL ASSET (LIVE TODAY)                 */}
+            {/* ========================================================= */}
+            {showMikaCard && (
+              <SpotlightCard
+                className="bg-black/80 border-t border-[#d4fc50]/50 border-x border-b border-[#d4fc50]/20 shadow-[inset_0_1px_0_rgba(212,252,80,0.15)] hover:border-[#d4fc50]/70 p-5 rounded-xl flex flex-col justify-between transition-all"
+                spotlightColor="rgba(212, 252, 80, 0.08)"
+              >
+                <div>
+                  {/* Card Header & Status */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-[#d4fc50] text-black uppercase tracking-wider">
+                      Live Today
+                    </span>
+                    <span className="text-[10px] font-mono text-white/40">Robinhood L2</span>
+                  </div>
+
+                  {/* Token Identity */}
+                  <div className="mb-4">
+                    <div className="flex items-baseline justify-between">
+                      <h3 className="text-base font-bold text-white font-sans">Mikayla</h3>
+                      <span className="text-xs font-mono text-[#30d158] font-medium">+342.8%</span>
+                    </div>
+                    <div className="text-lg font-mono font-bold text-[#d4fc50]">
+                      <ShinyText text="$MIKA" color="#d4fc50" shineColor="#ffffff" speed={2.5} />
+                    </div>
+                  </div>
+
+                  {/* Core Metrics */}
+                  <div className="grid grid-cols-2 gap-2 py-2.5 px-3 rounded-lg bg-white/[0.03] border border-white/[0.08] mb-3 text-xs font-mono">
+                    <div>
+                      <div className="text-[10px] text-white/40 uppercase">Price</div>
+                      <div className="text-white font-medium">$0.0428</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-white/40 uppercase">Market Cap</div>
+                      <div className="text-white font-medium">$42.8M</div>
+                    </div>
+                  </div>
+
+                  {/* Verified CA with Copy */}
+                  <div className="p-2.5 rounded-lg bg-black/60 border border-white/10 mb-3.5 flex items-center justify-between gap-2">
+                    <div>
+                      <div className="text-[9px] font-mono text-white/40 uppercase">Verified Contract (CA)</div>
+                      <code className="text-[10px] font-mono text-white/80 truncate block max-w-[150px]">
+                        {MIKA_CA}
+                      </code>
+                    </div>
+                    <button
+                      onClick={handleCopy}
+                      className="btn-tactile px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-mono text-[10px] cursor-pointer shrink-0"
+                    >
+                      {copiedCA ? "Copied" : "Copy"}
+                    </button>
+                  </div>
+
+                  {/* Core Token Utility Callout */}
+                  <div className="p-3 rounded-lg bg-[#d4fc50]/[0.06] border border-[#d4fc50]/20 mb-4 text-[11px] font-sans leading-relaxed text-white/80">
+                    <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold text-[#d4fc50] uppercase mb-1">
+                      <Flame className="w-3.5 h-3.5" />
+                      <span>50% Launch Profit Burn Sink</span>
+                    </div>
+                    <p className="text-white/70">
+                      Every subsequent creator launch generates platform profits. <strong className="text-white font-medium">50% of all profits are routed on-chain to buy back and burn $MIKA supply forever.</strong>
+                    </p>
+                  </div>
                 </div>
 
-                <span className="text-[10px] font-mono px-3 py-1 rounded-full border border-white/15 bg-black/60 text-[#d4fc50] font-bold backdrop-blur-md">
-                  {drop.status}
-                </span>
-              </div>
+                <a
+                  href="#hero"
+                  className="btn-tactile w-full py-2.5 rounded-lg bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs uppercase tracking-wider text-center flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(212,252,80,0.25)]"
+                >
+                  <span>Trade $MIKA Terminal</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </SpotlightCard>
+            )}
 
-              {/* MIDDLE: Atmospheric Gaze & Sleek Audio Whisper Pill */}
-              <div className="relative z-10 my-auto py-6">
-                {/* Sleek Horizontal Audio Whisper Pill */}
-                <div className="max-w-sm">
-                  <button
-                    type="button"
-                    onClick={() => toggleWhisper(drop.id)}
-                    className="w-full p-2.5 rounded-2xl bg-black/60 hover:bg-black/80 border border-white/15 hover:border-[#d4fc50]/40 backdrop-blur-xl flex items-center justify-between text-xs font-mono transition-all group/btn shadow-xl"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-7 h-7 rounded-xl flex items-center justify-center transition-colors ${activeWhisper === drop.id ? 'bg-[#d4fc50] text-black shadow-md shadow-[#d4fc50]/30' : 'bg-white/10 text-white group-hover/btn:bg-[#d4fc50] group-hover/btn:text-black'}`}>
-                        {activeWhisper === drop.id ? (
-                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                        ) : (
-                          <svg className="w-3.5 h-3.5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        )}
-                      </div>
-                      <span className="text-white/80 group-hover/btn:text-white text-xs">
-                        {activeWhisper === drop.id ? "Playing Voice Memo..." : "Private Whisper Memo"}
+            {/* ========================================================= */}
+            {/* CARDS 2, 3, 4: UPCOMING CREATOR DROPS (FRI, SUN, TUE)     */}
+            {/* ========================================================= */}
+            {filteredDrops.map((drop) => {
+              const isWhitelisted = whitelisted[drop.id];
+              return (
+                <SpotlightCard
+                  key={drop.id}
+                  className="bg-black/60 border-t border-white/20 border-x border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:border-white/25 p-5 rounded-xl flex flex-col justify-between transition-all"
+                  spotlightColor="rgba(255, 255, 255, 0.05)"
+                >
+                  <div>
+                    {/* Header & Date Badge */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-white/10 text-white uppercase tracking-wider flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-[#d4fc50]" />
+                        <span>{drop.dayLabel}</span>
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-mono text-[#d4fc50] bg-[#d4fc50]/10 border border-[#d4fc50]/20 font-bold uppercase">
+                        {drop.creatorRank}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1 h-3 mr-1">
-                      {[40, 85, 55, 95, 45, 75].map((h, idx) => (
-                        <span
-                          key={idx}
-                          className={`w-0.5 bg-[#d4fc50] rounded-full transition-all duration-300 ${activeWhisper === drop.id ? 'animate-pulse' : 'opacity-40'}`}
-                          style={{ height: activeWhisper === drop.id ? `${h}%` : '35%' }}
-                        />
-                      ))}
+                    {/* Drop Identity & Codename */}
+                    <div className="mb-3">
+                      <div className="flex items-baseline justify-between">
+                        <h3 className="text-base font-bold text-white font-sans">{drop.dropNumber}</h3>
+                        <span className="text-xs font-mono font-bold text-[#d4fc50]">{drop.codename}</span>
+                      </div>
+                      <div className="text-xs font-mono text-white/60">{drop.category}</div>
                     </div>
-                  </button>
 
-                  {/* Unfurled Whisper Quote */}
-                  {activeWhisper === drop.id && (
-                    <div className="mt-2.5 p-3 rounded-2xl bg-black/80 border border-[#d4fc50]/30 text-xs font-mono text-[#d4fc50] animate-fadeIn leading-relaxed italic backdrop-blur-2xl shadow-2xl">
-                      "{drop.secretWhisper}"
+                    {/* Verified Agency Roster Metrics */}
+                    <div className="grid grid-cols-2 gap-1.5 p-2 rounded-lg bg-white/[0.02] border border-white/[0.06] mb-3 text-[10px] font-mono">
+                      <div>
+                        <div className="text-white/40 uppercase text-[9px]">Verified Reach</div>
+                        <div className="text-white font-semibold">{drop.metrics.reach}</div>
+                      </div>
+                      <div>
+                        <div className="text-white/40 uppercase text-[9px]">Platform GMV</div>
+                        <div className="text-[#a8c3a0] font-semibold">{drop.metrics.monthlyGmv}</div>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
 
-              {/* BOTTOM: Clean Editorial Profile, Burn Utility, and Action */}
-              <div className="relative z-10 space-y-4">
-                {/* Creator Title & Verified Cashflow */}
-                <div>
-                  <div className="flex items-center justify-between gap-3 mb-1">
-                    <h3 className="text-2xl sm:text-3xl font-serif text-white tracking-tight font-medium">
-                      {drop.name}
-                    </h3>
-                    <span className="text-xs font-mono text-[#d4fc50] bg-[#d4fc50]/10 px-2.5 py-1 rounded-full border border-[#d4fc50]/30 font-bold shrink-0">
-                      <DecryptedText text={drop.ticker} speed={30} className="text-[#d4fc50]" />
-                    </span>
+                    {/* Countdown Clock & Embargo Notice */}
+                    <div className="p-2.5 rounded-lg bg-black/50 border border-white/[0.08] mb-3 flex flex-col items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/40 uppercase">
+                        <Clock className="w-3 h-3 text-[#d4fc50]" />
+                        <span>{drop.scheduleText}</span>
+                      </div>
+                      <CountdownClock initialRemainingMs={drop.targetMs} />
+                      <div className="text-[9px] font-mono text-white/40 mt-0.5">
+                        Handle & CA reveal at launch to protect fair orderflow
+                      </div>
+                    </div>
+
+                    {/* Creator Token Utility Breakdown */}
+                    <div className="space-y-2 mb-3.5">
+                      {/* Utility 1: $50 Holder Gate at target MC */}
+                      <div className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-[11px] leading-snug">
+                        <div className="flex items-center justify-between font-mono text-[10px] text-white/60 mb-0.5">
+                          <span className="text-[#d4fc50] font-semibold">Hold ≥ $50 Token</span>
+                          <span className="text-white/40">Gate: {drop.targetMcapGate}</span>
+                        </div>
+                        <p className="text-white/70 text-[10px] font-sans">
+                          {drop.holderGatePerk} unlocked automatically on token page.
+                        </p>
+                      </div>
+
+                      {/* Utility 2: Burn-to-Access */}
+                      <div className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-[11px] leading-snug">
+                        <div className="flex items-center gap-1 font-mono text-[10px] text-[#ff79c6] font-semibold mb-0.5">
+                          <Flame className="w-3 h-3 text-[#ff79c6]" />
+                          <span>Burn-to-Access</span>
+                        </div>
+                        <p className="text-white/70 text-[10px] font-sans">
+                          {drop.burnPerk} (burned on-site).
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tie-in to $MIKA */}
+                    <div className="mb-4 text-[10px] font-mono text-white/40 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
+                      <span>50% of launch profit burns $MIKA</span>
+                    </div>
                   </div>
 
-                  <p className="text-xs font-mono text-white/60 mb-2">{drop.category}</p>
-
-                  <div className="flex items-center gap-2 text-xs font-mono text-white/80">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]" />
-                    <span>Audited Net Cashflow: <strong className="text-white">{drop.monthlyRevenue}</strong></span>
-                  </div>
-                </div>
-
-                {/* Clean Frosted Burn Utility Capsule */}
-                <div className="p-3 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-md">
-                  <div className="flex items-center justify-between text-[10px] font-mono uppercase text-white/40 mb-1">
-                    <span className="font-bold text-white/60">Burn Utility Sinks</span>
-                    <span className="text-[#d4fc50] font-bold">$5 · $10 · $25</span>
-                  </div>
-                  <p className="text-xs font-mono text-white/80 leading-snug">
-                    {drop.burnUtility}
-                  </p>
-                </div>
-
-                {/* Countdown and Action Row */}
-                <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
-                  <CountdownWidget dayOffset={drop.dayOffset} />
-
+                  {/* Whitelist / Alert Action with Instant Tactile Feedback */}
                   <button
-                    type="button"
-                    onClick={() => handleAction(drop)}
-                    className={`flex-1 py-3 px-4 rounded-xl font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-lg ${
-                      drop.isFirst
-                        ? "bg-[#d4fc50] hover:bg-[#e4ff75] text-black shadow-[#d4fc50]/20 hover:scale-[1.02]"
-                        : "bg-white/10 hover:bg-white/20 text-white border border-white/15"
+                    onClick={() => handleWhitelist(drop.id, drop.dayLabel)}
+                    className={`btn-tactile w-full py-2.5 rounded-lg font-mono font-medium text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer ${
+                      isWhitelisted
+                        ? "bg-white/10 text-[#d4fc50] border border-[#d4fc50]/30"
+                        : "bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/10"
                     }`}
                   >
-                    <span>{drop.isFirst ? "Join Whitelist" : "Set Reminder"}</span>
-                    <span className="font-mono">→</span>
+                    {isWhitelisted ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-[#d4fc50]" />
+                        <span>Alert Set</span>
+                      </>
+                    ) : (
+                      <>
+                        <Clock className="w-3.5 h-3.5 text-white/60" />
+                        <span>Notify on Launch</span>
+                      </>
+                    )}
                   </button>
-                </div>
-              </div>
-            </SpotlightCard>
-          ))}
-        </div>
-
-        {/* Due Diligence & Curation Guarantee Bar */}
-        <div className="p-6 rounded-3xl bg-[#0b0d0b] border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-xl">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-[#d4fc50]/15 border border-[#d4fc50]/30 flex items-center justify-center text-[#d4fc50] font-bold text-xs shrink-0 font-mono">
-              KYC
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-white font-mono">
-                Institutional Due Diligence (No Public Unverified Launches)
-              </h4>
-              <p className="text-xs text-white/60 font-sans mt-0.5">
-                We accept &lt;2% of creator applications. All creators submit legal identity verification, 12-month bank/escrow revenue statements, and multi-year smart contract exclusivity lockups.
-              </p>
-            </div>
+                </SpotlightCard>
+              );
+            })}
           </div>
 
-          <button
-            onClick={() => window.dispatchEvent(new CustomEvent("open-launch-modal"))}
-            className="px-6 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono text-white hover:text-[#d4fc50] transition-all shrink-0"
-          >
-            Apply for Next Cohort →
-          </button>
+          {/* ========================================================= */}
+          {/* 4. THE 4-STEP SCM VALUE LOOP (CLEAN MINIMALIST ARCHITECTURE) */}
+          {/* ========================================================= */}
+          <div className="mt-8 pt-8 border-t border-white/[0.08]">
+            <div className="mb-5">
+              <span className="text-[10px] font-mono text-[#d4fc50] uppercase tracking-widest block mb-1">
+                Protocol Architecture
+              </span>
+              <h3 className="text-lg sm:text-xl font-serif text-white">
+                How Creator Launches Accrue Value Back to $MIKA
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <SpotlightCard
+                className="p-4 rounded-xl bg-black/40 border border-white/[0.08]"
+                spotlightColor="rgba(255, 255, 255, 0.04)"
+              >
+                <div className="text-[10px] font-mono text-[#d4fc50] font-bold mb-1">01 // LAUNCH</div>
+                <div className="text-xs font-bold text-white mb-1">Fair Creator Drops</div>
+                <p className="text-[11px] text-white/60 font-sans leading-relaxed">
+                  Agency models launch on Robinhood Chain with deterministic bonding curves and locked liquidity.
+                </p>
+              </SpotlightCard>
+
+              <SpotlightCard
+                className="p-4 rounded-xl bg-black/40 border border-white/[0.08]"
+                spotlightColor="rgba(255, 255, 255, 0.04)"
+              >
+                <div className="text-[10px] font-mono text-[#d4fc50] font-bold mb-1">02 // UTILITY</div>
+                <div className="text-xs font-bold text-white mb-1">Holder Gates & Burns</div>
+                <p className="text-[11px] text-white/60 font-sans leading-relaxed">
+                  Fans hold $50+ for token-gated content and burn creator coins on-site to unlock rare video rolls.
+                </p>
+              </SpotlightCard>
+
+              <SpotlightCard
+                className="p-4 rounded-xl bg-black/40 border border-white/[0.08]"
+                spotlightColor="rgba(255, 255, 255, 0.04)"
+              >
+                <div className="text-[10px] font-mono text-[#d4fc50] font-bold mb-1">03 // CASHFLOW</div>
+                <div className="text-xs font-bold text-white mb-1">Platform Profits</div>
+                <p className="text-[11px] text-white/60 font-sans leading-relaxed">
+                  Every launch generates platform revenue from trading fees and primary curve completions.
+                </p>
+              </SpotlightCard>
+
+              <SpotlightCard
+                className="p-4 rounded-xl bg-black/40 border border-[#d4fc50]/30"
+                spotlightColor="rgba(212, 252, 80, 0.08)"
+              >
+                <div className="text-[10px] font-mono text-[#d4fc50] font-bold mb-1">04 // 50% BURN SINK</div>
+                <div className="text-xs font-bold text-[#d4fc50] mb-1">Permanent $MIKA Burns</div>
+                <p className="text-[11px] text-white/80 font-sans leading-relaxed">
+                  50% of all launch & platform profits are routed directly on-chain to buy back and burn $MIKA supply.
+                </p>
+              </SpotlightCard>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   );

@@ -7,43 +7,43 @@ import DecryptedText from "./react-bits/DecryptedText";
 const stages = [
   {
     step: "01",
-    status: "Curated Curation",
-    name: "Due Diligence & Revenue Escrow",
+    status: "Agency Talent Curation",
+    name: "Agency Network & Direct Model Access",
     description:
-      "We accept <2% of applicants. Our team conducts institutional KYC, audits 12-month platform escrow revenue statements, and binds legal revenue-share covenants into smart contracts before scheduling drops (Friday, Sunday, Tuesday).",
-    tag: "COHORT VETTING",
-    perk: "Zero Public Scam Rugs",
-    stat: "100% Audited Revenue Stream",
+      "Originating from AI chatter and creator operations, our team works directly with verified agency talent rosters and high-earning models. Every creator drop is vetted for organic engagement and verified revenue, eliminating low-effort scam rugs.",
+    tag: "AGENCY NETWORK",
+    perk: "Zero Scam Rugs",
+    stat: "Verified Talent Rosters",
   },
   {
     step: "02",
-    status: "Bonding Curve",
-    name: "Algorithmic Price Discovery",
+    status: "Fair Bonding Curve",
+    name: "Robinhood Chain L2 Price Discovery",
     description:
-      "Fans and retail traders buy directly from the bonding curve. Every purchase increases price along a deterministic mathematical curve with zero front-running.",
-    tag: "LIVE TRADING",
-    perk: "100% Transparent Formula",
+      "Fans and traders buy directly from fair deterministic bonding curves on Robinhood Chain L2. Sub-second execution and negligible gas fees (<$0.001) provide seamless access for millions of retail traders.",
+    tag: "ROBINHOOD L2",
+    perk: "Zero MEV Exploits",
     stat: "Instant Liquidity Pools",
   },
   {
     step: "03",
-    status: "Migration",
-    name: "Automated Uniswap V4 Lock",
+    status: "Dual Utility Engine",
+    name: "$50 Holder Gate & On-Site Burns",
     description:
-      "Upon reaching $69,000 market cap (4.20 ETH), the protocol automatically graduates liquidity into Uniswap V4 and permanently burns 100% of LP tokens.",
-    tag: "UNISWAP GRADUATION",
-    perk: "Permanent Anti-Rug Proof",
-    stat: "100% LP Tokens Burned",
+      "Every creator token features concrete utility: holding at least $50 USD of the token unlocks exclusive private content once market cap milestones are reached. Fans can also burn creator tokens on-site to unlock ultra-exclusive master rolls.",
+    tag: "DUAL UTILITY",
+    perk: "Deflationary Contraction",
+    stat: "Hold $50 Gate + On-Site Burns",
   },
   {
     step: "04",
-    status: "Yield & Utility",
-    name: "Daily Creator Dividends & Perks",
+    status: "Protocol Value Capture",
+    name: "50% Platform Profit Burn for $MIKA",
     description:
-      "1% of all protocol volume streams continuously in USDC to the creator. Token holders verify wallet ownership to unlock gated content and AI chat perks.",
-    tag: "SUSTAINABILITY",
-    perk: "Token-Gated VIP Access",
-    stat: "Continuous Streaming Yield",
+      "Every secondary trade and creator launch generates platform profits. 50% of all platform and launch profits are routed directly on-chain to buy back and burn $MIKA supply forever.",
+    tag: "50% PROFIT BURN",
+    perk: "Automated Supply Squeeze",
+    stat: "50% Routed to 0x0...dead",
   },
 ];
 
@@ -155,7 +155,7 @@ const Services = () => {
             <div className="p-5 rounded-xl bg-[#090b09] border border-white/10 space-y-3 font-mono">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-[#10b981]" />
                   <span className="text-white font-medium">Smart Contract Execution State</span>
                 </div>
                 <span className="text-[#a8c3a0]">Robinhood Chain L2 Verified</span>

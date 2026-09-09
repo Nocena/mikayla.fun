@@ -1,57 +1,30 @@
-import {
-  benefitIcon1,
-  benefitIcon2,
-  benefitIcon3,
-  benefitIcon4,
-  benefitImage2,
-  chromecast,
-  disc02,
-  discord,
-  discordBlack,
-  facebook,
-  file02,
-  framer,
-  homeSmile,
-  instagram,
-  notification2,
-  notification3,
-  notification4,
-  notion,
-  photoshop,
-  plusSquare,
-  protopie,
-  raindrop,
-  recording01,
-  recording03,
-  roadmap1,
-  roadmap2,
-  roadmap3,
-  roadmap4,
-  searchMd,
-  slack,
-  sliders04,
-  telegram,
-  twitter,
-  of,
-  onlyfans,
-  pa,
-  fa,
-  hh,
-  jf,
-  fansly,
-  patreon,
-  herohero,
-  leverage,
-  curve3,
-  drop,
-  token,
-  phantom,
-  idea,
-  rocket,
-  data,
-  stream,
-  salary
-} from "../assets";
+// Lightweight placeholder icons/paths for legacy constants
+const file02 = "";
+const homeSmile = "";
+const searchMd = "";
+const plusSquare = "";
+const notification2 = "";
+const notification3 = "";
+const notification4 = "";
+const onlyfans = "";
+const fansly = "";
+const patreon = "";
+const herohero = "";
+const idea = "";
+const rocket = "";
+const data = "";
+const stream = "";
+const salary = "";
+const roadmap1 = "";
+const roadmap2 = "";
+const roadmap3 = "";
+const roadmap4 = "";
+const phantom = "";
+const discord = "";
+const leverage = "";
+const curve3 = "";
+const drop = "";
+const token = "";
 
 export const navigation = [
   {

@@ -1,136 +1,149 @@
 import React, { useState } from "react";
 import SpotlightCard from "./react-bits/SpotlightCard";
 import ShinyText from "./react-bits/ShinyText";
-import DecryptedText from "./react-bits/DecryptedText";
 import CountUp from "./react-bits/CountUp";
 
 const creatorVaults = [
   {
-    id: "aria",
-    creator: "Aria Brooks",
-    ticker: "$ARIA",
+    id: "drop01",
+    creator: "Project Aria · Drop #01",
+    ticker: "TICKER $ARIA [THIS FRIDAY]",
     image: "/creators/aria.jpg",
-    category: "OnlyFans Top 0.05%",
-    verifiedMonthly: "$72,000/mo Escrow",
+    category: "Top 0.05% OnlyFans Model · Miami / Milan",
+    verifiedMonthly: "Top 0.05% Earner · Launching Friday",
     tokenPrice: 0.0428,
     accentColor: "#d4fc50",
     badgeBorder: "border-[#d4fc50]/30 bg-[#d4fc50]/10 text-[#d4fc50]",
     tiers: [
       {
-        tierName: "UNFILTERED MILAN LEICA ROLL",
-        usdPrice: 5,
-        format: "24 Uncompressed 35mm Scans",
-        description: "Intimate backstage 35mm film negatives shot in Aria's private Milan hotel dressing room. Uncensored, raw, zero public retouching.",
-        perks: ["24 Uncompressed 35mm Leica Scans", "Private Darkroom Archive Pass", "Permanent On-Chain Vault Key"],
+        tierName: "TIER 01: $50 HOLDER GATE (TARGET MC)",
+        usdPrice: 0,
+        gateRequirement: "Hold ≥ $50 Token at $100k MC",
+        format: "24 Uncompressed 35mm Leica Negatives",
+        description: "Intimate backstage 35mm film negatives shot in Milan hotel dressing room. Automatically unlocks on the token page for any wallet holding at least $50 USD of this token once market cap reaches $100k.",
+        perks: ["Hold ≥ $50 USD to Unlock", "24 Uncompressed 35mm Leica Scans", "Automatic On-Chain Token Gate"],
         previewThumbnail: "/creators/aria.jpg",
+        isHolderGate: true,
       },
       {
-        tierName: "HOTEL SUITE 4K & 3 AM WHISPER",
+        tierName: "TIER 02: ON-SITE BURN-TO-ACCESS",
         usdPrice: 10,
-        format: "10-Min 4K Master Film + Voice Memo",
-        description: "Private cinematic 4K video recorded in her private penthouse suite after Milan Fashion Week, plus an intimate unscripted 3 AM voice note.",
-        perks: ["ProRes 4K 60fps Master Film", "Direct Binaural Voice Memo", "Encrypted Private Telegram Channel"],
+        format: "10-Min 4K Master Film + Binaural Voice Memo",
+        description: "Private cinematic 4K video recorded after Milan Fashion Week, plus an intimate unscripted 3 AM voice note. Unlocked by burning creator tokens directly on this website, shrinking circulating supply.",
+        perks: ["Burn $10 Token on Website", "ProRes 4K 60fps Master Film", "Tokens Sent to 0x00...dead"],
         previewThumbnail: "/creators/vault_banner.jpg",
+        isHolderGate: false,
       },
       {
-        tierName: "THE BLACK BOX & DIRECT LINE",
+        tierName: "TIER 03: ULTRA-RARE ON-SITE BURN",
         usdPrice: 25,
-        format: "Encrypted 1-on-1 Signal Access + Custom Drop",
-        description: "Direct end-to-end encrypted messaging pass with Aria, signed physical analog Polaroid mailed in black wax seal, and custom dedicated PPV clip.",
-        perks: ["Encrypted Direct Signal Line", "Custom Dedicated 4K Video Drop", "Physical Signed Polaroid in Wax Seal"],
+        format: "Encrypted 1-on-1 Access + Signed Wax-Sealed Print",
+        description: "Direct end-to-end encrypted messaging pass with the creator, plus signed physical analog print mailed in black wax seal. High deflationary burn on the creator's token.",
+        perks: ["Burn $25 Token on Website", "Encrypted Direct Line Access", "Physical Archival Print in Wax Seal"],
         previewThumbnail: "/creators/luna.jpg",
+        isHolderGate: false,
       },
     ],
   },
   {
-    id: "kira",
-    creator: "Kira Fox",
-    ticker: "$KIRA",
+    id: "drop02",
+    creator: "Project Kira · Drop #02",
+    ticker: "TICKER $KIRA [THIS SUNDAY]",
     image: "/creators/kira.jpg",
-    category: "Tokyo/Berlin Underground DJ & Cult Star",
-    verifiedMonthly: "$58,200/mo Nightlife Escrow",
+    category: "Top 0.02% OnlyFans Sensation · Los Angeles",
+    verifiedMonthly: "Top 0.02% Earner · Launching Sunday",
     tokenPrice: 0.0215,
     accentColor: "#d4fc50",
     badgeBorder: "border-[#d4fc50]/30 bg-[#d4fc50]/10 text-[#d4fc50]",
     tiers: [
       {
-        tierName: "TOKYO AFTERHOURS 35MM ROLL",
-        usdPrice: 5,
-        format: "24 Unreleased 35mm Analog Scans",
-        description: "Raw analog 35mm scans shot behind the decks and backstage at Tokyo underground club Womb. Grainy, intimate, living human beauty.",
-        perks: ["24 High-Res Analog Negatives", "Uncensored Backstage Archive", "Permanent Cryptographic Key"],
+        tierName: "TIER 01: $50 HOLDER GATE (TARGET MC)",
+        usdPrice: 0,
+        gateRequirement: "Hold ≥ $50 Token at $150k MC",
+        format: "30 Uncut Sunset Hills Penthouse 35mm Scans",
+        description: "Confidential 35mm raw film negatives from private Sunset Hills villa shoot. Automatically unlocks on the token page for all holders of ≥ $50 of the creator token when MC reaches $150k.",
+        perks: ["Hold ≥ $50 USD to Unlock", "30 High-Res Raw Negatives", "Automatic On-Chain Token Gate"],
         previewThumbnail: "/creators/kira.jpg",
+        isHolderGate: true,
       },
       {
-        tierName: "BERGHAIN SUITE 4K & MIDNIGHT MEMO",
+        tierName: "TIER 02: ON-SITE BURN-TO-ACCESS",
         usdPrice: 10,
-        format: "12-Min Uncut 4K Video + Lossless Memo",
-        description: "Raw 4K video recording from Kira's private hotel suite after her Berlin set, plus an intimate unscripted 3 AM voice whisper.",
-        perks: ["12-Min 4K ProRes Video Master", "Direct Binaural 3 AM Voice Memo", "Unreleased Ambient DJ Mix"],
+        format: "15-Min Uncut 4K Video + Intimate Audio Note",
+        description: "Private cinematic 4K video recording, plus an intimate unscripted whisper note. Burn creator tokens on-site to unlock and permanently incinerate circulating supply.",
+        perks: ["Burn $10 Token on Website", "15-Min 4K ProRes Video Master", "Tokens Sent to 0x00...dead"],
         previewThumbnail: "/creators/kira.jpg",
+        isHolderGate: false,
       },
       {
-        tierName: "PRIVATE SUITE DIRECT KEY & CUSTOM DROP",
+        tierName: "TIER 03: ULTRA-RARE ON-SITE BURN",
         usdPrice: 25,
-        format: "End-to-End Encrypted 1-on-1 + Custom PPV",
-        description: "Direct encrypted Signal/Telegram channel access with Kira. Request a custom private Polaroid set and personal video answer.",
-        perks: ["Direct Encrypted DM Access", "Personalized Custom 4K Clip", "VIP Backstage Guestlist Pass"],
+        format: "Direct Encrypted Telegram Line + Signed Canvas",
+        description: "Direct encrypted VIP channel access with the creator, dedicated private video response, and physical archival print delivered in wax seal.",
+        perks: ["Burn $25 Token on Website", "Direct Encrypted Line", "Physical Signed Archival Canvas"],
         previewThumbnail: "/creators/vault_banner.jpg",
+        isHolderGate: false,
       },
     ],
   },
   {
-    id: "luna",
-    creator: "Luna St. Claire",
-    ticker: "$LUNA",
+    id: "drop03",
+    creator: "Project Luna · Drop #03",
+    ticker: "TICKER $LUNA [NEXT TUESDAY]",
     image: "/creators/luna.jpg",
-    category: "Nocturnal Cinema & Fansly Top 0.01% Star",
-    verifiedMonthly: "$94,000/mo Audited Cashflow",
+    category: "Top 0.01% OnlyFans Supermodel · London / Paris",
+    verifiedMonthly: "Top 0.01% Earner · Launching Tuesday",
     tokenPrice: 0.0310,
     accentColor: "#d4fc50",
     badgeBorder: "border-[#d4fc50]/30 bg-[#d4fc50]/10 text-[#d4fc50]",
     tiers: [
       {
-        tierName: "PARIS VELVET 35MM VAULT",
-        usdPrice: 5,
-        format: "24 Vintage Analog Boudoir Scans",
-        description: "Private nocturnal boudoir photosets shot on 35mm film in a confidential Paris apartment. Pure film grain, uncensored shadows.",
-        perks: ["24 Uncompressed Film Scans", "Backstage Wardrobe Gallery", "Encrypted Vault Download"],
+        tierName: "TIER 01: $50 HOLDER GATE (TARGET MC)",
+        usdPrice: 0,
+        gateRequirement: "Hold ≥ $50 Token at $200k MC",
+        format: "45 Uncut 4K HDR Studio Gallery + Paris Hotel Archive",
+        description: "Private boudoir photosets shot on 35mm film in a confidential Paris apartment. Automatically unlocks on the token page for all holders of ≥ $50 of the creator token when MC reaches $200k.",
+        perks: ["Hold ≥ $50 USD to Unlock", "45 Uncompressed Film Scans", "Automatic On-Chain Token Gate"],
         previewThumbnail: "/creators/luna.jpg",
+        isHolderGate: true,
       },
       {
-        tierName: "NOCTURNAL MASTER FILM (UNCUT)",
+        tierName: "TIER 02: ON-SITE BURN-TO-ACCESS",
         usdPrice: 10,
-        format: "14-Min High-Bitrate 4K Cinema",
-        description: "Full-length unrated backstage luxury film. Direct streaming on Mikayla Launchpad player with zero ads, high-bitrate HDR.",
-        perks: ["1080p/4K Encrypted Stream", "Zero-Tracking Decryption", "Fansly VIP Token Verification"],
+        format: "14-Min High-Bitrate 4K Cinema Master",
+        description: "Full-length unrated backstage luxury film. Burn creator tokens on-site to decrypt and permanently burn supply on Robinhood Chain.",
+        perks: ["Burn $10 Token on Website", "14-Min 4K Cinema Master", "Tokens Sent to 0x00...dead"],
         previewThumbnail: "/creators/vault_banner.jpg",
+        isHolderGate: false,
       },
       {
-        tierName: "THE RED VELVET KEY & PRIVATE STREAM",
+        tierName: "TIER 03: ULTRA-RARE ON-SITE BURN",
         usdPrice: 25,
-        format: "Bi-Weekly Private Stream + Vault Archive",
-        description: "Bi-weekly token-gated intimate livestream access, complete vault archive pass, and signed physical archival print delivered in confidential packaging.",
-        perks: ["Bi-Weekly Private Stream Access", "All Past PPV Vault Releases", "Physical Signed Art Print in Wax Seal"],
+        format: "Private Token-Gated Stream + Signed Art Print",
+        description: "Bi-weekly token-gated intimate livestream access and signed physical archival print delivered in confidential packaging.",
+        perks: ["Burn $25 Token on Website", "Private Stream Access", "Physical Signed Art Print in Wax Seal"],
         previewThumbnail: "/creators/aria.jpg",
+        isHolderGate: false,
       },
     ],
   },
 ];
 
 const ContentVault = () => {
-  const [activeCreatorId, setActiveCreatorId] = useState("aria");
+  const [activeCreatorId, setActiveCreatorId] = useState("drop01");
   const [unlockedTiers, setUnlockedTiers] = useState({});
   const [burnModal, setBurnModal] = useState(null);
   const [isBurning, setIsBurning] = useState(false);
   const [burnStep, setBurnStep] = useState(0);
   const [totalBurnedUsd, setTotalBurnedUsd] = useState(142850);
   const [totalBurnedTokens, setTotalBurnedTokens] = useState(3337616);
+  const [toastMessage, setToastMessage] = useState(null);
 
   const currentCreator = creatorVaults.find((c) => c.id === activeCreatorId) || creatorVaults[0];
 
   const handleOpenBurn = (tier) => {
-    const tokenAmount = Math.round((tier.usdPrice / currentCreator.tokenPrice) * 10) / 10;
+    const cost = tier.isHolderGate ? 50 : tier.usdPrice;
+    const tokenAmount = Math.round((cost / currentCreator.tokenPrice) * 10) / 10;
     setBurnModal({
       tier,
       creator: currentCreator,
@@ -152,9 +165,9 @@ const ContentVault = () => {
           setIsBurning(false);
           setUnlockedTiers((prev) => ({
             ...prev,
-            [`${burnModal.creator.id}_${burnModal.tier.usdPrice}`]: true,
+            [`${burnModal.creator.id}_${burnModal.tier.tierName}`]: true,
           }));
-          setTotalBurnedUsd((prev) => prev + burnModal.tier.usdPrice);
+          setTotalBurnedUsd((prev) => prev + (burnModal.tier.usdPrice || 50));
           setTotalBurnedTokens((prev) => prev + Math.round(burnModal.tokenAmount));
           setBurnModal((prev) => ({ ...prev, done: true }));
         }, 900);
@@ -163,63 +176,63 @@ const ContentVault = () => {
   };
 
   return (
-    <section id="content-vault" className="relative py-20 lg:py-28 bg-[#060706] border-t border-white/10 overflow-hidden">
-      {/* Ambient background glows */}
-      <div className="absolute top-1/3 left-1/4 w-[600px] h-[500px] bg-[#d4fc50]/[0.025] blur-[160px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[500px] bg-[#ff007f]/[0.02] blur-[180px] rounded-full pointer-events-none" />
+    <section id="content-vault" className="relative py-20 lg:py-28 bg-[#080808] border-t border-white/[0.08]">
+      {/* Apple Fluid Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-20 right-6 z-50 px-4 py-2.5 rounded-lg bg-[#111111] border-t border-white/20 border-x border-b border-white/10 text-xs font-mono text-white flex items-center gap-2 shadow-[0_12px_32px_rgba(0,0,0,0.8)] backdrop-blur-xl animate-fadeIn">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
-      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-5 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#ff007f] animate-pulse" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-1 rounded-full bg-white/[0.04] border border-white/10 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
             <ShinyText
-              text="CONFIDENTIAL HUMAN VAULT PROTOCOL · 100% REAL CREATORS"
+              text="DUAL CREATOR TOKEN UTILITY ARCHITECTURE"
               className="text-xs font-mono uppercase tracking-widest text-[#d4fc50]"
               speed={3}
             />
-            <span className="text-white/30 text-xs">•</span>
-            <span className="text-[11px] font-mono text-white/70 uppercase">
-              ZERO AI · LIVING BREATHING TALENT
-            </span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-tight">
-            Burn-to-Unlock Content Vault
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white tracking-display leading-tight">
+            Holder Gates & Burn-to-Access
           </h2>
 
-          <p className="text-white/70 text-sm sm:text-base mt-4 max-w-3xl mx-auto leading-relaxed">
-            Creator tokens are not useless memes or idiotic AI chatbots. These are <strong>world-class, living human creators</strong>. Token holders burn <strong>$5, $10, or $25 USD</strong> worth of the creator's token directly on Mikayla to unlock exclusive 35mm Leica darkroom scans, private 4K hotel suite master films, and encrypted 1-on-1 access. Every unlock <strong>permanently incinerates tokens to 0x000...dead</strong> on Robinhood Chain, driving continuous supply contraction from authentic fan demand.
+          <p className="text-white/70 text-sm sm:text-base mt-4 max-w-3xl mx-auto leading-relaxed font-sans">
+            Every creator token features concrete, automated utility directly on their token page: <strong>holding at least $50 USD of the token</strong> automatically unlocks exclusive content once their market cap milestone is reached. Furthermore, fans can burn creator tokens directly on-site to access ultra-rare master media, creating <strong>continuous deflationary supply pressure</strong> on each creator coin.
           </p>
 
           {/* Live Burn Metrics Ribbon */}
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto font-mono text-xs">
-            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 text-center">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border-t border-white/15 border-x border-b border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-center">
               <span className="text-white/40 block text-[10px] uppercase mb-1">Total Content Burned</span>
               <strong className="text-white text-base font-bold">
                 $<CountUp to={totalBurnedUsd} separator="," duration={2} />
               </strong>
             </div>
-            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 text-center">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border-t border-white/15 border-x border-b border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-center">
               <span className="text-white/40 block text-[10px] uppercase mb-1">Tokens Incinerated</span>
               <strong className="text-[#d4fc50] text-base font-bold">
                 <CountUp to={totalBurnedTokens} separator="," duration={2} />
               </strong>
             </div>
-            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 text-center">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border-t border-white/15 border-x border-b border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-center">
               <span className="text-white/40 block text-[10px] uppercase mb-1">Burn Address</span>
               <span className="text-white/80 bg-white/5 px-2 py-0.5 rounded text-[11px] inline-block font-mono">
                 0x00...dEaD
               </span>
             </div>
-            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 text-center">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border-t border-white/15 border-x border-b border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-center">
               <span className="text-white/40 block text-[10px] uppercase mb-1">Settlement L2</span>
-              <span className="text-[#10b981] font-bold text-[11px] block">Robinhood Chain</span>
+              <span className="text-[#d4fc50] font-medium text-[11px] block">Robinhood Chain</span>
             </div>
           </div>
         </div>
 
-        {/* Creator Vault Selector Tabs */}
+        {/* Creator Vault Selector Tabs (Apple Segmented Pill with Tactile Feedback) */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {creatorVaults.map((vault) => {
             const isActive = activeCreatorId === vault.id;
@@ -227,9 +240,9 @@ const ContentVault = () => {
               <button
                 key={vault.id}
                 onClick={() => setActiveCreatorId(vault.id)}
-                className={`flex items-center gap-3 px-5 py-3 rounded-2xl border transition-all ${
+                className={`btn-tactile flex items-center gap-3 px-5 py-3 rounded-2xl border cursor-pointer transition-all ${
                   isActive
-                    ? "bg-[#141814] border-[#d4fc50] shadow-xl shadow-[#d4fc50]/10 scale-105"
+                    ? "bg-[#141814] border-t border-[#d4fc50]/60 border-x border-b border-[#d4fc50]/30 shadow-[inset_0_1px_0_rgba(212,252,80,0.2),0_10px_25px_rgba(0,0,0,0.7)]"
                     : "bg-[#0a0c0a] border-white/10 hover:border-white/20 text-white/60 hover:text-white"
                 }`}
               >
@@ -251,114 +264,114 @@ const ContentVault = () => {
         </div>
 
         {/* 3-Tier Content Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-14">
           {currentCreator.tiers.map((tier) => {
-            const isUnlocked = unlockedTiers[`${currentCreator.id}_${tier.usdPrice}`];
-            const tokenCost = (tier.usdPrice / currentCreator.tokenPrice).toFixed(1);
+            const isUnlocked = unlockedTiers[`${currentCreator.id}_${tier.tierName}`];
+            const tokenCost = tier.isHolderGate
+              ? (50 / currentCreator.tokenPrice).toFixed(1)
+              : (tier.usdPrice / currentCreator.tokenPrice).toFixed(1);
 
             return (
               <SpotlightCard
-                key={tier.usdPrice}
-                className="p-6 sm:p-7 flex flex-col justify-between border-white/10 bg-[#0c0e0c] hover:border-white/20 transition-all relative overflow-hidden"
-                spotlightColor="rgba(212, 252, 80, 0.14)"
+                key={tier.tierName}
+                className="p-6 sm:p-7 flex flex-col justify-between border border-white/10 bg-[#0d0d0d] hover:border-white/20 transition-all rounded-2xl relative overflow-hidden"
+                spotlightColor="rgba(212, 252, 80, 0.08)"
               >
                 <div>
-                  {/* Card Header: Tier Badge & Burn Price Tag */}
-                  <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
+                  {/* Card Header: Tier Badge & Requirements */}
+                  <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/[0.08]">
                     <div>
-                      <span className="text-xs font-mono font-bold uppercase tracking-wider block text-white/50">
-                        {tier.tierName}
+                      <span className="text-[10px] font-mono font-medium uppercase tracking-wider block text-white/50">
+                        {tier.isHolderGate ? "HOLD GATE UTILITY" : "DEFLATIONARY BURN SINK"}
                       </span>
-                      <span className="text-lg font-serif font-bold text-white tracking-tight">
-                        ${tier.usdPrice} USD BURN
+                      <span className="text-base font-bold text-white tracking-tight font-sans">
+                        {tier.isHolderGate ? "Hold ≥ $50 Token" : `$${tier.usdPrice} USD Burn`}
                       </span>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-xs font-mono font-bold text-[#d4fc50] bg-[#d4fc50]/10 px-2.5 py-1 rounded-xl border border-[#d4fc50]/30 inline-block">
-                        {tokenCost} {currentCreator.ticker}
+                      <span className="text-xs font-mono font-medium text-[#d4fc50] bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/10 inline-block">
+                        {tokenCost} {currentCreator.ticker.split(" ")[0]}
                       </span>
-                      <span className="text-[10px] font-mono text-white/40 block mt-0.5">Permanent Burn</span>
+                      <span className="text-[10px] font-mono text-white/40 block mt-0.5">
+                        {tier.isHolderGate ? "Holding Required" : "On-Site Burn"}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Media Preview Box with Frosted Gate */}
-                  <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/10 bg-black/60 group">
+                  {/* Media Preview Box */}
+                  <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-5 border border-white/10 bg-black/60">
                     <img
                       src={tier.previewThumbnail}
                       alt={tier.tierName}
-                      className={`w-full h-full object-cover object-top transition-all duration-700 ${
-                        isUnlocked ? "filter-none scale-100" : "filter blur-md scale-105 opacity-60"
+                      className={`w-full h-full object-cover object-top transition-all duration-500 ${
+                        isUnlocked ? "filter-none scale-100" : "filter blur-sm scale-105 opacity-60"
                       }`}
                     />
-
-                    {/* Scanline texture overlay */}
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.4)_50%)] bg-[length:100%_4px] pointer-events-none opacity-40" />
 
                     {/* Status Overlay */}
                     {!isUnlocked ? (
                       <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-black/50 backdrop-blur-sm text-center">
-                        <div className="w-10 h-10 rounded-2xl bg-black/70 border border-white/20 flex items-center justify-center mb-2 shadow-2xl">
-                          <svg className="w-5 h-5 text-[#d4fc50]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                          </svg>
-                        </div>
-                        <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                          TOKEN-GATED VAULT
+                        <span className="text-xs font-mono font-semibold text-white uppercase tracking-wider">
+                          {tier.isHolderGate ? "Market Cap Gate" : "Burn-to-Access"}
                         </span>
-                        <span className="text-[11px] font-mono text-[#d4fc50] mt-0.5">
-                          Burn ${tier.usdPrice} of {currentCreator.ticker}
+                        <span className="text-[11px] font-mono text-[#d4fc50] mt-1">
+                          {tier.isHolderGate ? tier.gateRequirement : `Burn $${tier.usdPrice} on Website`}
                         </span>
                       </div>
                     ) : (
-                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#10b981] text-black font-mono text-[10px] font-bold tracking-wider uppercase shadow-xl flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
-                        UNLOCKED & ACTIVE
+                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-[#d4fc50] text-black font-mono text-[10px] font-bold tracking-wider uppercase">
+                        Unlocked & Active
                       </div>
                     )}
                   </div>
 
                   {/* Format & Description */}
                   <div className="mb-4">
-                    <span className="text-[11px] font-mono text-[#a8c3a0] block uppercase tracking-wider mb-1">
+                    <span className="text-[11px] font-mono text-[#d4fc50] block uppercase tracking-wider mb-1">
                       {tier.format}
                     </span>
-                    <p className="text-xs text-white/70 leading-relaxed">
+                    <p className="text-xs text-white/70 leading-relaxed font-sans">
                       {tier.description}
                     </p>
                   </div>
 
                   {/* Feature Checklist */}
-                  <div className="space-y-1.5 py-3 border-t border-white/5 font-mono text-xs text-white/60 mb-6">
+                  <div className="space-y-1.5 py-3 border-t border-white/[0.06] font-mono text-xs text-white/60 mb-6">
                     {tier.perks.map((perk, i) => (
                       <div key={i} className="flex items-center gap-2 text-[11px]">
-                        <svg className="w-3.5 h-3.5 text-[#d4fc50] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                        </svg>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
                         <span className="text-white/80">{perk}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Burn Action Button */}
+                {/* Action Button with Apple Tactile Feedback */}
                 <div>
                   {isUnlocked ? (
                     <button
                       type="button"
-                      onClick={() => alert(`Opening full high-definition vault for ${currentCreator.creator} (${tier.tierName}) on Robinhood Chain IPFS player!`)}
-                      className="w-full py-3.5 rounded-xl font-mono font-bold text-xs uppercase tracking-wider bg-[#10b981] hover:bg-[#1fd694] text-black transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#10b981]/20"
+                      onClick={() => {
+                        setToastMessage("Decrypting private media archive from Robinhood L2 IPFS cluster...");
+                        setTimeout(() => setToastMessage(null), 3500);
+                      }}
+                      className="btn-tactile w-full py-3 rounded-xl font-mono font-medium text-xs uppercase tracking-wider bg-[#d4fc50] text-black shadow-[0_0_15px_rgba(212,252,80,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>Access Unlocked Media</span>
+                      <span>Access Media Pass</span>
                       <span>→</span>
                     </button>
                   ) : (
                     <button
                       type="button"
                       onClick={() => handleOpenBurn(tier)}
-                      className="w-full py-3.5 rounded-xl font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 bg-[#d4fc50] hover:bg-[#e4ff75] text-[#080808] shadow-xl shadow-[#d4fc50]/20 hover:scale-[1.01] active:scale-[0.99]"
+                      className="btn-tactile w-full py-3 rounded-xl font-mono font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 bg-white/10 hover:bg-[#d4fc50] text-white hover:text-black border-t border-white/20 border-x border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] cursor-pointer"
                     >
-                      <span>Burn ${tier.usdPrice} in {currentCreator.ticker} to Unlock</span>
+                      <span>
+                        {tier.isHolderGate
+                          ? "Verify $50 Token Balance"
+                          : `Burn $${tier.usdPrice} on Website`}
+                      </span>
                       <span>→</span>
                     </button>
                   )}

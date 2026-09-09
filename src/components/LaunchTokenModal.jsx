@@ -90,7 +90,7 @@ const LaunchTokenModal = ({ isOpen, onClose, onCreated }) => {
             {/* Header */}
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#d4fc50]" />
                 <span className="text-xs font-mono uppercase tracking-widest text-[#d4fc50]">
                   Institutional Due Diligence · Curated Cohorts Only
                 </span>
