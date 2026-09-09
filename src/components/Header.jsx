@@ -5,6 +5,7 @@ import { logo } from "../assets";
 import { navigation } from "../constants";
 import LaunchTokenModal from "./LaunchTokenModal";
 import SearchModal from "./SearchModal";
+import ShinyText from "./react-bits/ShinyText";
 
 const Header = () => {
   const pathname = useLocation();
@@ -91,6 +92,26 @@ const Header = () => {
 
             {/* Minimalist Right Actions */}
             <div className="flex items-center gap-4 sm:gap-5 text-xs font-mono">
+              {/* Apple-Grade Dex Paid Pill */}
+              <a
+                href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/dexpaid btn-tactile hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-black/60 hover:bg-black/90 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:border-[#30d158]/50 hover:shadow-[0_0_16px_rgba(48,209,88,0.2)] transition-all cursor-pointer"
+              >
+                <span className="relative flex h-1.5 w-1.5 items-center justify-center">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_6px_#30d158]"></span>
+                </span>
+                <span className="text-[10px] font-mono font-bold tracking-[0.12em] uppercase flex items-center gap-1">
+                  <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold" />
+                  <span className="text-[9px] text-[#30d158]">✓</span>
+                </span>
+                <span className="text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
+                  ↗
+                </span>
+              </a>
+
               {/* Tactile Text Link for Apply */}
               <button
                 onClick={() => setIsLaunchOpen(true)}

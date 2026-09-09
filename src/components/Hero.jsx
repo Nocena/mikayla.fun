@@ -336,6 +336,24 @@ export default function Hero() {
                         {copiedCA ? "Copied!" : "Copy"}
                       </button>
                     </div>
+                    <a
+                      href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/dexpaid btn-tactile inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.4)] hover:border-[#30d158]/50 hover:shadow-[0_0_20px_rgba(48,209,88,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all cursor-pointer"
+                    >
+                      <span className="relative flex h-2 w-2 items-center justify-center">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_8px_#30d158]"></span>
+                      </span>
+                      <span className="text-[10px] font-mono font-bold tracking-[0.12em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1.5">
+                        <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold" />
+                        <span className="text-[10px] text-[#30d158]">✓</span>
+                      </span>
+                      <span className="text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
+                        ↗
+                      </span>
+                    </a>
                     <span className="text-[10px] font-mono text-white/60 flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
                       Robinhood L2 Verified
@@ -759,6 +777,20 @@ export default function Hero() {
                         {copiedCA ? "Copied" : "Copy"}
                       </button>
                     </div>
+                    <a
+                      href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:border-[#30d158]/50 hover:shadow-[0_0_16px_rgba(48,209,88,0.2)] transition-all cursor-pointer"
+                    >
+                      <span className="relative flex h-1.5 w-1.5 items-center justify-center">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_6px_#30d158]"></span>
+                      </span>
+                      <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold tracking-wider text-[9px]" />
+                      <span className="text-[9px] text-[#30d158]">✓</span>
+                      <span className="text-[8px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] transition-colors">↗</span>
+                    </a>
                     <span className="text-[10px] font-mono text-[#d4fc50]">
                       50% of all launch & platform profits burn $MIKA
                     </span>
