@@ -12,7 +12,7 @@ import {
 import ShinyText from "./react-bits/ShinyText";
 import SpotlightCard from "./react-bits/SpotlightCard";
 
-const MIKA_CA = "0x71C25860d5Fa7F602B734a6C31208639F45e42b0";
+const MIKA_CA = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
 
 // Upcoming creator launches planned for Friday, Sunday, and Tuesday
 // Upcoming creator launches planned for Friday, Sunday, and Tuesday
@@ -187,7 +187,7 @@ const UpcomingDrops = () => {
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-[11px] text-white/40 font-mono">Contract:</span>
             <code className="text-[11px] text-white/80 font-mono">
-              0x71C2...42b0
+              0xa4f9...3Ab4
             </code>
             <button
               onClick={handleCopy}

@@ -90,7 +90,7 @@ export default function Hero() {
 
   const handleCopyCA = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    navigator.clipboard.writeText("0x71C25860d5Fa7F602B734a6C31208639F45e42b0");
+    navigator.clipboard.writeText("0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4");
     setCopiedCA(true);
     setToastMessage("Copied $MIKA Contract Address to clipboard!");
     setTimeout(() => {
@@ -323,7 +323,7 @@ export default function Hero() {
                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/80 border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                       <span className="text-[#d4fc50] text-[10px] font-bold tracking-wider">CA:</span>
                       <code className="text-white font-mono text-[11px] truncate max-w-[170px] sm:max-w-[210px]">
-                        0x71C25860d5Fa7F602B734a6C31208639F45e42b0
+                        0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
                       </code>
                       <button
                         onClick={handleCopyCA}
@@ -746,7 +746,7 @@ export default function Hero() {
                     <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/80 border border-white/20 text-[11px] font-mono">
                       <span className="text-[#d4fc50] text-[10px] font-bold">CA:</span>
                       <code className="text-white font-mono text-[10px] truncate max-w-[140px] sm:max-w-[180px]">
-                        0x71C25860d5Fa7F602B734a6C31208639F45e42b0
+                        0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
                       </code>
                       <button
                         onClick={handleCopyCA}

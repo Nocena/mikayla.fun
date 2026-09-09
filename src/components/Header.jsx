@@ -109,7 +109,7 @@ const Header = () => {
                 }`}
               >
                 <span className={`w-1.5 h-1.5 ${isConnected ? "bg-[#30d158]" : "bg-[#d4fc50]"}`} />
-                <span>{isConnected ? "0x71C...42b0" : "Connect"}</span>
+                <span>{isConnected ? "0xa4f...3Ab4" : "Connect"}</span>
               </button>
 
               {/* Mobile Menu Button */}
