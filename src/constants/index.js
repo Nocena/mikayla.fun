@@ -25,6 +25,11 @@ const leverage = "";
 const curve3 = "";
 const drop = "";
 const token = "";
+const discordBlack = "";
+const twitter = "";
+const instagram = "";
+const telegram = "";
+const facebook = "";
 
 export const navigation = [
   {
