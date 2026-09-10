@@ -302,7 +302,7 @@ export default function Hero() {
             const opacity = getSceneOpacity(0);
             return (
               <div
-                className={`absolute inset-y-0 left-6 sm:left-12 lg:left-20 pt-14 pb-6 w-full max-w-xl lg:max-w-2xl text-left flex flex-col justify-center transition-opacity duration-200 ${
+                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
                   opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
                 }`}
                 style={{
@@ -312,22 +312,22 @@ export default function Hero() {
               >
                 <div style={{ transform: getSceneTransform(0) }}>
                   {/* Monospace Architectural Tag */}
-                  <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.25em] text-[#d4fc50] uppercase mb-4 border-l-2 border-[#d4fc50] pl-3 py-0.5">
+                  <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-3 sm:mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
                     <span>[ 01 // ROBINHOOD PROTOCOL ]</span>
                     <span className="text-white/30 hidden sm:inline">|</span>
                     <span className="text-white/60 hidden sm:inline text-[10px]">SOLANA → ROBINHOOD EXPANSION</span>
                   </div>
 
                   {/* Official CA Capsule with 1-Click Copy */}
-                  <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/80 border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                      <span className="text-[#d4fc50] text-[10px] font-bold tracking-wider">CA:</span>
-                      <code className="text-white font-mono text-[11px] truncate max-w-[170px] sm:max-w-[210px]">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-black/80 border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+                      <span className="text-[#d4fc50] text-[9px] sm:text-[10px] font-bold tracking-wider">CA:</span>
+                      <code className="text-white font-mono text-[10px] sm:text-[11px] truncate max-w-[130px] sm:max-w-[210px]">
                         0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
                       </code>
                       <button
                         onClick={handleCopyCA}
-                        className={`btn-tactile px-2 py-0.5 rounded text-[10px] font-mono font-medium cursor-pointer transition-colors ${
+                        className={`btn-tactile px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-medium cursor-pointer transition-colors ${
                           copiedCA
                             ? "bg-[#d4fc50] text-black"
                             : "bg-white/10 hover:bg-[#d4fc50] hover:text-black text-white"
@@ -340,65 +340,65 @@ export default function Hero() {
                       href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/dexpaid btn-tactile inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.4)] hover:border-[#30d158]/50 hover:shadow-[0_0_20px_rgba(48,209,88,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all cursor-pointer"
+                      className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.4)] hover:border-[#30d158]/50 hover:shadow-[0_0_20px_rgba(48,209,88,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all cursor-pointer"
                     >
-                      <span className="relative flex h-2 w-2 items-center justify-center">
+                      <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 items-center justify-center">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
                         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_8px_#30d158]"></span>
                       </span>
-                      <span className="text-[10px] font-mono font-bold tracking-[0.12em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1.5">
+                      <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.12em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1">
                         <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold" />
-                        <span className="text-[10px] text-[#30d158]">✓</span>
+                        <span className="text-[9px] sm:text-[10px] text-[#30d158]">✓</span>
                       </span>
-                      <span className="text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
+                      <span className="text-[8px] sm:text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
                         ↗
                       </span>
                     </a>
-                    <span className="text-[10px] font-mono text-white/60 flex items-center gap-1.5">
+                    <span className="text-[9px] sm:text-[10px] font-mono text-white/60 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
                       Robinhood L2 Verified
                     </span>
                   </div>
 
                   {/* Bold Editorial Headline (Apple Optical Display Typography) */}
-                  <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-serif text-white tracking-display leading-[1.04] mb-3 sm:mb-4">
+                  <h1 className="text-[32px] sm:text-5xl lg:text-[56px] font-serif text-white tracking-display leading-[1.05] mb-3 sm:mb-4">
                     Sex Capital Markets.<br />
                     <span className="italic font-light text-[#d4fc50]">Tokenized on Robinhood.</span>
                   </h1>
 
                   {/* Editorial Narrative */}
-                  <p className="text-xs sm:text-sm text-white/75 max-w-lg leading-relaxed font-sans font-light mb-4 sm:mb-5 border-l border-white/15 pl-3.5">
+                  <p className="text-xs sm:text-sm text-white/75 max-w-lg leading-relaxed font-sans font-light mb-3 sm:mb-5 border-l border-white/15 pl-3">
                     Solana's premier SCM launchpad is expanding to Robinhood Chain L2. <strong className="text-white font-medium">50% of all launch and platform profits are permanently routed on-chain to buy back and burn $MIKA supply.</strong>
                   </p>
 
                   {/* Metrics Matrix */}
-                  <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-lg mb-6 sm:mb-7 py-3 sm:py-4 border-y border-white/10">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-6 max-w-lg mb-5 sm:mb-7 py-2.5 sm:py-4 border-y border-white/10">
                     <div>
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Market TAM</div>
-                      <div className="text-lg sm:text-xl font-mono font-bold text-white">$60.2B</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Market TAM</div>
+                      <div className="text-base sm:text-xl font-mono font-bold text-white">$60.2B</div>
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Pre-Allocation</div>
-                      <div className="text-lg sm:text-xl font-mono font-bold text-[#d4fc50]">0.00%</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Pre-Allocation</div>
+                      <div className="text-base sm:text-xl font-mono font-bold text-[#d4fc50]">0.00%</div>
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Profit Burn</div>
-                      <div className="text-lg sm:text-xl font-mono font-bold text-white">50% to $MIKA</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Profit Burn</div>
+                      <div className="text-base sm:text-xl font-mono font-bold text-white">50% to $MIKA</div>
                     </div>
                   </div>
 
                   {/* Sharp Geometric Actions with Instant Tactile Feedback */}
-                  <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 w-full">
                     <button
                       onClick={() => scrollToScene(1)}
-                      className="btn-tactile px-6 sm:px-7 py-3 sm:py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-none flex items-center gap-2.5"
+                      className="btn-tactile w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-none flex items-center justify-center gap-2.5"
                     >
                       <span>Explore Paradigm</span>
                       <span>→</span>
                     </button>
                     <a
                       href="#upcoming-drops"
-                      className="btn-tactile px-5 sm:px-6 py-3 sm:py-3.5 border border-white/20 bg-black/40 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-none flex items-center gap-2"
+                      className="btn-tactile w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3.5 border border-white/20 bg-black/40 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-none flex items-center justify-center gap-2"
                     >
                       <span>Upcoming Drops (Fri, Sun, Tue)</span>
                       <span>↓</span>
@@ -416,7 +416,7 @@ export default function Hero() {
             const opacity = getSceneOpacity(1);
             return (
               <div
-                className={`absolute inset-y-0 left-6 sm:left-12 lg:left-20 pt-14 pb-6 w-full max-w-xl lg:max-w-2xl text-left flex flex-col justify-center transition-opacity duration-200 ${
+                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
                   opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
                 }`}
                 style={{
@@ -426,16 +426,16 @@ export default function Hero() {
               >
                 <div style={{ transform: getSceneTransform(1) }}>
                   {/* System Architecture Tagline */}
-                  <div className="inline-flex flex-wrap items-center gap-2.5 font-mono text-[11px] tracking-widest text-[#d4fc50] uppercase mb-4 border-l-2 border-[#d4fc50] pl-3 py-0.5">
+                  <div className="inline-flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-[11px] tracking-widest text-[#d4fc50] uppercase mb-2.5 sm:mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
                     <span className="whitespace-nowrap font-medium">[ 02 // SCM ORIGINS & ADVANTAGE ]</span>
                     <span className="text-white/20 hidden sm:inline">|</span>
-                    <span className="text-white/60 text-[10px] tracking-wider whitespace-nowrap">
+                    <span className="text-white/60 text-[9px] sm:text-[10px] tracking-wider whitespace-nowrap">
                       <ShinyText text="AGENCY EXPERTISE & DEEP MARKET ROOTS" speed={3.5} className="text-white/70" />
                     </span>
                   </div>
 
                   {/* Editorial Headline */}
-                  <h2 className="text-3xl sm:text-5xl lg:text-[50px] font-serif text-white tracking-tight leading-[1.06] mb-4">
+                  <h2 className="text-2xl sm:text-4xl lg:text-[50px] font-serif text-white tracking-tight leading-[1.06] mb-2 sm:mb-4">
                     From AI Chatters to<br />
                     <span className="italic font-serif text-[#d4fc50]">
                       <ShinyText text="Sex Capital Markets." speed={2.8} className="text-[#d4fc50]" />
@@ -443,34 +443,34 @@ export default function Hero() {
                   </h2>
 
                   {/* Core Narrative Paragraph */}
-                  <p className="text-xs sm:text-sm text-white/75 font-sans font-light leading-relaxed mb-6 border-l border-white/15 pl-3.5 max-w-xl">
+                  <p className="text-xs sm:text-sm text-white/75 font-sans font-light leading-relaxed mb-3 sm:mb-6 border-l border-white/15 pl-3 max-w-xl">
                     Mikayla originally began as an AI chatter assistant—yielding deep insider mastery over creator operations, chatter conversions, and the cashflows of top-earning models. That operational engine evolved into Solana's premier SCM launchpad, and is now being brought to <strong className="text-white font-medium">Robinhood Chain</strong>.
                   </p>
 
                   {/* Two ReactBits Spotlight Cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 w-full mb-3 sm:mb-5">
                     {/* Pillar 1: Agency Relationships */}
                     <SpotlightCard
-                      className="p-5 bg-[#0a0c0a]/85 border-white/10 rounded-2xl transition-all duration-300 hover:border-[#d4fc50]/30 backdrop-blur-xl"
+                      className="p-3.5 sm:p-5 bg-[#0a0c0a]/85 border-white/10 rounded-2xl transition-all duration-300 hover:border-[#d4fc50]/30 backdrop-blur-xl"
                       spotlightColor="rgba(212, 252, 80, 0.16)"
                     >
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#d4fc50]/10 border border-[#d4fc50]/25 text-[10px] font-mono uppercase tracking-wider text-[#d4fc50] font-semibold">
+                      <div className="flex items-center justify-between mb-2 sm:mb-3">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#d4fc50]/10 border border-[#d4fc50]/25 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#d4fc50] font-semibold">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
                           Agency Network
                         </div>
-                        <span className="text-[10px] font-mono text-white/40">Direct Talent</span>
+                        <span className="text-[9px] sm:text-[10px] font-mono text-white/40">Direct Talent</span>
                       </div>
 
-                      <h3 className="text-sm font-sans font-bold text-white mb-2 tracking-tight">
+                      <h3 className="text-xs sm:text-sm font-sans font-bold text-white mb-1.5 tracking-tight">
                         <DecryptedText text="Agency Relationships" speed={30} animateOn="hover" className="text-white" />
                       </h3>
 
-                      <p className="text-xs text-white/70 leading-relaxed font-sans font-light mb-4">
+                      <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed font-sans font-light mb-2.5 sm:mb-4">
                         Built on direct relationships with verified models and top management agencies. Not anonymous devs—real talent with organic followings.
                       </p>
 
-                      <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono">
+                      <div className="pt-2 sm:pt-3 border-t border-white/5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
                         <span className="text-white/40">Creator Roster</span>
                         <span className="text-[#d4fc50] font-medium">100% Curated & KYC'd</span>
                       </div>
@@ -478,26 +478,26 @@ export default function Hero() {
 
                     {/* Pillar 2: Robinhood L2 Settlement */}
                     <SpotlightCard
-                      className="p-5 bg-[#0a0c0a]/85 border-white/10 rounded-2xl transition-all duration-300 hover:border-white/25 backdrop-blur-xl"
+                      className="p-3.5 sm:p-5 bg-[#0a0c0a]/85 border-white/10 rounded-2xl transition-all duration-300 hover:border-white/25 backdrop-blur-xl"
                       spotlightColor="rgba(255, 255, 255, 0.12)"
                     >
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/15 text-[10px] font-mono uppercase tracking-wider text-white/80 font-semibold">
+                      <div className="flex items-center justify-between mb-2 sm:mb-3">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/5 border border-white/15 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-white/80 font-semibold">
                           <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
                           Infrastructure
                         </div>
-                        <span className="text-[10px] font-mono text-white/40">Robinhood L2</span>
+                        <span className="text-[9px] sm:text-[10px] font-mono text-white/40">Robinhood L2</span>
                       </div>
 
-                      <h3 className="text-sm font-sans font-bold text-white mb-2 tracking-tight">
+                      <h3 className="text-xs sm:text-sm font-sans font-bold text-white mb-1.5 tracking-tight">
                         <DecryptedText text="Robinhood L2 Settlement" speed={30} animateOn="hover" className="text-white" />
                       </h3>
 
-                      <p className="text-xs text-white/70 leading-relaxed font-sans font-light mb-4">
+                      <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed font-sans font-light mb-2.5 sm:mb-4">
                         Sub-second finality, negligible gas (&lt;$0.001), and fair deterministic bonding curves accessible to 24M+ retail investors.
                       </p>
 
-                      <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono">
+                      <div className="pt-2 sm:pt-3 border-t border-white/5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
                         <span className="text-white/40">Tx Finality</span>
                         <span className="text-[#a8c3a0] font-medium">&lt;400ms · &lt;$0.001 Gas</span>
                       </div>
@@ -505,8 +505,8 @@ export default function Hero() {
                   </div>
 
                   {/* Liquid-Glass Footer Ticker Banner */}
-                  <div className="flex items-center justify-between gap-3 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[11px] sm:text-xs font-mono text-white/80 w-full">
-                    <div className="flex items-center gap-2.5 truncate">
+                  <div className="flex items-center justify-between gap-2.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[10px] sm:text-xs font-mono text-white/80 w-full">
+                    <div className="flex items-center gap-2 truncate">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50] shrink-0" />
                       <span className="text-white/75 truncate">
                         Viral narrative built for high-conviction trading on Phantom & Robinhood
@@ -515,7 +515,7 @@ export default function Hero() {
 
                     <button
                       onClick={() => scrollToScene(2)}
-                      className="inline-flex items-center gap-1 text-[#d4fc50] hover:text-white transition-colors cursor-pointer shrink-0 font-medium pl-2 border-l border-white/10"
+                      className="inline-flex items-center gap-1 text-[#d4fc50] hover:text-white transition-colors cursor-pointer shrink-0 font-medium pl-2 border-l border-white/10 text-[10px] sm:text-xs"
                     >
                       <span>Drops</span>
                       <span>→</span>
@@ -533,7 +533,7 @@ export default function Hero() {
             const opacity = getSceneOpacity(2);
             return (
               <div
-                className={`absolute inset-y-0 left-6 sm:left-12 lg:left-20 pt-14 pb-6 w-full max-w-xl lg:max-w-2xl text-left flex flex-col justify-center transition-opacity duration-200 ${
+                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
                   opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
                 }`}
                 style={{
@@ -543,107 +543,107 @@ export default function Hero() {
               >
                 <div style={{ transform: getSceneTransform(2) }}>
                   {/* System Architecture Tagline */}
-                  <div className="inline-flex flex-wrap items-center gap-2.5 font-mono text-[11px] tracking-widest text-[#d4fc50] uppercase mb-3 border-l-2 border-[#d4fc50] pl-3 py-0.5 whitespace-nowrap">
+                  <div className="inline-flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-[11px] tracking-widest text-[#d4fc50] uppercase mb-2 sm:mb-3 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5 whitespace-nowrap">
                     <span className="font-medium">[ 03 // LAUNCH CALENDAR ]</span>
                     <span className="text-white/20 hidden sm:inline">|</span>
-                    <span className="text-white/60 text-[10px] tracking-wider whitespace-nowrap">
+                    <span className="text-white/60 text-[9px] sm:text-[10px] tracking-wider whitespace-nowrap">
                       <ShinyText text="TOP 0.1% ONLYFANS CREATOR COHORT" speed={3.5} className="text-white/70" />
                     </span>
                   </div>
 
                   {/* Editorial Headline */}
-                  <h2 className="text-3xl sm:text-5xl lg:text-[48px] font-serif text-white tracking-tight leading-[1.06] mb-2">
+                  <h2 className="text-2xl sm:text-4xl lg:text-[48px] font-serif text-white tracking-tight leading-[1.06] mb-1.5 sm:mb-2">
                     Top 0.1% OnlyFans Drops.<br />
                     <span className="italic font-serif text-[#d4fc50]">
                       <ShinyText text="Agency Signed & Contract Locked." speed={2.8} className="text-[#d4fc50]" />
                     </span>
                   </h2>
 
-                  <p className="text-xs sm:text-sm text-white/70 font-sans font-light leading-relaxed mb-4 max-w-xl">
+                  <p className="text-xs sm:text-sm text-white/70 font-sans font-light leading-relaxed mb-3 sm:mb-4 max-w-xl">
                     Scheduled weekly drops for verified high-earning creators. Creator handles and tickers are embargoed under pre-launch NDA until countdown zero to guarantee 100% fair launch orderflow.
                   </p>
 
                   {/* 3 Polished Creator Rows */}
-                  <div className="space-y-3 w-full mb-4">
+                  <div className="space-y-2 sm:space-y-3 w-full mb-3 sm:mb-4">
                     {/* Drop 1 */}
-                    <div className="p-3.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-[#d4fc50]/40 transition-all backdrop-blur-xl flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-lg bg-[#d4fc50]/10 border border-[#d4fc50]/20 flex items-center justify-center shrink-0">
-                          <span className="text-xs font-mono font-bold text-[#d4fc50]">01</span>
+                    <div className="p-2.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-[#d4fc50]/40 transition-all backdrop-blur-xl flex items-center justify-between gap-2.5 sm:gap-3">
+                      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#d4fc50]/10 border border-[#d4fc50]/20 flex items-center justify-center shrink-0">
+                          <span className="text-[11px] sm:text-xs font-mono font-bold text-[#d4fc50]">01</span>
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-sans font-bold text-white">Project ARIA</span>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#d4fc50]/15 text-[#d4fc50] font-semibold border border-[#d4fc50]/25 uppercase">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                            <span className="text-xs sm:text-sm font-sans font-bold text-white">Project ARIA</span>
+                            <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-[#d4fc50]/15 text-[#d4fc50] font-semibold border border-[#d4fc50]/25 uppercase">
                               This Friday
                             </span>
-                            <span className="text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.05% OF</span>
+                            <span className="text-[9px] sm:text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.05% OF</span>
                           </div>
-                          <div className="text-[11px] text-white/60 font-mono">
+                          <div className="text-[10px] sm:text-[11px] text-white/60 font-mono truncate sm:line-clamp-none">
                             1.4M+ Fans · Miami/Milan · Hold $50+ for Milan Penthouse 35mm Negatives
                           </div>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="text-xs font-mono font-bold text-white">In 2 Days</div>
-                        <div className="text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
+                        <div className="text-[11px] sm:text-xs font-mono font-bold text-white">In 2 Days</div>
+                        <div className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
                       </div>
                     </div>
 
                     {/* Drop 2 */}
-                    <div className="p-3.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-white/20 transition-all backdrop-blur-xl flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <span className="text-xs font-mono font-bold text-white/80">02</span>
+                    <div className="p-2.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-white/20 transition-all backdrop-blur-xl flex items-center justify-between gap-2.5 sm:gap-3">
+                      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                          <span className="text-[11px] sm:text-xs font-mono font-bold text-white/80">02</span>
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-sans font-bold text-white">Project KIRA</span>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-white font-semibold border border-white/15 uppercase">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                            <span className="text-xs sm:text-sm font-sans font-bold text-white">Project KIRA</span>
+                            <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-white/10 text-white font-semibold border border-white/15 uppercase">
                               This Sunday
                             </span>
-                            <span className="text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.02% OF</span>
+                            <span className="text-[9px] sm:text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.02% OF</span>
                           </div>
-                          <div className="text-[11px] text-white/60 font-mono">
+                          <div className="text-[10px] sm:text-[11px] text-white/60 font-mono truncate sm:line-clamp-none">
                             2.2M+ Fans · Los Angeles · Hold $50+ for Sunset Hills Penthouse Raw Gallery
                           </div>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="text-xs font-mono font-bold text-white/90">In 4 Days</div>
-                        <div className="text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
+                        <div className="text-[11px] sm:text-xs font-mono font-bold text-white/90">In 4 Days</div>
+                        <div className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
                       </div>
                     </div>
 
                     {/* Drop 3 */}
-                    <div className="p-3.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-white/20 transition-all backdrop-blur-xl flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <span className="text-xs font-mono font-bold text-white/80">03</span>
+                    <div className="p-2.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-white/20 transition-all backdrop-blur-xl flex items-center justify-between gap-2.5 sm:gap-3">
+                      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                          <span className="text-[11px] sm:text-xs font-mono font-bold text-white/80">03</span>
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-sans font-bold text-white">Project LUNA</span>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-white font-semibold border border-white/15 uppercase">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                            <span className="text-xs sm:text-sm font-sans font-bold text-white">Project LUNA</span>
+                            <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-white/10 text-white font-semibold border border-white/15 uppercase">
                               Next Tuesday
                             </span>
-                            <span className="text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.01% OF</span>
+                            <span className="text-[9px] sm:text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.01% OF</span>
                           </div>
-                          <div className="text-[11px] text-white/60 font-mono">
+                          <div className="text-[10px] sm:text-[11px] text-white/60 font-mono truncate sm:line-clamp-none">
                             3.6M+ Fans · London/Paris · Hold $50+ for Paris Studio 4K HDR Archive
                           </div>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="text-xs font-mono font-bold text-white/90">In 6 Days</div>
-                        <div className="text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
+                        <div className="text-[11px] sm:text-xs font-mono font-bold text-white/90">In 6 Days</div>
+                        <div className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
                       </div>
                     </div>
                   </div>
 
                   {/* Liquid-Glass Footer Ticker Banner */}
-                  <div className="flex items-center justify-between gap-3 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[11px] sm:text-xs font-mono text-white/80 w-full">
-                    <div className="flex items-center gap-2.5 truncate">
+                  <div className="flex items-center justify-between gap-2.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[10px] sm:text-xs font-mono text-white/80 w-full">
+                    <div className="flex items-center gap-2 truncate">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50] shrink-0" />
                       <span className="text-white/75 truncate">
                         Identity reveals at T-0h to protect fair launch · 50% of launch profit burns $MIKA
@@ -652,9 +652,9 @@ export default function Hero() {
 
                     <a
                       href="#upcoming-drops"
-                      className="inline-flex items-center gap-1 text-[#d4fc50] hover:text-white transition-colors cursor-pointer shrink-0 font-medium pl-2 border-l border-white/10"
+                      className="inline-flex items-center gap-1 text-[#d4fc50] hover:text-white transition-colors cursor-pointer shrink-0 font-medium pl-2 border-l border-white/10 text-[10px] sm:text-xs"
                     >
-                      <span>Full Schedule</span>
+                      <span>Schedule</span>
                       <span>↓</span>
                     </a>
                   </div>
@@ -670,7 +670,7 @@ export default function Hero() {
             const opacity = getSceneOpacity(3);
             return (
               <div
-                className={`absolute inset-y-0 left-6 sm:left-12 lg:left-20 pt-14 pb-6 w-full max-w-xl lg:max-w-2xl text-left flex flex-col justify-center transition-opacity duration-200 ${
+                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
                   opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
                 }`}
                 style={{
@@ -679,49 +679,49 @@ export default function Hero() {
                 }}
               >
                 <div style={{ transform: getSceneTransform(3) }}>
-                  <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.25em] text-[#d4fc50] uppercase mb-2.5 border-l-2 border-[#d4fc50] pl-3 py-0.5">
+                  <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-2 sm:mb-2.5 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
                     <span>[ 04 // CLEAR TOKEN UTILITY ]</span>
                     <span className="text-white/30 hidden sm:inline">|</span>
                     <span className="text-white/60 hidden sm:inline text-[10px]">HOLDER GATES & ON-SITE BURNS</span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.08] mb-1.5">
+                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.08] mb-1 sm:mb-1.5">
                     Two Clear Utility Mechanics.
                   </h2>
-                  <p className="text-xs sm:text-sm text-white/60 font-light mb-4">
+                  <p className="text-xs sm:text-sm text-white/60 font-light mb-3 sm:mb-4">
                     Every creator coin has tangible utility built directly into the token's web page.
                   </p>
 
                   {/* 2 Utility Panels */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full mb-3.5">
-                    <div className="p-4 bg-black/80 border border-white/15">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-[#d4fc50] mb-1 font-semibold">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 w-full mb-3 sm:mb-3.5">
+                    <div className="p-3.5 sm:p-4 bg-black/80 border border-white/15 rounded-xl sm:rounded-none">
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#d4fc50] mb-1 font-semibold">
                         Utility 01 // Gate
                       </div>
-                      <div className="text-base font-bold text-white mb-1.5">Hold ≥ $50 of Token</div>
-                      <p className="text-xs text-white/70 font-light leading-relaxed mb-2">
+                      <div className="text-sm sm:text-base font-bold text-white mb-1">Hold ≥ $50 of Token</div>
+                      <p className="text-[11px] sm:text-xs text-white/70 font-light leading-relaxed mb-2">
                         At predetermined Market Cap milestones, anyone holding at least $50 of the creator's token automatically unlocks exclusive private content directly on their page.
                       </p>
-                      <div className="text-[10px] font-mono text-white/40 border-t border-white/10 pt-1.5">
+                      <div className="text-[9px] sm:text-[10px] font-mono text-white/40 border-t border-white/10 pt-1.5">
                         Incentive: Continuous Buy & Hold Pressure
                       </div>
                     </div>
 
-                    <div className="p-4 bg-black/80 border border-white/15">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-[#ff79c6] mb-1 font-semibold">
+                    <div className="p-3.5 sm:p-4 bg-black/80 border border-white/15 rounded-xl sm:rounded-none">
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#ff79c6] mb-1 font-semibold">
                         Utility 02 // Burn
                       </div>
-                      <div className="text-base font-bold text-white mb-1.5">Burn-to-Access Exclusives</div>
-                      <p className="text-xs text-white/70 font-light leading-relaxed mb-2">
+                      <div className="text-sm sm:text-base font-bold text-white mb-1">Burn-to-Access Exclusives</div>
+                      <p className="text-[11px] sm:text-xs text-white/70 font-light leading-relaxed mb-2">
                         Fans can burn creator tokens directly on the website to purchase ultra-exclusive photo rolls and 4K masters, driving permanent deflationary pressure.
                       </p>
-                      <div className="text-[10px] font-mono text-[#ff79c6] border-t border-white/10 pt-1.5">
+                      <div className="text-[9px] sm:text-[10px] font-mono text-[#ff79c6] border-t border-white/10 pt-1.5">
                         Incentive: Permanent Supply Contraction
                       </div>
                     </div>
                   </div>
 
-                  <div className="text-[11px] font-mono text-white/50 flex items-center gap-2">
+                  <div className="text-[10px] sm:text-[11px] font-mono text-white/50 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
                     <span>Executed on Robinhood L2 with instant zero-friction settlement</span>
                   </div>
@@ -737,7 +737,7 @@ export default function Hero() {
             const opacity = getSceneOpacity(4);
             return (
               <div
-                className={`absolute inset-y-0 left-6 sm:left-12 lg:left-20 pt-14 pb-6 w-full max-w-xl lg:max-w-2xl text-left flex flex-col justify-center transition-opacity duration-200 ${
+                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
                   opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
                 }`}
                 style={{
@@ -746,7 +746,7 @@ export default function Hero() {
                 }}
               >
                 <div style={{ transform: getSceneTransform(4) }}>
-                  <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.25em] text-[#d4fc50] uppercase mb-2.5 border-l-2 border-[#d4fc50] pl-3 py-0.5">
+                  <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-1.5 sm:mb-2.5 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
                     <span>[ 05 // PROTOCOL TOKENOMICS ]</span>
                     <span className="text-white/30 hidden sm:inline">|</span>
                     <span className="text-white/60 hidden sm:inline text-[10px]">50% PROFIT BURN ENGINE</span>
@@ -755,20 +755,20 @@ export default function Hero() {
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-white tracking-tight leading-[1.08] mb-1">
                     $MIKA Genesis Protocol Asset.
                   </h2>
-                  <p className="text-xs text-white/60 font-light mb-2.5">
+                  <p className="text-[11px] sm:text-xs text-white/60 font-light mb-2">
                     The parent equity asset capturing 50% of all creator launch profits on Robinhood Chain.
                   </p>
 
                   {/* CA & Utility Sink Pill */}
-                  <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/80 border border-white/20 text-[11px] font-mono">
-                      <span className="text-[#d4fc50] text-[10px] font-bold">CA:</span>
-                      <code className="text-white font-mono text-[10px] truncate max-w-[140px] sm:max-w-[180px]">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                    <div className="flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/80 border border-white/20 text-[10px] sm:text-[11px] font-mono">
+                      <span className="text-[#d4fc50] text-[9px] sm:text-[10px] font-bold">CA:</span>
+                      <code className="text-white font-mono text-[9px] sm:text-[10px] truncate max-w-[120px] sm:max-w-[180px]">
                         0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
                       </code>
                       <button
                         onClick={handleCopyCA}
-                        className={`btn-tactile px-1.5 py-0.5 rounded text-[9px] font-mono font-medium cursor-pointer transition-colors ${
+                        className={`btn-tactile px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-mono font-medium cursor-pointer transition-colors ${
                           copiedCA
                             ? "bg-[#d4fc50] text-black"
                             : "bg-white/10 hover:bg-[#d4fc50] hover:text-black text-white"
@@ -781,33 +781,33 @@ export default function Hero() {
                       href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:border-[#30d158]/50 hover:shadow-[0_0_16px_rgba(48,209,88,0.2)] transition-all cursor-pointer"
+                      className="group/dexpaid btn-tactile inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-[10px] sm:text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:border-[#30d158]/50 hover:shadow-[0_0_16px_rgba(48,209,88,0.2)] transition-all cursor-pointer"
                     >
                       <span className="relative flex h-1.5 w-1.5 items-center justify-center">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
                         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_6px_#30d158]"></span>
                       </span>
-                      <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold tracking-wider text-[9px]" />
-                      <span className="text-[9px] text-[#30d158]">✓</span>
+                      <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold tracking-wider text-[8px] sm:text-[9px]" />
+                      <span className="text-[8px] sm:text-[9px] text-[#30d158]">✓</span>
                       <span className="text-[8px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] transition-colors">↗</span>
                     </a>
-                    <span className="text-[10px] font-mono text-[#d4fc50]">
-                      50% of all launch & platform profits burn $MIKA
+                    <span className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">
+                      50% profits burn $MIKA
                     </span>
                   </div>
 
                   {/* Sharp Geometric Terminal Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3 w-full items-start">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 w-full items-start">
                     {/* Chart Card */}
-                    <div className="md:col-span-7 p-3.5 sm:p-4 bg-black/85 border-t border-white/20 border-x border-b border-white/10 rounded-none backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                      <div className="flex justify-between items-center mb-2">
+                    <div className="md:col-span-7 p-3 sm:p-4 bg-black/85 border-t border-white/20 border-x border-b border-white/10 rounded-xl sm:rounded-none backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+                      <div className="flex justify-between items-center mb-1.5 sm:mb-2">
                         <div className="flex items-baseline gap-2">
-                          <span className="text-xl sm:text-2xl font-mono font-bold text-white">
+                          <span className="text-lg sm:text-2xl font-mono font-bold text-white">
                             ${activeDataPoint.price.toFixed(4)}
                           </span>
-                          <span className="text-xs font-mono text-[#30d158] font-semibold">+342.8%</span>
+                          <span className="text-[11px] sm:text-xs font-mono text-[#30d158] font-semibold">+342.8%</span>
                         </div>
-                        <div className="flex items-center gap-1 border border-white/15 p-0.5 text-[10px] font-mono rounded-none">
+                        <div className="flex items-center gap-1 border border-white/15 p-0.5 text-[9px] sm:text-[10px] font-mono rounded-none">
                           {["1D", "1W", "1M", "ALL"].map((tf) => (
                             <button
                               key={tf}
@@ -825,7 +825,7 @@ export default function Hero() {
                         </div>
                       </div>
 
-                      <div className="relative w-full h-[110px] bg-black/40 border border-white/10 p-1 rounded-none">
+                      <div className="relative w-full h-[85px] sm:h-[110px] bg-black/40 border border-white/10 p-1 rounded-none">
                         <svg
                           ref={chartSvgRef}
                           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
@@ -850,14 +850,14 @@ export default function Hero() {
                     </div>
 
                     {/* Swap Ticket */}
-                    <div className="md:col-span-5 p-3.5 sm:p-4 bg-black/85 border-t border-[#d4fc50]/60 border-x border-b border-[#d4fc50]/30 rounded-none backdrop-blur-md shadow-[inset_0_1px_0_rgba(212,252,80,0.2)]">
-                      <div className="flex justify-between items-center text-[11px] font-mono mb-2">
+                    <div className="md:col-span-5 p-3 sm:p-4 bg-black/85 border-t border-[#d4fc50]/60 border-x border-b border-[#d4fc50]/30 rounded-xl sm:rounded-none backdrop-blur-md shadow-[inset_0_1px_0_rgba(212,252,80,0.2)]">
+                      <div className="flex justify-between items-center text-[10px] sm:text-[11px] font-mono mb-1.5 sm:mb-2">
                         <span className="text-white font-medium">Robinhood L2 Swap</span>
                         <span className="text-[#d4fc50]">2% Buyback</span>
                       </div>
 
-                      <form onSubmit={handleOrder} className="space-y-2">
-                        <div className="bg-black/60 border border-white/15 p-2 flex justify-between items-center rounded-none">
+                      <form onSubmit={handleOrder} className="space-y-1.5 sm:space-y-2">
+                        <div className="bg-black/60 border border-white/15 p-1.5 sm:p-2 flex justify-between items-center rounded-none">
                           <input
                             type="number"
                             step="0.01"
@@ -869,7 +869,7 @@ export default function Hero() {
                           <span className="text-xs font-mono font-bold text-[#d4fc50]">ETH</span>
                         </div>
 
-                        <div className="bg-black/60 border border-white/15 p-2 flex justify-between items-center rounded-none">
+                        <div className="bg-black/60 border border-white/15 p-1.5 sm:p-2 flex justify-between items-center rounded-none">
                           <input
                             type="text"
                             readOnly
@@ -886,7 +886,7 @@ export default function Hero() {
                         <button
                           type="submit"
                           disabled={isExecuting}
-                          className="btn-tactile w-full py-2.5 bg-[#d4fc50] text-[#080808] font-bold text-xs font-mono uppercase tracking-widest hover:bg-white cursor-pointer disabled:opacity-50 rounded-none"
+                          className="btn-tactile w-full py-2 sm:py-2.5 bg-[#d4fc50] text-[#080808] font-bold text-xs font-mono uppercase tracking-widest hover:bg-white cursor-pointer disabled:opacity-50 rounded-none"
                         >
                           {isExecuting ? "Executing..." : "Confirm Swap"}
                         </button>

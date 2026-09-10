@@ -238,7 +238,7 @@ const Roadmap = () => {
               <button
                 key={tab.id}
                 onClick={() => setFilter(tab.id)}
-                className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all duration-200 border ${
+                className={`px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-mono transition-all duration-200 border cursor-pointer ${
                   filter === tab.id
                     ? "bg-[#d4fc50] text-[#080808] border-[#d4fc50] font-bold shadow-lg shadow-[#d4fc50]/20"
                     : "bg-white/[0.03] text-white/60 border-white/10 hover:border-white/20 hover:text-white"

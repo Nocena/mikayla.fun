@@ -233,20 +233,20 @@ const ContentVault = () => {
         </div>
 
         {/* Creator Vault Selector Tabs (Apple Segmented Pill with Tactile Feedback) */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+        <div className="flex sm:flex-wrap items-center sm:justify-center gap-2.5 mb-10 overflow-x-auto no-scrollbar max-w-full pb-2 px-1">
           {creatorVaults.map((vault) => {
             const isActive = activeCreatorId === vault.id;
             return (
               <button
                 key={vault.id}
                 onClick={() => setActiveCreatorId(vault.id)}
-                className={`btn-tactile flex items-center gap-3 px-5 py-3 rounded-2xl border cursor-pointer transition-all ${
+                className={`btn-tactile flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl border cursor-pointer transition-all shrink-0 ${
                   isActive
                     ? "bg-[#141814] border-t border-[#d4fc50]/60 border-x border-b border-[#d4fc50]/30 shadow-[inset_0_1px_0_rgba(212,252,80,0.2),0_10px_25px_rgba(0,0,0,0.7)]"
                     : "bg-[#0a0c0a] border-white/10 hover:border-white/20 text-white/60 hover:text-white"
                 }`}
               >
-                <div className="w-8 h-8 rounded-xl overflow-hidden border border-white/15 shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl overflow-hidden border border-white/15 shrink-0">
                   <img src={vault.image} alt={vault.creator} className="w-full h-full object-cover object-top" />
                 </div>
                 <div className="text-left">

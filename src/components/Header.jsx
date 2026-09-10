@@ -29,9 +29,11 @@ const Header = () => {
     if (openNavigation) {
       setOpenNavigation(false);
       enablePageScroll();
+      window.dispatchEvent(new CustomEvent("mobile-menu-toggle", { detail: { open: false } }));
     } else {
       setOpenNavigation(true);
       disablePageScroll();
+      window.dispatchEvent(new CustomEvent("mobile-menu-toggle", { detail: { open: true } }));
     }
   };
 
@@ -39,24 +41,25 @@ const Header = () => {
     if (!openNavigation) return;
     enablePageScroll();
     setOpenNavigation(false);
+    window.dispatchEvent(new CustomEvent("mobile-menu-toggle", { detail: { open: false } }));
   };
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-40">
+      <header className="fixed top-0 left-0 w-full z-50">
         {/* Apple Translucent Chrome Navbar with Specular Bottom Edge */}
-        <div className="w-full bg-[#080808]/75 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-colors">
-          <div className="max-w-[90rem] mx-auto flex items-center justify-between px-6 sm:px-10 h-14">
+        <div className="w-full bg-[#080808]/80 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-colors">
+          <div className="max-w-[90rem] mx-auto flex items-center justify-between px-3.5 sm:px-10 h-14">
             {/* Brand Logo with Instant Tactile Feedback */}
-            <a href="#hero" className="flex items-center gap-2.5 group shrink-0 icon-tactile">
-              <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="#hero" className="flex items-center gap-2 group shrink-0 icon-tactile">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105">
                 <img src={logo} width={32} height={32} alt="Mikayla" className="w-full h-full object-contain" />
               </div>
-              <div className="flex items-baseline gap-1">
-                <span className="text-base font-bold tracking-tight text-white group-hover:text-[#d4fc50] transition-colors font-sans">
+              <div className="flex items-baseline gap-0.5 sm:gap-1">
+                <span className="text-sm sm:text-base font-bold tracking-tight text-white group-hover:text-[#d4fc50] transition-colors font-sans">
                   mikayla
                 </span>
-                <span className="text-xs font-mono font-bold text-[#d4fc50]">
+                <span className="text-[11px] sm:text-xs font-mono font-bold text-[#d4fc50]">
                   .fun
                 </span>
               </div>
@@ -91,7 +94,7 @@ const Header = () => {
             </nav>
 
             {/* Minimalist Right Actions */}
-            <div className="flex items-center gap-4 sm:gap-5 text-xs font-mono">
+            <div className="flex items-center gap-2 sm:gap-5 text-xs font-mono">
               {/* Apple-Grade Dex Paid Pill */}
               <a
                 href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
@@ -123,7 +126,7 @@ const Header = () => {
               {/* Apple-Grade Tactile Connect Button */}
               <button
                 onClick={() => setIsConnected(!isConnected)}
-                className={`btn-tactile px-3.5 py-1.5 border text-xs font-mono flex items-center gap-2 cursor-pointer uppercase tracking-[0.05em] rounded-none ${
+                className={`btn-tactile px-2.5 sm:px-3.5 py-1.5 border text-[11px] sm:text-xs font-mono flex items-center gap-1.5 sm:gap-2 cursor-pointer uppercase tracking-[0.05em] rounded-none shrink-0 whitespace-nowrap ${
                   isConnected
                     ? "bg-white/10 border-[#30d158]/50 text-white"
                     : "bg-white/[0.04] border-white/20 text-white/80 hover:text-[#080808] hover:border-[#d4fc50] hover:bg-[#d4fc50]"
@@ -136,7 +139,7 @@ const Header = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleNavigation}
-                className="icon-tactile md:hidden w-8 h-8 flex items-center justify-center rounded-none bg-white/5 border border-white/10 text-white/80"
+                className="icon-tactile md:hidden w-8 h-8 flex items-center justify-center rounded-none bg-white/5 border border-white/10 text-white/80 shrink-0"
                 aria-label="Toggle Navigation"
               >
                 {openNavigation ? "✕" : "☰"}
@@ -147,54 +150,53 @@ const Header = () => {
 
         {/* Mobile Navigation Drawer */}
         {openNavigation && (
-          <div className="md:hidden fixed inset-x-0 top-14 bottom-0 bg-[#080808]/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col justify-between animate-fadeIn z-40">
-            <div className="space-y-4 pt-2">
-              <a
-                href="#hero"
-                onClick={handleClick}
-                className="block text-base font-mono text-white/80 hover:text-white"
-              >
-                Overview
-              </a>
-              <a
-                href="#upcoming-drops"
-                onClick={handleClick}
-                className="block text-base font-mono text-white/80 hover:text-white"
-              >
-                Curated Drops
-              </a>
-              <a
-                href="#content-vault"
-                onClick={handleClick}
-                className="block text-base font-mono text-white/80 hover:text-white"
-              >
-                Burn-to-Unlock Vault
-              </a>
-              <a
-                href="#benefits"
-                onClick={handleClick}
-                className="block text-base font-mono text-white/80 hover:text-white"
-              >
-                Protocol & Robinhood L2
-              </a>
-              <a
-                href="#roadmap"
-                onClick={handleClick}
-                className="block text-base font-mono text-white/80 hover:text-white"
-              >
-                Roadmap
-              </a>
+          <div className="md:hidden fixed inset-x-0 top-14 bottom-0 bg-[#080808]/98 backdrop-blur-3xl border-b border-white/10 p-5 pb-8 flex flex-col justify-between animate-fadeIn z-50 overflow-y-auto">
+            <div className="space-y-2 pt-2">
+              {[
+                { href: "#hero", label: "01 // Protocol Overview", sub: "$MIKA Genesis & Robinhood L2" },
+                { href: "#upcoming-drops", label: "02 // Curated Launchpad", sub: "Friday, Sunday, Tuesday Drops" },
+                { href: "#content-vault", label: "03 // Burn-to-Unlock Vault", sub: "Holder Gates & Token Utility" },
+                { href: "#benefits", label: "04 // SCM Thesis & Origins", sub: "Agency Network & Direct Talent" },
+                { href: "#pricing", label: "05 // Tokenomics & Treasury", sub: "Cap Table & 50% Profit Burn" },
+                { href: "#roadmap", label: "06 // Protocol Roadmap", sub: "Chatbot Origins to #1 Launchpad" },
+              ].map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={handleClick}
+                  className="block p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#d4fc50]/30 hover:bg-white/5 transition-all"
+                >
+                  <div className="text-sm font-mono font-medium text-white flex items-center justify-between">
+                    <span>{item.label}</span>
+                    <span className="text-[#d4fc50] text-xs">→</span>
+                  </div>
+                  <div className="text-[11px] font-mono text-white/40 mt-0.5">
+                    {item.sub}
+                  </div>
+                </a>
+              ))}
             </div>
 
-            <div className="pt-6 border-t border-white/10 space-y-3">
+            <div className="pt-5 border-t border-white/10 space-y-2.5 mt-4">
+              <a
+                href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#30d158]" />
+                <span>View on DexScreener</span>
+                <span>↗</span>
+              </a>
+
               <button
                 onClick={() => {
                   handleClick();
                   setIsLaunchOpen(true);
                 }}
-                className="w-full py-2.5 rounded-full bg-[#d4fc50] text-black font-mono font-bold text-xs uppercase tracking-wider text-center"
+                className="w-full py-3 rounded-xl bg-[#d4fc50] text-black font-mono font-bold text-xs uppercase tracking-wider text-center cursor-pointer hover:bg-white transition-colors"
               >
-                Apply to Launch
+                Apply to Launch on Robinhood
               </button>
             </div>
           </div>

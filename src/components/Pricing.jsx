@@ -51,7 +51,7 @@ const PieChart = ({ data, activeIndex, onHover }) => {
   let cumulativePercentage = 0;
 
   return (
-    <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[380px] mx-auto">
+    <div className="relative w-full aspect-square max-w-[260px] sm:max-w-[340px] md:max-w-[380px] mx-auto">
       <div className="absolute inset-0 rounded-full bg-[#d4fc50]/[0.05] blur-2xl pointer-events-none" />
 
       <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-xl overflow-visible">
@@ -139,7 +139,7 @@ const Pricing = () => {
           >
             <PieChart data={tokenAllocation} activeIndex={activeIndex} onHover={setActiveIndex} />
 
-            <div className="w-full mt-6 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-mono text-white/50">
+            <div className="w-full mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono text-white/50">
               <span>
                 Token Standard: <strong className="text-white">ERC-20 (Robinhood L2)</strong>
               </span>

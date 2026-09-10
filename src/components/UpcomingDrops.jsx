@@ -184,32 +184,36 @@ const UpcomingDrops = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-[11px] text-white/40 font-mono">Contract:</span>
-            <code className="text-[11px] text-white/80 font-mono">
-              0xa4f9...3Ab4
-            </code>
-            <button
-              onClick={handleCopy}
-              className="btn-tactile px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-[10px] font-mono font-medium text-white cursor-pointer flex items-center gap-1.5"
-            >
-              {copiedCA ? <Check className="w-3 h-3 text-[#d4fc50]" /> : <Copy className="w-3 h-3" />}
-              <span>{copiedCA ? "Copied" : "Copy CA"}</span>
-            </button>
-            <a
-              href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 hover:bg-black/90 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-[10px] font-mono font-bold transition-all hover:border-[#30d158]/40 hover:shadow-[0_0_14px_rgba(48,209,88,0.2)] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] cursor-pointer"
-            >
-              <span className="relative flex h-1.5 w-1.5 items-center justify-center">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_6px_#30d158]"></span>
-              </span>
-              <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold tracking-wider text-[10px]" />
-              <span className="text-[9px] text-[#30d158]">✓</span>
-              <span className="text-[8px] text-white/30 group-hover/dexpaid:text-[#30d158] transition-colors">↗</span>
-            </a>
+          <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto justify-between sm:justify-start pt-2 sm:pt-0 border-t sm:border-t-0 border-white/10">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-white/40 font-mono">Contract:</span>
+              <code className="text-[11px] text-white/80 font-mono">
+                0xa4f9...3Ab4
+              </code>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCopy}
+                className="btn-tactile px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-[10px] font-mono font-medium text-white cursor-pointer flex items-center gap-1.5"
+              >
+                {copiedCA ? <Check className="w-3 h-3 text-[#d4fc50]" /> : <Copy className="w-3 h-3" />}
+                <span>{copiedCA ? "Copied" : "Copy CA"}</span>
+              </button>
+              <a
+                href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 hover:bg-black/90 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-[10px] font-mono font-bold transition-all hover:border-[#30d158]/40 hover:shadow-[0_0_14px_rgba(48,209,88,0.2)] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] cursor-pointer"
+              >
+                <span className="relative flex h-1.5 w-1.5 items-center justify-center">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_6px_#30d158]"></span>
+                </span>
+                <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold tracking-wider text-[10px]" />
+                <span className="text-[9px] text-[#30d158]">✓</span>
+                <span className="text-[8px] text-white/30 group-hover/dexpaid:text-[#30d158] transition-colors">↗</span>
+              </a>
+            </div>
           </div>
         </div>
 
