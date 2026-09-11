@@ -6,6 +6,7 @@ import { navigation } from "../constants";
 import LaunchTokenModal from "./LaunchTokenModal";
 import SearchModal from "./SearchModal";
 import ShinyText from "./react-bits/ShinyText";
+import LaunchCountdownBanner from "./LaunchCountdownBanner";
 
 const Header = () => {
   const pathname = useLocation();
@@ -47,6 +48,7 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50">
+        <LaunchCountdownBanner />
         {/* Apple Translucent Chrome Navbar with Specular Bottom Edge */}
         <div className="w-full bg-[#080808]/80 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-colors">
           <div className="max-w-[90rem] mx-auto flex items-center justify-between px-3.5 sm:px-10 h-14">
@@ -150,7 +152,7 @@ const Header = () => {
 
         {/* Mobile Navigation Drawer */}
         {openNavigation && (
-          <div className="md:hidden fixed inset-x-0 top-14 bottom-0 bg-[#080808]/98 backdrop-blur-3xl border-b border-white/10 p-5 pb-8 flex flex-col justify-between animate-fadeIn z-50 overflow-y-auto">
+          <div className="md:hidden absolute top-full inset-x-0 h-[calc(100dvh-100%)] bg-[#080808]/98 backdrop-blur-3xl border-b border-white/10 p-5 pb-8 flex flex-col justify-between animate-fadeIn z-50 overflow-y-auto">
             <div className="space-y-2 pt-2">
               {[
                 { href: "#hero", label: "01 // Protocol Overview", sub: "$MIKA Genesis & Robinhood L2" },

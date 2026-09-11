@@ -8,6 +8,8 @@ import BlurText from "./react-bits/BlurText";
 import DecryptedText from "./react-bits/DecryptedText";
 import TiltedCard from "./react-bits/TiltedCard";
 import HeroScrollCanvas from "./HeroScrollCanvas";
+import { BURN_DATA } from "../constants/burn";
+import AppleBurnBadge from "./AppleBurnBadge";
 
 const chartDatasets = {
   "1D": [
@@ -318,46 +320,46 @@ export default function Hero() {
                     <span className="text-white/60 hidden sm:inline text-[10px]">SOLANA → ROBINHOOD EXPANSION</span>
                   </div>
 
-                  {/* Official CA Capsule with 1-Click Copy */}
+                  {/* Official CA, DEX PAID & Minimalist Apple Burn Capsules */}
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-black/80 border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                      <span className="text-[#d4fc50] text-[9px] sm:text-[10px] font-bold tracking-wider">CA:</span>
-                      <code className="text-white font-mono text-[10px] sm:text-[11px] truncate max-w-[130px] sm:max-w-[210px]">
+                    {/* Minimalist CA Capsule */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)]">
+                      <span className="text-white/50 text-[9px] sm:text-[10px] font-medium tracking-wider">CA:</span>
+                      <code className="text-white/90 font-mono text-[10px] sm:text-[11px] truncate max-w-[100px] sm:max-w-[125px]">
                         0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
                       </code>
                       <button
                         onClick={handleCopyCA}
                         className={`btn-tactile px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-medium cursor-pointer transition-colors ${
                           copiedCA
-                            ? "bg-[#d4fc50] text-black"
-                            : "bg-white/10 hover:bg-[#d4fc50] hover:text-black text-white"
+                            ? "bg-white text-black"
+                            : "bg-white/10 hover:bg-white hover:text-black text-white"
                         }`}
                       >
-                        {copiedCA ? "Copied!" : "Copy"}
+                        {copiedCA ? "Copied" : "Copy"}
                       </button>
                     </div>
+
+                    {/* Apple-Grade Dex Paid Capsule */}
                     <a
                       href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.4)] hover:border-[#30d158]/50 hover:shadow-[0_0_20px_rgba(48,209,88,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all cursor-pointer"
+                      className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)] hover:border-[#30d158]/40 hover:shadow-[0_0_16px_rgba(48,209,88,0.15)] transition-all cursor-pointer"
+                      title="Verified Enhanced Token Info on Dexscreener"
                     >
-                      <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 items-center justify-center">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_8px_#30d158]"></span>
-                      </span>
-                      <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.12em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1">
-                        <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold" />
-                        <span className="text-[9px] sm:text-[10px] text-[#30d158]">✓</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] shadow-[0_0_6px_#30d158]" />
+                      <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.1em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1">
+                        DEX PAID
+                        <span className="text-[9px] text-[#30d158]">✓</span>
                       </span>
                       <span className="text-[8px] sm:text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
                         ↗
                       </span>
                     </a>
-                    <span className="text-[9px] sm:text-[10px] font-mono text-white/60 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
-                      Robinhood L2 Verified
-                    </span>
+
+                    {/* Apple-Grade Minimalist Burn Badge */}
+                    <AppleBurnBadge />
                   </div>
 
                   {/* Bold Editorial Headline (Apple Optical Display Typography) */}
@@ -371,7 +373,7 @@ export default function Hero() {
                     Solana's premier SCM launchpad is expanding to Robinhood Chain L2. <strong className="text-white font-medium">50% of all launch and platform profits are permanently routed on-chain to buy back and burn $MIKA supply.</strong>
                   </p>
 
-                  {/* Metrics Matrix */}
+                  {/* Metrics Matrix (Refined Monochrome Palette) */}
                   <div className="grid grid-cols-3 gap-2 sm:gap-6 max-w-lg mb-5 sm:mb-7 py-2.5 sm:py-4 border-y border-white/10">
                     <div>
                       <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Market TAM</div>
@@ -379,12 +381,23 @@ export default function Hero() {
                     </div>
                     <div>
                       <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Pre-Allocation</div>
-                      <div className="text-base sm:text-xl font-mono font-bold text-[#d4fc50]">0.00%</div>
+                      <div className="text-base sm:text-xl font-mono font-bold text-white">0.00%</div>
                     </div>
-                    <div>
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Profit Burn</div>
-                      <div className="text-base sm:text-xl font-mono font-bold text-white">50% to $MIKA</div>
-                    </div>
+                    <a
+                      href={BURN_DATA.burnTxUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/burnstat block hover:opacity-80 transition-opacity"
+                    >
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1 flex items-center gap-1">
+                        <span>Burned Supply</span>
+                        <span className="text-white/30 group-hover/burnstat:text-white transition-colors">↗</span>
+                      </div>
+                      <div className="text-base sm:text-xl font-mono font-bold text-white flex items-baseline gap-1.5">
+                        <span>{BURN_DATA.burnedAmount}</span>
+                        <span className="text-[10px] font-mono text-white/40 font-normal">({BURN_DATA.percentSupply})</span>
+                      </div>
+                    </a>
                   </div>
 
                   {/* Sharp Geometric Actions with Instant Tactile Feedback */}
@@ -791,9 +804,16 @@ export default function Hero() {
                       <span className="text-[8px] sm:text-[9px] text-[#30d158]">✓</span>
                       <span className="text-[8px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] transition-colors">↗</span>
                     </a>
-                    <span className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">
-                      50% profits burn $MIKA
-                    </span>
+                    <a
+                      href={BURN_DATA.burnTxUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-tactile inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-black/60 hover:bg-black/90 backdrop-blur-xl border-t border-white/20 border-x border-b border-white/10 text-[9px] sm:text-[10px] font-mono text-white/80 hover:text-white transition-all"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                      <span className="text-white font-medium">{BURN_DATA.totalBurned} Burned</span>
+                      <span className="text-white/40">({BURN_DATA.percentSupply}) ↗</span>
+                    </a>
                   </div>
 
                   {/* Sharp Geometric Terminal Grid */}

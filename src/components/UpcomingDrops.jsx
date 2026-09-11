@@ -14,28 +14,43 @@ import SpotlightCard from "./react-bits/SpotlightCard";
 
 const MIKA_CA = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
 
-// Upcoming creator launches planned for Friday, Sunday, and Tuesday
+const getFridayTargetMs = () => {
+  const primaryTarget = new Date("2026-09-11T17:00:00Z").getTime();
+  if (Date.now() < primaryTarget) return primaryTarget;
+  const now = new Date();
+  const nextFriday = new Date();
+  const day = now.getUTCDay();
+  const diffDays = (5 + 7 - day) % 7 || 7;
+  nextFriday.setUTCDate(now.getUTCDate() + diffDays);
+  nextFriday.setUTCHours(17, 0, 0, 0);
+  return nextFriday.getTime();
+};
+
 // Upcoming creator launches planned for Friday, Sunday, and Tuesday
 const CREATOR_DROPS = [
   {
     id: "drop-friday",
-    dropNumber: "PROJECT ARIA · DROP #01",
-    codename: "$ARIA",
-    creatorRank: "TOP 0.05% ONLYFANS",
-    dayLabel: "THIS FRIDAY",
-    scheduleText: "Launching Friday · T-2 Days",
-    targetMs: 2 * 86400 * 1000 + 4 * 3600 * 1000 + 18 * 60 * 1000 + 32 * 1000,
-    category: "High-Fashion & Boudoir Muse · Miami",
+    dropNumber: "MS JUICY P · DROP #01",
+    codename: "$JUICY",
+    creatorRank: "TOP CREATOR · VERIFIED",
+    dayLabel: "THIS FRIDAY · 5PM UTC",
+    scheduleText: "Launching Friday · 5:00 PM UTC",
+    targetTimestamp: getFridayTargetMs(),
+    avatar: "/creators/msjuicy.jpg",
+    banner: "/creators/msjuicy_banner.jpg",
+    handle: "@msjuicy_plenty",
+    xUrl: "https://x.com/msjuicy_plenty",
+    category: "Viral Sensation & Glamour Star · @msjuicy_plenty",
     metrics: {
-      reach: "1.4M+ Verified Fans",
-      monthlyGmv: "$185k/mo Revenue",
-      status: "Contract Locked",
+      reach: "Viral Audience",
+      monthlyGmv: "Audited Escrow",
+      status: "Mikayla Launchpad",
     },
     targetMcapGate: "$100k Market Cap",
-    holderGatePerk: "Exclusive Milan Penthouse 35mm Leica Negatives (24 Photos)",
-    burnPerk: "12-Min ProRes 4K Master Video + 3 AM Audio Note",
-    teaser: "Tier-1 agency-represented OnlyFans supermodel. Smart contract parameters and liquidity lock pre-audited.",
-    whitelistedCount: 1482,
+    holderGatePerk: "Exclusive Uncut Studio Vault & Leica Negatives",
+    burnPerk: "Direct Private 4K Master Roll + Audio Access",
+    teaser: "Official creator token launch presented by Mikayla Launchpad. Fair launch on Robinhood Chain L2 with 50% profit buyback & burn to $MIKA.",
+    whitelistedCount: 1940,
     accentColor: "#d4fc50",
   },
   {
@@ -46,6 +61,7 @@ const CREATOR_DROPS = [
     dayLabel: "THIS SUNDAY",
     scheduleText: "Launching Sunday · T-4 Days",
     targetMs: 4 * 86400 * 1000 + 12 * 3600 * 1000 + 45 * 60 * 1000 + 10 * 1000,
+    avatar: "/creators/kira.jpg",
     category: "Viral Alt-Glamour & Boudoir Sensation · LA",
     metrics: {
       reach: "2.2M+ Verified Fans",
@@ -67,6 +83,7 @@ const CREATOR_DROPS = [
     dayLabel: "NEXT TUESDAY",
     scheduleText: "Launching Tuesday · T-6 Days",
     targetMs: 6 * 86400 * 1000 + 8 * 3600 * 1000 + 20 * 60 * 1000,
+    avatar: "/creators/luna.jpg",
     category: "Platinum Erotic Muse & Runaway Star · Paris",
     metrics: {
       reach: "3.6M+ Verified Fans",
@@ -82,18 +99,22 @@ const CREATOR_DROPS = [
   },
 ];
 
-const CountdownClock = ({ initialRemainingMs }) => {
-  const [remaining, setRemaining] = useState(initialRemainingMs);
+const CountdownClock = ({ initialRemainingMs, targetTimestamp }) => {
+  const calculateRemaining = () => {
+    if (targetTimestamp) {
+      return Math.max(0, targetTimestamp - Date.now());
+    }
+    return initialRemainingMs || 0;
+  };
+
+  const [remaining, setRemaining] = useState(calculateRemaining);
 
   useEffect(() => {
-    const start = Date.now();
     const interval = setInterval(() => {
-      const elapsed = Date.now() - start;
-      const next = Math.max(0, initialRemainingMs - elapsed);
-      setRemaining(next);
+      setRemaining(calculateRemaining());
     }, 1000);
     return () => clearInterval(interval);
-  }, [initialRemainingMs]);
+  }, [targetTimestamp, initialRemainingMs]);
 
   const days = Math.floor(remaining / (86400 * 1000));
   const hours = Math.floor((remaining % (86400 * 1000)) / (3600 * 1000));
@@ -385,6 +406,42 @@ const UpcomingDrops = () => {
                       </span>
                     </div>
 
+                    {/* Creator Visual Thumbnail */}
+                    {drop.avatar && (
+                      <div className="relative w-full h-28 rounded-lg overflow-hidden mb-3 border border-white/10 bg-black/60 group/thumb">
+                        <img
+                          src={drop.banner || drop.avatar}
+                          alt={drop.dropNumber}
+                          className="w-full h-full object-cover object-center group-hover/thumb:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-full overflow-hidden border border-[#d4fc50]/60 shadow-[0_0_8px_rgba(212,252,80,0.3)] bg-black shrink-0">
+                              <img src={drop.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                            </div>
+                            {drop.handle && (
+                              <a
+                                href={drop.xUrl || `https://x.com/${drop.handle.replace('@', '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-[10px] font-mono font-medium text-white/90 hover:text-[#d4fc50] bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/15 flex items-center gap-1 transition-colors"
+                              >
+                                <span>{drop.handle}</span>
+                                <ArrowUpRight className="w-2.5 h-2.5 text-[#d4fc50]" />
+                              </a>
+                            )}
+                          </div>
+                          {drop.id === "drop-friday" && (
+                            <span className="text-[9px] font-mono font-bold text-[#d4fc50] bg-[#d4fc50]/20 border border-[#d4fc50]/40 px-1.5 py-0.5 rounded uppercase">
+                              Launchpad Pick
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Drop Identity & Codename */}
                     <div className="mb-3">
                       <div className="flex items-baseline justify-between">
@@ -412,7 +469,7 @@ const UpcomingDrops = () => {
                         <Clock className="w-3 h-3 text-[#d4fc50]" />
                         <span>{drop.scheduleText}</span>
                       </div>
-                      <CountdownClock initialRemainingMs={drop.targetMs} />
+                      <CountdownClock initialRemainingMs={drop.targetMs} targetTimestamp={drop.targetTimestamp} />
                       <div className="text-[9px] font-mono text-white/40 mt-0.5">
                         Handle & CA reveal at launch to protect fair orderflow
                       </div>
