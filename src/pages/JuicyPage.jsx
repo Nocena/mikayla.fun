@@ -7,7 +7,6 @@ import JuicyMilestones from "../components/juicy/JuicyMilestones";
 import JuicyVault from "../components/juicy/JuicyVault";
 import JuicyCapTable from "../components/juicy/JuicyCapTable";
 import JuicyFooter from "../components/juicy/JuicyFooter";
-import JuicyPasswordGate from "../components/juicy/JuicyPasswordGate";
 import "./juicy.css";
 
 class JuicyErrorBoundary extends React.Component {
@@ -50,24 +49,12 @@ class JuicyErrorBoundary extends React.Component {
 }
 
 function JuicyPageContent() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    try {
-      return sessionStorage.getItem("juicy_authenticated") === "true";
-    } catch (e) {
-      return false;
-    }
-  });
-
   useEffect(() => {
     document.title = "Ms Juicy P ($JUICY) · Vice Capital Syndicate · Robinhood Chain L2";
     try {
       window.scrollTo(0, 0);
     } catch (e) {}
   }, []);
-
-  if (!isAuthenticated) {
-    return <JuicyPasswordGate onAuthenticated={() => setIsAuthenticated(true)} />;
-  }
 
   return (
     <div className="min-h-screen bg-[#050605] text-[#f4f4f2] selection:bg-[#ccff00] selection:text-black font-sans antialiased relative">
