@@ -1,98 +1,97 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { logo } from "../assets";
+import { ArrowUpRight, Bell, Check, Clock, Flame, ShieldAlert } from "lucide-react";
 import LightRays from "./react-bits/LightRays";
 import SpotlightCard from "./react-bits/SpotlightCard";
-import ShinyText from "./react-bits/ShinyText";
-import BlurText from "./react-bits/BlurText";
-import DecryptedText from "./react-bits/DecryptedText";
-import TiltedCard from "./react-bits/TiltedCard";
 import HeroScrollCanvas from "./HeroScrollCanvas";
 import { BURN_DATA } from "../constants/burn";
 import AppleBurnBadge from "./AppleBurnBadge";
+import { useTokenData } from "../hooks/useTokenData";
+import LaunchNotifyModal from "./LaunchNotifyModal";
 
-const chartDatasets = {
-  "1D": [
-    { time: "09:30 AM", price: 0.0098 },
-    { time: "11:00 AM", price: 0.0124 },
-    { time: "01:00 PM", price: 0.0115 },
-    { time: "03:30 PM", price: 0.0189 },
-    { time: "05:00 PM", price: 0.0245 },
-    { time: "07:30 PM", price: 0.0210 },
-    { time: "09:00 PM", price: 0.0340 },
-    { time: "11:00 PM", price: 0.0385 },
-    { time: "Now", price: 0.0428 },
-  ],
-  "1W": [
-    { time: "Mon", price: 0.0042 },
-    { time: "Tue", price: 0.0068 },
-    { time: "Wed", price: 0.0112 },
-    { time: "Thu", price: 0.0195 },
-    { time: "Fri", price: 0.0260 },
-    { time: "Sat", price: 0.0345 },
-    { time: "Sun", price: 0.0428 },
-  ],
-  "1M": [
-    { time: "Week 1", price: 0.0012 },
-    { time: "Week 2", price: 0.0035 },
-    { time: "Week 3", price: 0.0140 },
-    { time: "Week 4", price: 0.0428 },
-  ],
-  "1Y": [
-    { time: "Q1", price: 0.0005 },
-    { time: "Q2", price: 0.0020 },
-    { time: "Q3", price: 0.0110 },
-    { time: "Q4", price: 0.0428 },
-  ],
-  "ALL": [
-    { time: "Genesis", price: 0.0001 },
-    { time: "Bonding", price: 0.0080 },
-    { time: "Robinhood L2", price: 0.0210 },
-    { time: "Current", price: 0.0428 },
-  ],
+const JUICY_X_URL = "https://x.com/msjuicy_plenty";
+const JUICY_REPOST_URL = "https://x.com/mikaylafun/status/2098092424337711392?s=20";
+
+const getTargetTimestamp = () => {
+  const primaryTarget = new Date("2026-09-11T17:00:00Z").getTime();
+  if (Date.now() < primaryTarget) return primaryTarget;
+  const now = new Date();
+  const nextFriday = new Date();
+  const day = now.getUTCDay();
+  const diffDays = (5 + 7 - day) % 7 || 7;
+  nextFriday.setUTCDate(now.getUTCDate() + diffDays);
+  nextFriday.setUTCHours(17, 0, 0, 0);
+  return nextFriday.getTime();
 };
-
-const mockOrderbookAsks = [
-  { price: "0.0435", amount: "18,400", total: "$800.40", width: "85%" },
-  { price: "0.0432", amount: "12,100", total: "$522.72", width: "65%" },
-  { price: "0.0430", amount: "24,800", total: "$1,066.40", width: "95%" },
-  { price: "0.0429", amount: "8,900", total: "$381.81", width: "45%" },
-];
-
-const mockOrderbookBids = [
-  { price: "0.0428", amount: "32,400", total: "$1,386.72", width: "100%" },
-  { price: "0.0425", amount: "15,600", total: "$663.00", width: "70%" },
-  { price: "0.0422", amount: "28,000", total: "$1,181.60", width: "88%" },
-  { price: "0.0418", amount: "19,200", total: "$802.56", width: "60%" },
-];
-
-const SCENE_WINDOWS = [
-  { id: 0, label: "Overview", tag: "SCM Launchpad", enter: 0.00, fullIn: 0.00, fullOut: 0.14, exit: 0.18, jumpProgress: 0.00 },
-  { id: 1, label: "What is SCM", tag: "Paradigm", enter: 0.20, fullIn: 0.24, fullOut: 0.35, exit: 0.39, jumpProgress: 0.28 },
-  { id: 2, label: "Creator Drops", tag: "Live Curves", enter: 0.41, fullIn: 0.45, fullOut: 0.55, exit: 0.59, jumpProgress: 0.48 },
-  { id: 3, label: "Burn Vault", tag: "Utility", enter: 0.61, fullIn: 0.65, fullOut: 0.75, exit: 0.79, jumpProgress: 0.68 },
-  { id: 4, label: "$MIKA Terminal", tag: "Trade & Earn", enter: 0.81, fullIn: 0.85, fullOut: 1.00, exit: 1.00, jumpProgress: 0.92 },
-];
 
 export default function Hero() {
   const containerRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [currentScene, setCurrentScene] = useState(0);
+  const tokenData = useTokenData();
 
-  // Terminal & Trading State
-  const [activeTab, setActiveTab] = useState("chart");
-  const [timeframe, setTimeframe] = useState("1D");
-  const [ethAmount, setEthAmount] = useState("0.5");
-  const [isExecuting, setIsExecuting] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
-  const [simEth, setSimEth] = useState(1.0);
-  const [hoverIndex, setHoverIndex] = useState(null);
   const [copiedCA, setCopiedCA] = useState(false);
-  const chartSvgRef = useRef(null);
+  const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
+  const [isAlertSet, setIsAlertSet] = useState(() => {
+    try {
+      const saved = localStorage.getItem("mika_drop_alert_msjuicy");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return Boolean(parsed.calendar || parsed.browser || parsed.contact);
+      }
+    } catch (e) {}
+    return false;
+  });
+
+  // Live countdown state for upcoming launch teaser
+  const [targetTime] = useState(getTargetTimestamp);
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const diff = Math.max(0, targetTime - Date.now());
+    return {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    };
+  });
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const diff = Math.max(0, targetTime - Date.now());
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      });
+    };
+
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [targetTime]);
+
+  // Sync alert state across tabs and components
+  useEffect(() => {
+    const syncAlerts = () => {
+      try {
+        const saved = localStorage.getItem("mika_drop_alert_msjuicy");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setIsAlertSet(Boolean(parsed.calendar || parsed.browser || parsed.contact));
+        }
+      } catch (e) {}
+    };
+    window.addEventListener("storage", syncAlerts);
+    window.addEventListener("mika_alert_updated", syncAlerts);
+    return () => {
+      window.removeEventListener("storage", syncAlerts);
+      window.removeEventListener("mika_alert_updated", syncAlerts);
+    };
+  }, []);
 
   const handleCopyCA = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    navigator.clipboard.writeText("0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4");
+    navigator.clipboard.writeText(tokenData.tokenAddress || "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4");
     setCopiedCA(true);
     setToastMessage("Copied $MIKA Contract Address to clipboard!");
     setTimeout(() => {
@@ -101,825 +100,385 @@ export default function Hero() {
     }, 3000);
   };
 
-  const data = chartDatasets[timeframe];
-  const activeDataPoint = hoverIndex !== null ? data[hoverIndex] : data[data.length - 1];
+  const handleNotifyLaunch = () => {
+    setIsNotifyModalOpen(true);
+  };
 
-  // Throttled scroll progress listener using requestAnimationFrame
+  const handleOpenLaunch = () => {
+    window.dispatchEvent(new CustomEvent("open-launch-modal"));
+  };
+
+  // Subtle background video scrub driven by standard window scroll
   useEffect(() => {
-    let ticking = false;
-    let lastProgress = -1;
-    let lastScene = -1;
-
-    const updateScroll = () => {
-      if (!containerRef.current) {
-        ticking = false;
-        return;
-      }
-      const rect = containerRef.current.getBoundingClientRect();
-      // Skip updates when hero container is outside viewport
-      if (rect.bottom < 0 || rect.top > window.innerHeight) {
-        ticking = false;
-        return;
-      }
-
-      const totalDistance = rect.height - window.innerHeight;
-      if (totalDistance <= 0) {
-        ticking = false;
-        return;
-      }
-
-      const progress = Math.max(0, Math.min(1, -rect.top / totalDistance));
-      if (Math.abs(progress - lastProgress) > 0.001) {
-        lastProgress = progress;
-        setScrollProgress(progress);
-      }
-
-      let bestScene = 0;
-      let minDistance = Infinity;
-      SCENE_WINDOWS.forEach((sw) => {
-        const center = (sw.fullIn + sw.fullOut) / 2;
-        const dist = Math.abs(progress - center);
-        if (dist < minDistance) {
-          minDistance = dist;
-          bestScene = sw.id;
-        }
-      });
-      if (bestScene !== lastScene) {
-        lastScene = bestScene;
-        setCurrentScene(bestScene);
-      }
-
-      ticking = false;
-    };
-
     const handleScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(updateScroll);
-      }
+      const scrollY = window.scrollY;
+      const scrubRange = window.innerHeight * 1.5;
+      const progress = Math.min(1, Math.max(0, scrollY / scrubRange));
+      setScrollProgress(progress);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    updateScroll();
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const scrollToScene = (sceneIndex) => {
-    if (!containerRef.current) return;
-    const targetProgress = SCENE_WINDOWS[sceneIndex].jumpProgress;
-    const containerTop = containerRef.current.offsetTop;
-    const totalDistance = containerRef.current.offsetHeight - window.innerHeight;
-    const targetScroll = containerTop + targetProgress * totalDistance;
-    window.scrollTo({ top: targetScroll, behavior: "smooth" });
-  };
-
-  const handleOrder = (e) => {
-    e.preventDefault();
-    if (!ethAmount || parseFloat(ethAmount) <= 0) return;
-
-    setIsExecuting(true);
-    setTimeout(() => {
-      setIsExecuting(false);
-      const tokensReceived = (parseFloat(ethAmount) * 46728).toLocaleString(undefined, {
-        maximumFractionDigits: 0,
-      });
-      setToastMessage(`Swapped ${ethAmount} ETH for ${tokensReceived} $MIKA on Robinhood Chain!`);
-      setTimeout(() => setToastMessage(null), 4000);
-    }, 1200);
-  };
-
-  // Dynamic SVG Chart Path Generators
-  const chartWidth = 400;
-  const chartHeight = 160;
-  const prices = data.map((d) => d.price);
-  const minPrice = Math.min(...prices) * 0.95;
-  const maxPrice = Math.max(...prices) * 1.05;
-
-  const points = data.map((d, index) => {
-    const x = (index / (data.length - 1)) * chartWidth;
-    const y = chartHeight - ((d.price - minPrice) / (maxPrice - minPrice)) * chartHeight;
-    return { x, y, ...d };
-  });
-
-  const pathD = points.reduce((acc, point, index) => {
-    return index === 0 ? `M ${point.x} ${point.y}` : `${acc} L ${point.x} ${point.y}`;
-  }, "");
-
-  const areaD = `${pathD} L ${chartWidth} ${chartHeight} L 0 ${chartHeight} Z`;
-
-  const handleChartMouseMove = (e) => {
-    if (!chartSvgRef.current) return;
-    const rect = chartSvgRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const ratio = Math.max(0, Math.min(1, x / rect.width));
-    const index = Math.round(ratio * (data.length - 1));
-    setHoverIndex(index);
-  };
-
-  const currentPoint = hoverIndex !== null ? points[hoverIndex] : points[points.length - 1];
-
-  // Strict non-overlapping opacity calculation
-  const getSceneOpacity = (sceneIdx) => {
-    const w = SCENE_WINDOWS[sceneIdx];
-    if (scrollProgress < w.enter || scrollProgress > w.exit) return 0;
-    if (scrollProgress >= w.fullIn && scrollProgress <= w.fullOut) return 1;
-    if (scrollProgress < w.fullIn) {
-      const denom = w.fullIn - w.enter;
-      return denom > 0 ? (scrollProgress - w.enter) / denom : 1;
-    }
-    if (scrollProgress > w.fullOut) {
-      const denom = w.exit - w.fullOut;
-      return denom > 0 ? (w.exit - scrollProgress) / denom : 0;
-    }
-    return 0;
-  };
-
-  // Kinetic directional glide transition (entering up from +24px, exiting up to -24px)
-  const getSceneTransform = (sceneIdx) => {
-    const w = SCENE_WINDOWS[sceneIdx];
-    if (scrollProgress < w.enter) {
-      return "translate3d(0, 24px, 0)";
-    }
-    if (scrollProgress < w.fullIn) {
-      const p = (scrollProgress - w.enter) / (w.fullIn - w.enter);
-      const y = (1 - p) * 24;
-      return `translate3d(0, ${y.toFixed(1)}px, 0)`;
-    }
-    if (scrollProgress <= w.fullOut) {
-      return "translate3d(0, 0px, 0)";
-    }
-    if (scrollProgress <= w.exit) {
-      const p = (scrollProgress - w.fullOut) / (w.exit - w.fullOut);
-      const y = -p * 24;
-      return `translate3d(0, ${y.toFixed(1)}px, 0)`;
-    }
-    return "translate3d(0, -24px, 0)";
-  };
 
   return (
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-[500vh] bg-[#080808] text-[#f4f4f2] overflow-visible"
+      className="relative min-h-[90vh] flex items-center pt-28 pb-16 lg:pt-36 lg:pb-24 bg-[#080808] text-[#f4f4f2] overflow-hidden"
     >
-      {/* Pinned Viewport Stage */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center">
-        {/* Background Video Frame Scrubbing Canvas */}
+      {/* Background Video Frame Scrubbing Canvas */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
         <HeroScrollCanvas progress={scrollProgress} />
+      </div>
 
-        {/* Subtle Ambient Volumetric Glow */}
-        <LightRays
-          raysColor="#d4fc50"
-          raysSpeed={0.4}
-          lightSpread={1.1}
-          rayLength={2.0}
-          pulsating={true}
-          noiseAmount={0.03}
-          followMouse={false}
-          className="opacity-20 pointer-events-none z-[1]"
-        />
+      {/* Subtle Ambient Volumetric Glow */}
+      <LightRays
+        raysColor="#d4fc50"
+        raysSpeed={0.4}
+        lightSpread={1.1}
+        rayLength={2.0}
+        pulsating={true}
+        noiseAmount={0.03}
+        followMouse={false}
+        className="opacity-20 pointer-events-none z-[1]"
+      />
 
-        {/* Global Floating Toast */}
-        <AnimatePresence>
-          {toastMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 bg-[#080808]/95 border border-[#d4fc50] text-white shadow-[0_0_25px_rgba(212,252,80,0.25)] flex items-center gap-2.5 backdrop-blur-xl rounded-none"
+      {/* Global Floating Toast */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 bg-[#080808]/95 border border-[#d4fc50] text-white shadow-[0_0_25px_rgba(212,252,80,0.25)] flex items-center gap-2.5 backdrop-blur-xl rounded-none"
+          >
+            <span className="w-1.5 h-1.5 bg-[#d4fc50]" />
+            <span className="text-xs font-mono">{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main 2-Column Launchpad Hero Stage */}
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+          {/* ========================================================= */}
+          {/* LEFT COLUMN: EDITORIAL, TOKEN EXPLANATION, DEX PAID, BURNS */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-center">
+            {/* Monospace Architectural Tag */}
+            <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
+              <span>[ 01 // ROBINHOOD PROTOCOL ]</span>
+              <span className="text-white/30 hidden sm:inline">|</span>
+              <span className="text-white/60 hidden sm:inline text-[10px]">SOLANA → ROBINHOOD EXPANSION</span>
+            </div>
+
+            {/* Official CA, DEX PAID & Non-Overlaying Burn Counter Capsule */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {/* Minimalist CA Capsule */}
+              <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)]">
+                <span className="text-white/50 text-[9px] sm:text-[10px] font-medium tracking-wider">CA:</span>
+                <code className="text-white/90 font-mono text-[10px] sm:text-[11px] truncate max-w-[110px] sm:max-w-[140px]">
+                  0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
+                </code>
+                <button
+                  onClick={handleCopyCA}
+                  className={`btn-tactile px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-medium cursor-pointer transition-colors ${
+                    copiedCA
+                      ? "bg-white text-black"
+                      : "bg-white/10 hover:bg-white hover:text-black text-white"
+                  }`}
+                >
+                  {copiedCA ? "Copied" : "Copy"}
+                </button>
+              </div>
+
+              {/* Apple-Grade Dex Paid Capsule */}
+              <a
+                href={tokenData.pairUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)] hover:border-[#30d158]/40 hover:shadow-[0_0_16px_rgba(48,209,88,0.15)] transition-all cursor-pointer"
+                title="Verified Enhanced Token Info on Dexscreener"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] shadow-[0_0_6px_#30d158]" />
+                <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.1em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1">
+                  DEX PAID
+                  <span className="text-[9px] text-[#30d158]">✓</span>
+                </span>
+                <span className="text-[8px] sm:text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
+                  ↗
+                </span>
+              </a>
+
+              {/* FOMO Terminal Capsule */}
+              <a
+                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/fomo btn-tactile inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)] hover:border-[#d4fc50]/40 hover:shadow-[0_0_16px_rgba(212,252,80,0.15)] transition-all cursor-pointer"
+                title="Trade MIKA on FOMO Social App"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50] shadow-[0_0_6px_#d4fc50]" />
+                <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.1em] uppercase text-white/90 group-hover/fomo:text-white transition-colors flex items-center gap-1">
+                  FOMO
+                  <span className="text-[9px] text-[#d4fc50]">⚡</span>
+                </span>
+                <span className="text-[8px] sm:text-[9px] font-mono text-white/30 group-hover/fomo:text-[#d4fc50] group-hover/fomo:translate-x-0.5 group-hover/fomo:-translate-y-0.5 transition-all">
+                  ↗
+                </span>
+              </a>
+
+              {/* Clean, Non-Overlaying Onchain Burn Counter Capsule */}
+              <AppleBurnBadge />
+            </div>
+
+            {/* Bold Editorial Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-serif text-white tracking-display leading-[1.05] mb-4">
+              Sex Capital Markets.<br />
+              <span className="italic font-light text-[#d4fc50]">Tokenized on Robinhood.</span>
+            </h1>
+
+            {/* Crucial Explanation of Current Token ($MIKA) */}
+            <p className="text-xs sm:text-sm text-white/75 max-w-xl leading-relaxed font-sans font-light mb-6 border-l border-white/15 pl-3">
+              Solana's premier SCM launchpad is expanding to Robinhood Chain L2. <strong className="text-white font-medium">50% of all launch and platform profits are permanently routed on-chain to buy back and burn $MIKA supply forever.</strong>
+            </p>
+
+            {/* Metrics Matrix (Verified Live Market & Onchain Values) */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-lg mb-7 py-3 border-y border-white/10">
+              <div>
+                <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Market Cap</div>
+                <div className="text-base sm:text-xl font-mono font-bold text-white">
+                  {tokenData.marketCapFormatted}
+                </div>
+                <div className="text-[10px] font-mono text-white/40 mt-0.5">
+                  FOMO & Uniswap
+                </div>
+              </div>
+              <div>
+                <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">24H Change</div>
+                <div className="text-base sm:text-xl font-mono font-bold text-[#30d158] flex items-center gap-1">
+                  <span>+{tokenData.priceChange24h.toFixed(1)}%</span>
+                  <span className="text-xs text-[#30d158]">▲</span>
+                </div>
+                <div className="text-[10px] font-mono text-white/40 mt-0.5">
+                  Vol: {tokenData.volume24hFormatted || "$177.1K"} · 415 Holders
+                </div>
+              </div>
+              <a
+                href={BURN_DATA.burnTxUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/burnstat block hover:opacity-80 transition-opacity"
+              >
+                <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1 flex items-center gap-1">
+                  <span>Burned Supply</span>
+                  <span className="text-white/30 group-hover/burnstat:text-white transition-colors">↗</span>
+                </div>
+                <div className="text-base sm:text-xl font-mono font-bold text-white flex items-baseline gap-1.5">
+                  <span>{tokenData.totalBurnedFormatted || "16.4M"}</span>
+                  <span className="text-[10px] font-mono text-white/40 font-normal">({tokenData.percentBurned || "1.64%"})</span>
+                </div>
+                <div className="text-[10px] font-mono text-white/40 mt-0.5">
+                  Permanent Deflation
+                </div>
+              </a>
+            </div>
+
+            {/* Quick Tactile Actions */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
+              <a
+                href="#upcoming-drops"
+                className="btn-tactile px-6 py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-none flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(212,252,80,0.25)]"
+              >
+                <span>Explore Launchpad Drops</span>
+                <span>↓</span>
+              </a>
+              <a
+                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-tactile px-5 py-3.5 border border-white/20 hover:border-[#d4fc50] text-white/90 hover:text-white font-mono text-xs uppercase font-medium tracking-[0.08em] transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-white/[0.02] hover:bg-[#d4fc50]/10"
+              >
+                <span>Trade on FOMO</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#d4fc50]" />
+              </a>
+              <button
+                onClick={handleOpenLaunch}
+                className="btn-tactile px-6 py-3.5 border border-white/20 bg-black/50 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-none flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>+ Apply to Launch</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ========================================================= */}
+          {/* RIGHT COLUMN: NEXT FAIR LAUNCH TEASER (MS JUICY P)        */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-6 xl:col-span-5">
+            <SpotlightCard
+              className="p-5 sm:p-6 bg-[#0c0e0c]/90 border-t border-[#d4fc50]/50 border-x border-b border-[#d4fc50]/20 rounded-2xl shadow-[inset_0_1px_0_rgba(212,252,80,0.15),0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl group"
+              spotlightColor="rgba(212, 252, 80, 0.12)"
             >
-              <span className="w-1.5 h-1.5 bg-[#d4fc50]" />
-              <span className="text-xs font-mono">{toastMessage}</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {/* Teaser Header Bar */}
+              <div className="flex items-center justify-between pb-3 mb-3.5 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-pulse shadow-[0_0_8px_#d4fc50]" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#d4fc50]">
+                    Next Launch Teaser
+                  </span>
+                </div>
+                <div className="px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 text-[10px] font-mono text-white/70">
+                  Robinhood Chain L2
+                </div>
+              </div>
 
-        {/* Main Stage: Left-Aligned Editorial Scenes (Sharp Architectural Aesthetic) */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 h-full flex items-center pointer-events-none">
+              {/* High-Impact Visual Poster (Artwork: Only "MS JUICY P", zero overlay text) */}
+              <div className="relative aspect-[16/9] rounded-xl overflow-hidden mb-3.5 bg-black border border-white/10 group-hover:border-[#d4fc50]/40 transition-colors shadow-lg">
+                <img
+                  src="/creators/msjuicy_banner.jpg"
+                  alt="Ms Juicy P"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
 
-          {/* ========================================================= */}
-          {/* SCENE 0: HERO SHOT & PROTOCOL INTRODUCTION               */}
-          {/* ========================================================= */}
-          {(() => {
-            const opacity = getSceneOpacity(0);
-            return (
-              <div
-                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
-                  opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
-                }`}
-                style={{
-                  opacity,
-                  visibility: opacity > 0 ? "visible" : "hidden",
-                }}
-              >
-                <div style={{ transform: getSceneTransform(0) }}>
-                  {/* Monospace Architectural Tag */}
-                  <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-3 sm:mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
-                    <span>[ 01 // ROBINHOOD PROTOCOL ]</span>
-                    <span className="text-white/30 hidden sm:inline">|</span>
-                    <span className="text-white/60 hidden sm:inline text-[10px]">SOLANA → ROBINHOOD EXPANSION</span>
+              {/* Creator Profile & Status Bar */}
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full overflow-hidden border border-[#d4fc50] bg-black shrink-0 shadow-[0_0_10px_rgba(212,252,80,0.3)]">
+                    <img src="/creators/msjuicy.jpg" alt="Ms Juicy P" className="w-full h-full object-cover" />
                   </div>
-
-                  {/* Official CA, DEX PAID & Minimalist Apple Burn Capsules */}
-                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-                    {/* Minimalist CA Capsule */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)]">
-                      <span className="text-white/50 text-[9px] sm:text-[10px] font-medium tracking-wider">CA:</span>
-                      <code className="text-white/90 font-mono text-[10px] sm:text-[11px] truncate max-w-[100px] sm:max-w-[125px]">
-                        0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
-                      </code>
-                      <button
-                        onClick={handleCopyCA}
-                        className={`btn-tactile px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-medium cursor-pointer transition-colors ${
-                          copiedCA
-                            ? "bg-white text-black"
-                            : "bg-white/10 hover:bg-white hover:text-black text-white"
-                        }`}
-                      >
-                        {copiedCA ? "Copied" : "Copy"}
-                      </button>
+                  <div>
+                    <div className="text-sm font-bold text-white flex items-center gap-1.5">
+                      <span>Ms Juicy P</span>
+                      <span className="text-xs text-[#30d158]" title="Verified Creator">✓</span>
                     </div>
-
-                    {/* Apple-Grade Dex Paid Capsule */}
                     <a
-                      href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                      href={JUICY_X_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/dexpaid btn-tactile inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)] hover:border-[#30d158]/40 hover:shadow-[0_0_16px_rgba(48,209,88,0.15)] transition-all cursor-pointer"
-                      title="Verified Enhanced Token Info on Dexscreener"
+                      className="text-[11px] font-mono text-white/60 hover:text-[#d4fc50] transition-colors"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] shadow-[0_0_6px_#30d158]" />
-                      <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.1em] uppercase text-white/90 group-hover/dexpaid:text-white transition-colors flex items-center gap-1">
-                        DEX PAID
-                        <span className="text-[9px] text-[#30d158]">✓</span>
-                      </span>
-                      <span className="text-[8px] sm:text-[9px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] group-hover/dexpaid:translate-x-0.5 group-hover/dexpaid:-translate-y-0.5 transition-all">
-                        ↗
-                      </span>
-                    </a>
-
-                    {/* Apple-Grade Minimalist Burn Badge */}
-                    <AppleBurnBadge />
-                  </div>
-
-                  {/* Bold Editorial Headline (Apple Optical Display Typography) */}
-                  <h1 className="text-[32px] sm:text-5xl lg:text-[56px] font-serif text-white tracking-display leading-[1.05] mb-3 sm:mb-4">
-                    Sex Capital Markets.<br />
-                    <span className="italic font-light text-[#d4fc50]">Tokenized on Robinhood.</span>
-                  </h1>
-
-                  {/* Editorial Narrative */}
-                  <p className="text-xs sm:text-sm text-white/75 max-w-lg leading-relaxed font-sans font-light mb-3 sm:mb-5 border-l border-white/15 pl-3">
-                    Solana's premier SCM launchpad is expanding to Robinhood Chain L2. <strong className="text-white font-medium">50% of all launch and platform profits are permanently routed on-chain to buy back and burn $MIKA supply.</strong>
-                  </p>
-
-                  {/* Metrics Matrix (Refined Monochrome Palette) */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-6 max-w-lg mb-5 sm:mb-7 py-2.5 sm:py-4 border-y border-white/10">
-                    <div>
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Market TAM</div>
-                      <div className="text-base sm:text-xl font-mono font-bold text-white">$60.2B</div>
-                    </div>
-                    <div>
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1">Pre-Allocation</div>
-                      <div className="text-base sm:text-xl font-mono font-bold text-white">0.00%</div>
-                    </div>
-                    <a
-                      href={BURN_DATA.burnTxUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group/burnstat block hover:opacity-80 transition-opacity"
-                    >
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-0.5 sm:mb-1 flex items-center gap-1">
-                        <span>Burned Supply</span>
-                        <span className="text-white/30 group-hover/burnstat:text-white transition-colors">↗</span>
-                      </div>
-                      <div className="text-base sm:text-xl font-mono font-bold text-white flex items-baseline gap-1.5">
-                        <span>{BURN_DATA.burnedAmount}</span>
-                        <span className="text-[10px] font-mono text-white/40 font-normal">({BURN_DATA.percentSupply})</span>
-                      </div>
-                    </a>
-                  </div>
-
-                  {/* Sharp Geometric Actions with Instant Tactile Feedback */}
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 w-full">
-                    <button
-                      onClick={() => scrollToScene(1)}
-                      className="btn-tactile w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-none flex items-center justify-center gap-2.5"
-                    >
-                      <span>Explore Paradigm</span>
-                      <span>→</span>
-                    </button>
-                    <a
-                      href="#upcoming-drops"
-                      className="btn-tactile w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3.5 border border-white/20 bg-black/40 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-none flex items-center justify-center gap-2"
-                    >
-                      <span>Upcoming Drops (Fri, Sun, Tue)</span>
-                      <span>↓</span>
+                      @msjuicy_plenty
                     </a>
                   </div>
                 </div>
+
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[10px] font-mono text-white/60 px-2 py-0.5 rounded bg-black/70 border border-white/15">
+                    [Ticker Embargoed]
+                  </span>
+                  <span className="text-[9px] font-mono text-white/40">
+                    Anti-Sniper Protection
+                  </span>
+                </div>
               </div>
-            );
-          })()}
 
-          {/* ========================================================= */}
-          {/* SCENE 1: WHAT IS SCM & ROOTS                              */}
-          {/* ========================================================= */}
-          {(() => {
-            const opacity = getSceneOpacity(1);
-            return (
-              <div
-                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
-                  opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
-                }`}
-                style={{
-                  opacity,
-                  visibility: opacity > 0 ? "visible" : "hidden",
-                }}
-              >
-                <div style={{ transform: getSceneTransform(1) }}>
-                  {/* System Architecture Tagline */}
-                  <div className="inline-flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-[11px] tracking-widest text-[#d4fc50] uppercase mb-2.5 sm:mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
-                    <span className="whitespace-nowrap font-medium">[ 02 // SCM ORIGINS & ADVANTAGE ]</span>
-                    <span className="text-white/20 hidden sm:inline">|</span>
-                    <span className="text-white/60 text-[9px] sm:text-[10px] tracking-wider whitespace-nowrap">
-                      <ShinyText text="AGENCY EXPERTISE & DEEP MARKET ROOTS" speed={3.5} className="text-white/70" />
-                    </span>
-                  </div>
+              {/* Creator Credentials & Endorsement Row */}
+              <div className="flex items-center justify-between text-xs font-mono mb-3 py-1.5 px-2.5 rounded-lg bg-black/50 border border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-[#d4fc50]/10 border border-[#d4fc50]/30 text-[10px] font-bold text-[#d4fc50]">
+                    DROP #01 · FRI 5PM UTC
+                  </span>
+                  <a
+                    href={JUICY_X_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/80 hover:text-[#d4fc50] transition-colors text-[11px] flex items-center gap-1"
+                  >
+                    <span>80K+ on X</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                </div>
+                <a
+                  href={JUICY_REPOST_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[#30d158] hover:text-[#d4fc50] font-medium transition-colors text-[11px]"
+                  title="Verified announcement repost on X"
+                >
+                  <span>Reposted on X</span>
+                  <ArrowUpRight className="w-3 h-3" />
+                </a>
+              </div>
 
-                  {/* Editorial Headline */}
-                  <h2 className="text-2xl sm:text-4xl lg:text-[50px] font-serif text-white tracking-tight leading-[1.06] mb-2 sm:mb-4">
-                    From AI Chatters to<br />
-                    <span className="italic font-serif text-[#d4fc50]">
-                      <ShinyText text="Sex Capital Markets." speed={2.8} className="text-[#d4fc50]" />
-                    </span>
-                  </h2>
+              {/* Real-time Countdown Display */}
+              <div className="p-3 bg-black/70 border border-white/10 rounded-xl mb-3 text-center">
+                <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1.5 flex items-center justify-center gap-1.5">
+                  <Clock className="w-3 h-3 text-[#d4fc50]" />
+                  <span>Fair Launch T-Minus (Friday 5:00 PM UTC)</span>
+                </div>
 
-                  {/* Core Narrative Paragraph */}
-                  <p className="text-xs sm:text-sm text-white/75 font-sans font-light leading-relaxed mb-3 sm:mb-6 border-l border-white/15 pl-3 max-w-xl">
-                    Mikayla originally began as an AI chatter assistant—yielding deep insider mastery over creator operations, chatter conversions, and the cashflows of top-earning models. That operational engine evolved into Solana's premier SCM launchpad, and is now being brought to <strong className="text-white font-medium">Robinhood Chain</strong>.
-                  </p>
-
-                  {/* Two ReactBits Spotlight Cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 w-full mb-3 sm:mb-5">
-                    {/* Pillar 1: Agency Relationships */}
-                    <SpotlightCard
-                      className="p-3.5 sm:p-5 bg-[#0a0c0a]/85 border-white/10 rounded-2xl transition-all duration-300 hover:border-[#d4fc50]/30 backdrop-blur-xl"
-                      spotlightColor="rgba(212, 252, 80, 0.16)"
-                    >
-                      <div className="flex items-center justify-between mb-2 sm:mb-3">
-                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#d4fc50]/10 border border-[#d4fc50]/25 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#d4fc50] font-semibold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
-                          Agency Network
-                        </div>
-                        <span className="text-[9px] sm:text-[10px] font-mono text-white/40">Direct Talent</span>
-                      </div>
-
-                      <h3 className="text-xs sm:text-sm font-sans font-bold text-white mb-1.5 tracking-tight">
-                        <DecryptedText text="Agency Relationships" speed={30} animateOn="hover" className="text-white" />
-                      </h3>
-
-                      <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed font-sans font-light mb-2.5 sm:mb-4">
-                        Built on direct relationships with verified models and top management agencies. Not anonymous devs—real talent with organic followings.
-                      </p>
-
-                      <div className="pt-2 sm:pt-3 border-t border-white/5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
-                        <span className="text-white/40">Creator Roster</span>
-                        <span className="text-[#d4fc50] font-medium">100% Curated & KYC'd</span>
-                      </div>
-                    </SpotlightCard>
-
-                    {/* Pillar 2: Robinhood L2 Settlement */}
-                    <SpotlightCard
-                      className="p-3.5 sm:p-5 bg-[#0a0c0a]/85 border-white/10 rounded-2xl transition-all duration-300 hover:border-white/25 backdrop-blur-xl"
-                      spotlightColor="rgba(255, 255, 255, 0.12)"
-                    >
-                      <div className="flex items-center justify-between mb-2 sm:mb-3">
-                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/5 border border-white/15 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-white/80 font-semibold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-                          Infrastructure
-                        </div>
-                        <span className="text-[9px] sm:text-[10px] font-mono text-white/40">Robinhood L2</span>
-                      </div>
-
-                      <h3 className="text-xs sm:text-sm font-sans font-bold text-white mb-1.5 tracking-tight">
-                        <DecryptedText text="Robinhood L2 Settlement" speed={30} animateOn="hover" className="text-white" />
-                      </h3>
-
-                      <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed font-sans font-light mb-2.5 sm:mb-4">
-                        Sub-second finality, negligible gas (&lt;$0.001), and fair deterministic bonding curves accessible to 24M+ retail investors.
-                      </p>
-
-                      <div className="pt-2 sm:pt-3 border-t border-white/5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
-                        <span className="text-white/40">Tx Finality</span>
-                        <span className="text-[#a8c3a0] font-medium">&lt;400ms · &lt;$0.001 Gas</span>
-                      </div>
-                    </SpotlightCard>
-                  </div>
-
-                  {/* Liquid-Glass Footer Ticker Banner */}
-                  <div className="flex items-center justify-between gap-2.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[10px] sm:text-xs font-mono text-white/80 w-full">
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50] shrink-0" />
-                      <span className="text-white/75 truncate">
-                        Viral narrative built for high-conviction trading on Phantom & Robinhood
-                      </span>
+                <div className="grid grid-cols-4 gap-1.5 font-mono">
+                  <div className="p-1.5 rounded-lg bg-black/60 border border-white/10">
+                    <div className="text-base sm:text-lg font-bold text-white">
+                      {String(timeLeft.days).padStart(2, "0")}
                     </div>
-
-                    <button
-                      onClick={() => scrollToScene(2)}
-                      className="inline-flex items-center gap-1 text-[#d4fc50] hover:text-white transition-colors cursor-pointer shrink-0 font-medium pl-2 border-l border-white/10 text-[10px] sm:text-xs"
-                    >
-                      <span>Drops</span>
-                      <span>→</span>
-                    </button>
+                    <div className="text-[8px] uppercase text-white/40">Days</div>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-black/60 border border-white/10">
+                    <div className="text-base sm:text-lg font-bold text-white">
+                      {String(timeLeft.hours).padStart(2, "0")}
+                    </div>
+                    <div className="text-[8px] uppercase text-white/40">Hours</div>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-black/60 border border-white/10">
+                    <div className="text-base sm:text-lg font-bold text-white">
+                      {String(timeLeft.minutes).padStart(2, "0")}
+                    </div>
+                    <div className="text-[8px] uppercase text-white/40">Mins</div>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-black/60 border border-[#d4fc50]/30 shadow-[0_0_10px_rgba(212,252,80,0.15)]">
+                    <div className="text-base sm:text-lg font-bold text-[#d4fc50]">
+                      {String(timeLeft.seconds).padStart(2, "0")}
+                    </div>
+                    <div className="text-[8px] uppercase text-[#d4fc50]/70">Secs</div>
                   </div>
                 </div>
               </div>
-            );
-          })()}
 
-          {/* ========================================================= */}
-          {/* SCENE 2: CREATOR COIN LAUNCHES (FRI, SUN, TUE)             */}
-          {/* ========================================================= */}
-          {(() => {
-            const opacity = getSceneOpacity(2);
-            return (
-              <div
-                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
-                  opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
-                }`}
-                style={{
-                  opacity,
-                  visibility: opacity > 0 ? "visible" : "hidden",
-                }}
-              >
-                <div style={{ transform: getSceneTransform(2) }}>
-                  {/* System Architecture Tagline */}
-                  <div className="inline-flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-[11px] tracking-widest text-[#d4fc50] uppercase mb-2 sm:mb-3 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5 whitespace-nowrap">
-                    <span className="font-medium">[ 03 // LAUNCH CALENDAR ]</span>
-                    <span className="text-white/20 hidden sm:inline">|</span>
-                    <span className="text-white/60 text-[9px] sm:text-[10px] tracking-wider whitespace-nowrap">
-                      <ShinyText text="TOP 0.1% ONLYFANS CREATOR COHORT" speed={3.5} className="text-white/70" />
-                    </span>
-                  </div>
+              {/* Action CTAs */}
+              <div className="space-y-2">
+                <button
+                  onClick={handleNotifyLaunch}
+                  className={`btn-tactile w-full py-2.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                    isAlertSet
+                      ? "bg-white/10 text-[#d4fc50] border border-[#d4fc50]/40"
+                      : "bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_16px_rgba(212,252,80,0.3)]"
+                  }`}
+                >
+                  {isAlertSet ? <Check className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
+                  <span>{isAlertSet ? "Launch Notification Active ✓" : "Notify Me on Launch"}</span>
+                </button>
 
-                  {/* Editorial Headline */}
-                  <h2 className="text-2xl sm:text-4xl lg:text-[48px] font-serif text-white tracking-tight leading-[1.06] mb-1.5 sm:mb-2">
-                    Top 0.1% OnlyFans Drops.<br />
-                    <span className="italic font-serif text-[#d4fc50]">
-                      <ShinyText text="Agency Signed & Contract Locked." speed={2.8} className="text-[#d4fc50]" />
-                    </span>
-                  </h2>
-
-                  <p className="text-xs sm:text-sm text-white/70 font-sans font-light leading-relaxed mb-3 sm:mb-4 max-w-xl">
-                    Scheduled weekly drops for verified high-earning creators. Creator handles and tickers are embargoed under pre-launch NDA until countdown zero to guarantee 100% fair launch orderflow.
-                  </p>
-
-                  {/* 3 Polished Creator Rows */}
-                  <div className="space-y-2 sm:space-y-3 w-full mb-3 sm:mb-4">
-                    {/* Drop 1 */}
-                    <div className="p-2.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-[#d4fc50]/40 transition-all backdrop-blur-xl flex items-center justify-between gap-2.5 sm:gap-3">
-                      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#d4fc50]/10 border border-[#d4fc50]/20 flex items-center justify-center shrink-0">
-                          <span className="text-[11px] sm:text-xs font-mono font-bold text-[#d4fc50]">01</span>
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-                            <span className="text-xs sm:text-sm font-sans font-bold text-white">Project ARIA</span>
-                            <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-[#d4fc50]/15 text-[#d4fc50] font-semibold border border-[#d4fc50]/25 uppercase">
-                              This Friday
-                            </span>
-                            <span className="text-[9px] sm:text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.05% OF</span>
-                          </div>
-                          <div className="text-[10px] sm:text-[11px] text-white/60 font-mono truncate sm:line-clamp-none">
-                            1.4M+ Fans · Miami/Milan · Hold $50+ for Milan Penthouse 35mm Negatives
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <div className="text-[11px] sm:text-xs font-mono font-bold text-white">In 2 Days</div>
-                        <div className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
-                      </div>
-                    </div>
-
-                    {/* Drop 2 */}
-                    <div className="p-2.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-white/20 transition-all backdrop-blur-xl flex items-center justify-between gap-2.5 sm:gap-3">
-                      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <span className="text-[11px] sm:text-xs font-mono font-bold text-white/80">02</span>
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-                            <span className="text-xs sm:text-sm font-sans font-bold text-white">Project KIRA</span>
-                            <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-white/10 text-white font-semibold border border-white/15 uppercase">
-                              This Sunday
-                            </span>
-                            <span className="text-[9px] sm:text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.02% OF</span>
-                          </div>
-                          <div className="text-[10px] sm:text-[11px] text-white/60 font-mono truncate sm:line-clamp-none">
-                            2.2M+ Fans · Los Angeles · Hold $50+ for Sunset Hills Penthouse Raw Gallery
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <div className="text-[11px] sm:text-xs font-mono font-bold text-white/90">In 4 Days</div>
-                        <div className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
-                      </div>
-                    </div>
-
-                    {/* Drop 3 */}
-                    <div className="p-2.5 sm:p-4 rounded-xl bg-[#0a0c0a]/85 border border-white/10 hover:border-white/20 transition-all backdrop-blur-xl flex items-center justify-between gap-2.5 sm:gap-3">
-                      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <span className="text-[11px] sm:text-xs font-mono font-bold text-white/80">03</span>
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-                            <span className="text-xs sm:text-sm font-sans font-bold text-white">Project LUNA</span>
-                            <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-white/10 text-white font-semibold border border-white/15 uppercase">
-                              Next Tuesday
-                            </span>
-                            <span className="text-[9px] sm:text-[10px] font-mono text-white/40 hidden sm:inline">Top 0.01% OF</span>
-                          </div>
-                          <div className="text-[10px] sm:text-[11px] text-white/60 font-mono truncate sm:line-clamp-none">
-                            3.6M+ Fans · London/Paris · Hold $50+ for Paris Studio 4K HDR Archive
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <div className="text-[11px] sm:text-xs font-mono font-bold text-white/90">In 6 Days</div>
-                        <div className="text-[9px] sm:text-[10px] font-mono text-[#d4fc50]">Burns $MIKA</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Liquid-Glass Footer Ticker Banner */}
-                  <div className="flex items-center justify-between gap-2.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[10px] sm:text-xs font-mono text-white/80 w-full">
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50] shrink-0" />
-                      <span className="text-white/75 truncate">
-                        Identity reveals at T-0h to protect fair launch · 50% of launch profit burns $MIKA
-                      </span>
-                    </div>
-
-                    <a
-                      href="#upcoming-drops"
-                      className="inline-flex items-center gap-1 text-[#d4fc50] hover:text-white transition-colors cursor-pointer shrink-0 font-medium pl-2 border-l border-white/10 text-[10px] sm:text-xs"
-                    >
-                      <span>Schedule</span>
-                      <span>↓</span>
-                    </a>
-                  </div>
+                <div className="flex items-center justify-between text-[11px] font-mono text-white/50 pt-0.5 px-1">
+                  <span>Anti-Sniper Shield Active</span>
+                  <a
+                    href="#upcoming-drops"
+                    className="text-[#d4fc50] hover:underline flex items-center gap-0.5"
+                  >
+                    <span>View All Cohort Drops</span>
+                    <span>↓</span>
+                  </a>
                 </div>
               </div>
-            );
-          })()}
-
-          {/* ========================================================= */}
-          {/* SCENE 3: DUAL CREATOR TOKEN UTILITY                       */}
-          {/* ========================================================= */}
-          {(() => {
-            const opacity = getSceneOpacity(3);
-            return (
-              <div
-                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
-                  opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
-                }`}
-                style={{
-                  opacity,
-                  visibility: opacity > 0 ? "visible" : "hidden",
-                }}
-              >
-                <div style={{ transform: getSceneTransform(3) }}>
-                  <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-2 sm:mb-2.5 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
-                    <span>[ 04 // CLEAR TOKEN UTILITY ]</span>
-                    <span className="text-white/30 hidden sm:inline">|</span>
-                    <span className="text-white/60 hidden sm:inline text-[10px]">HOLDER GATES & ON-SITE BURNS</span>
-                  </div>
-
-                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.08] mb-1 sm:mb-1.5">
-                    Two Clear Utility Mechanics.
-                  </h2>
-                  <p className="text-xs sm:text-sm text-white/60 font-light mb-3 sm:mb-4">
-                    Every creator coin has tangible utility built directly into the token's web page.
-                  </p>
-
-                  {/* 2 Utility Panels */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 w-full mb-3 sm:mb-3.5">
-                    <div className="p-3.5 sm:p-4 bg-black/80 border border-white/15 rounded-xl sm:rounded-none">
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#d4fc50] mb-1 font-semibold">
-                        Utility 01 // Gate
-                      </div>
-                      <div className="text-sm sm:text-base font-bold text-white mb-1">Hold ≥ $50 of Token</div>
-                      <p className="text-[11px] sm:text-xs text-white/70 font-light leading-relaxed mb-2">
-                        At predetermined Market Cap milestones, anyone holding at least $50 of the creator's token automatically unlocks exclusive private content directly on their page.
-                      </p>
-                      <div className="text-[9px] sm:text-[10px] font-mono text-white/40 border-t border-white/10 pt-1.5">
-                        Incentive: Continuous Buy & Hold Pressure
-                      </div>
-                    </div>
-
-                    <div className="p-3.5 sm:p-4 bg-black/80 border border-white/15 rounded-xl sm:rounded-none">
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#ff79c6] mb-1 font-semibold">
-                        Utility 02 // Burn
-                      </div>
-                      <div className="text-sm sm:text-base font-bold text-white mb-1">Burn-to-Access Exclusives</div>
-                      <p className="text-[11px] sm:text-xs text-white/70 font-light leading-relaxed mb-2">
-                        Fans can burn creator tokens directly on the website to purchase ultra-exclusive photo rolls and 4K masters, driving permanent deflationary pressure.
-                      </p>
-                      <div className="text-[9px] sm:text-[10px] font-mono text-[#ff79c6] border-t border-white/10 pt-1.5">
-                        Incentive: Permanent Supply Contraction
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="text-[10px] sm:text-[11px] font-mono text-white/50 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
-                    <span>Executed on Robinhood L2 with instant zero-friction settlement</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ========================================================= */}
-          {/* SCENE 4: $MIKA TOKENOMICS & TERMINAL                      */}
-          {/* ========================================================= */}
-          {(() => {
-            const opacity = getSceneOpacity(4);
-            return (
-              <div
-                className={`absolute inset-y-0 inset-x-0 mx-auto max-w-xl lg:max-w-2xl lg:mx-0 lg:left-20 lg:right-auto px-4 sm:px-8 lg:px-0 pt-16 pb-6 text-left flex flex-col justify-center transition-opacity duration-200 ${
-                  opacity > 0.05 ? "pointer-events-auto" : "pointer-events-none"
-                }`}
-                style={{
-                  opacity,
-                  visibility: opacity > 0 ? "visible" : "hidden",
-                }}
-              >
-                <div style={{ transform: getSceneTransform(4) }}>
-                  <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-1.5 sm:mb-2.5 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
-                    <span>[ 05 // PROTOCOL TOKENOMICS ]</span>
-                    <span className="text-white/30 hidden sm:inline">|</span>
-                    <span className="text-white/60 hidden sm:inline text-[10px]">50% PROFIT BURN ENGINE</span>
-                  </div>
-
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-white tracking-tight leading-[1.08] mb-1">
-                    $MIKA Genesis Protocol Asset.
-                  </h2>
-                  <p className="text-[11px] sm:text-xs text-white/60 font-light mb-2">
-                    The parent equity asset capturing 50% of all creator launch profits on Robinhood Chain.
-                  </p>
-
-                  {/* CA & Utility Sink Pill */}
-                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
-                    <div className="flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/80 border border-white/20 text-[10px] sm:text-[11px] font-mono">
-                      <span className="text-[#d4fc50] text-[9px] sm:text-[10px] font-bold">CA:</span>
-                      <code className="text-white font-mono text-[9px] sm:text-[10px] truncate max-w-[120px] sm:max-w-[180px]">
-                        0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
-                      </code>
-                      <button
-                        onClick={handleCopyCA}
-                        className={`btn-tactile px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-mono font-medium cursor-pointer transition-colors ${
-                          copiedCA
-                            ? "bg-[#d4fc50] text-black"
-                            : "bg-white/10 hover:bg-[#d4fc50] hover:text-black text-white"
-                        }`}
-                      >
-                        {copiedCA ? "Copied" : "Copy"}
-                      </button>
-                    </div>
-                    <a
-                      href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group/dexpaid btn-tactile inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-[10px] sm:text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:border-[#30d158]/50 hover:shadow-[0_0_16px_rgba(48,209,88,0.2)] transition-all cursor-pointer"
-                    >
-                      <span className="relative flex h-1.5 w-1.5 items-center justify-center">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#30d158] opacity-60"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#30d158] shadow-[0_0_6px_#30d158]"></span>
-                      </span>
-                      <ShinyText text="DEX PAID" color="#30d158" shineColor="#ffffff" speed={3} className="font-bold tracking-wider text-[8px] sm:text-[9px]" />
-                      <span className="text-[8px] sm:text-[9px] text-[#30d158]">✓</span>
-                      <span className="text-[8px] font-mono text-white/30 group-hover/dexpaid:text-[#30d158] transition-colors">↗</span>
-                    </a>
-                    <a
-                      href={BURN_DATA.burnTxUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-tactile inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-black/60 hover:bg-black/90 backdrop-blur-xl border-t border-white/20 border-x border-b border-white/10 text-[9px] sm:text-[10px] font-mono text-white/80 hover:text-white transition-all"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                      <span className="text-white font-medium">{BURN_DATA.totalBurned} Burned</span>
-                      <span className="text-white/40">({BURN_DATA.percentSupply}) ↗</span>
-                    </a>
-                  </div>
-
-                  {/* Sharp Geometric Terminal Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 w-full items-start">
-                    {/* Chart Card */}
-                    <div className="md:col-span-7 p-3 sm:p-4 bg-black/85 border-t border-white/20 border-x border-b border-white/10 rounded-xl sm:rounded-none backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                      <div className="flex justify-between items-center mb-1.5 sm:mb-2">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-lg sm:text-2xl font-mono font-bold text-white">
-                            ${activeDataPoint.price.toFixed(4)}
-                          </span>
-                          <span className="text-[11px] sm:text-xs font-mono text-[#30d158] font-semibold">+342.8%</span>
-                        </div>
-                        <div className="flex items-center gap-1 border border-white/15 p-0.5 text-[9px] sm:text-[10px] font-mono rounded-none">
-                          {["1D", "1W", "1M", "ALL"].map((tf) => (
-                            <button
-                              key={tf}
-                              onClick={() => {
-                                setTimeframe(tf);
-                                setHoverIndex(null);
-                              }}
-                              className={`btn-tactile px-1.5 py-0.5 cursor-pointer rounded-none ${
-                                timeframe === tf ? "bg-white text-black font-bold" : "text-white/60 hover:text-white"
-                              }`}
-                            >
-                              {tf}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="relative w-full h-[85px] sm:h-[110px] bg-black/40 border border-white/10 p-1 rounded-none">
-                        <svg
-                          ref={chartSvgRef}
-                          viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-                          preserveAspectRatio="none"
-                          onMouseMove={handleChartMouseMove}
-                          onMouseLeave={() => setHoverIndex(null)}
-                          className="w-full h-full cursor-crosshair overflow-visible"
-                        >
-                          <defs>
-                            <linearGradient id="heroGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#d4fc50" stopOpacity="0.3" />
-                              <stop offset="100%" stopColor="#d4fc50" stopOpacity="0.0" />
-                            </linearGradient>
-                          </defs>
-                          <path d={areaD} fill="url(#heroGradient)" />
-                          <path d={pathD} fill="none" stroke="#d4fc50" strokeWidth="1.5" strokeLinecap="round" />
-                          {currentPoint && (
-                            <circle cx={currentPoint.x} cy={currentPoint.y} r={3.5} fill="#d4fc50" />
-                          )}
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Swap Ticket */}
-                    <div className="md:col-span-5 p-3 sm:p-4 bg-black/85 border-t border-[#d4fc50]/60 border-x border-b border-[#d4fc50]/30 rounded-xl sm:rounded-none backdrop-blur-md shadow-[inset_0_1px_0_rgba(212,252,80,0.2)]">
-                      <div className="flex justify-between items-center text-[10px] sm:text-[11px] font-mono mb-1.5 sm:mb-2">
-                        <span className="text-white font-medium">Robinhood L2 Swap</span>
-                        <span className="text-[#d4fc50]">2% Buyback</span>
-                      </div>
-
-                      <form onSubmit={handleOrder} className="space-y-1.5 sm:space-y-2">
-                        <div className="bg-black/60 border border-white/15 p-1.5 sm:p-2 flex justify-between items-center rounded-none">
-                          <input
-                            type="number"
-                            step="0.01"
-                            min="0.01"
-                            value={ethAmount}
-                            onChange={(e) => setEthAmount(e.target.value)}
-                            className="w-20 bg-transparent text-xs font-mono text-white focus:outline-none"
-                          />
-                          <span className="text-xs font-mono font-bold text-[#d4fc50]">ETH</span>
-                        </div>
-
-                        <div className="bg-black/60 border border-white/15 p-1.5 sm:p-2 flex justify-between items-center rounded-none">
-                          <input
-                            type="text"
-                            readOnly
-                            value={
-                              ethAmount && parseFloat(ethAmount) > 0
-                                ? (parseFloat(ethAmount) * 46728).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                : "0"
-                            }
-                            className="w-24 bg-transparent text-xs font-mono text-white/70 focus:outline-none"
-                          />
-                          <span className="text-xs font-mono font-bold text-white">$MIKA</span>
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={isExecuting}
-                          className="btn-tactile w-full py-2 sm:py-2.5 bg-[#d4fc50] text-[#080808] font-bold text-xs font-mono uppercase tracking-widest hover:bg-white cursor-pointer disabled:opacity-50 rounded-none"
-                        >
-                          {isExecuting ? "Executing..." : "Confirm Swap"}
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
+            </SpotlightCard>
+          </div>
 
         </div>
       </div>
+
+      {/* Real Drop Notification & Calendar Sync Modal */}
+      <LaunchNotifyModal
+        isOpen={isNotifyModalOpen}
+        onClose={() => setIsNotifyModalOpen(false)}
+        onAlertSaved={() => {
+          setIsAlertSet(true);
+          window.dispatchEvent(new Event("mika_alert_updated"));
+        }}
+      />
     </section>
   );
 }

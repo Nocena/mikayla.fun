@@ -2,12 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { logo } from "../assets";
 
 const tokensList = [
-  { id: "mika", name: "Mikayla Protocol", ticker: "$MIKA", price: "$0.0428", change: "+342.8%", isUp: true, mcap: "$42.8M", category: "Platform Token" },
-  { id: "aria", name: "Aria Brooks", ticker: "$ARIA", price: "$0.0192", change: "+54.2%", isUp: true, mcap: "$19.2M", category: "Haute Boudoir" },
-  { id: "kira", name: "Kira Fox", ticker: "$KIRA", price: "$0.0215", change: "+42.5%", isUp: true, mcap: "$21.5M", category: "Underground DJ" },
-  { id: "luna", name: "Luna St. Claire", ticker: "$LUNA", price: "$0.0310", change: "+18.1%", isUp: true, mcap: "$31.0M", category: "Nocturnal Cinema" },
-  { id: "chloe", name: "Chloe Vane", ticker: "$CHLOE", price: "$0.0145", change: "+64.2%", isUp: true, mcap: "$14.5M", category: "Parisian Boudoir" },
-  { id: "solar", name: "Solaris Creator Trust", ticker: "$SOLAR", price: "$0.0240", change: "+88.9%", isUp: true, mcap: "$24.0M", category: "Agency Trust" },
+  { id: "mika", name: "Mikayla Protocol", ticker: "$MIKA", price: "$0.0000827", change: "-51.7%", isUp: false, mcap: "$82.7K", category: "Genesis Platform Token" },
+  { id: "juicy", name: "Ms Juicy P (Drop #01)", ticker: "[EMBARGOED]", price: "Fri 5PM UTC", change: "80K+ on X", isUp: true, mcap: "Fair Launch", category: "Verified Creator" },
+  { id: "drop2", name: "Confidential Talent (Drop #02)", ticker: "[EMBARGOED]", price: "Sunday Drop", change: "Top 0.02% OF", isUp: true, mcap: "Fair Launch", category: "NDA Embargoed" },
+  { id: "drop3", name: "Confidential Talent (Drop #03)", ticker: "[EMBARGOED]", price: "Tuesday Drop", change: "Top 0.01% OF", isUp: true, mcap: "Fair Launch", category: "NDA Embargoed" },
 ];
 
 const SearchModal = ({ isOpen, onClose, onSelectToken }) => {

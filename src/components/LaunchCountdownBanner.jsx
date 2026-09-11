@@ -91,7 +91,7 @@ const LaunchCountdownBanner = () => {
                   Mikayla Launchpad Presents:
                 </span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <a
                   href="https://x.com/msjuicy_plenty"
                   target="_blank"
@@ -100,12 +100,12 @@ const LaunchCountdownBanner = () => {
                 >
                   <span>Ms Juicy P</span>
                   <span className="text-[10px] text-[#30d158] font-bold">✓</span>
-                  <span className="text-[9px] font-mono text-white/40 group-hover/name:text-[#d4fc50]">
-                    (@msjuicy_plenty)
+                  <span className="text-[9px] font-mono text-white/50 group-hover/name:text-[#d4fc50]">
+                    (@msjuicy_plenty · 80K+ on X)
                   </span>
                 </a>
-                <span className="text-[10px] font-mono font-bold text-[#d4fc50] px-1.5 py-0.5 rounded bg-black/60 border border-[#d4fc50]/30">
-                  $JUICY
+                <span className="text-[9px] font-mono text-white/50 px-1.5 py-0.5 rounded bg-black/60 border border-white/15">
+                  [TICKER EMBARGOED]
                 </span>
               </div>
             </div>

@@ -66,10 +66,7 @@ const FloatingSideMenu = () => {
     const sections = [
       "hero",
       "upcoming-drops",
-      "content-vault",
-      "benefits",
-      "pricing",
-      "roadmap",
+      "protocol",
     ];
 
     const observer = new IntersectionObserver(
@@ -98,7 +95,7 @@ const FloatingSideMenu = () => {
   const sectionItems = [
     {
       id: "hero",
-      label: "Protocol & $MIKA",
+      label: "Terminal & $MIKA",
       icon: <Rocket className="w-4 h-4" />,
       action: () => scrollToSection("hero"),
     },
@@ -109,28 +106,10 @@ const FloatingSideMenu = () => {
       action: () => scrollToSection("upcoming-drops"),
     },
     {
-      id: "content-vault",
-      label: "Content Vault & Utility",
-      icon: <Flame className="w-4 h-4" />,
-      action: () => scrollToSection("content-vault"),
-    },
-    {
-      id: "benefits",
-      label: "SCM Thesis & Agency",
-      icon: <Activity className="w-4 h-4" />,
-      action: () => scrollToSection("benefits"),
-    },
-    {
-      id: "pricing",
-      label: "$MIKA Tokenomics",
+      id: "protocol",
+      label: "Protocol & Tokenomics",
       icon: <PieChart className="w-4 h-4" />,
-      action: () => scrollToSection("pricing"),
-    },
-    {
-      id: "roadmap",
-      label: "Protocol Roadmap",
-      icon: <Milestone className="w-4 h-4" />,
-      action: () => scrollToSection("roadmap"),
+      action: () => scrollToSection("protocol"),
     },
   ];
 

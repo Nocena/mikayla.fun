@@ -7,6 +7,7 @@ import LaunchTokenModal from "./LaunchTokenModal";
 import SearchModal from "./SearchModal";
 import ShinyText from "./react-bits/ShinyText";
 import LaunchCountdownBanner from "./LaunchCountdownBanner";
+import { DEX_PAIR_URL, FOMO_URL } from "../hooks/useTokenData";
 
 const Header = () => {
   const pathname = useLocation();
@@ -76,22 +77,16 @@ const Header = () => {
                 Launchpad
               </a>
               <a
-                href="#content-vault"
-                className="text-white/60 hover:text-white transition-colors py-1"
+                href="#hero"
+                className="text-white/60 hover:text-[#d4fc50] transition-colors py-1"
               >
-                Vault
+                Trade $MIKA
               </a>
               <a
-                href="#benefits"
+                href="#protocol"
                 className="text-white/60 hover:text-white transition-colors py-1"
               >
-                Protocol
-              </a>
-              <a
-                href="#roadmap"
-                className="text-white/60 hover:text-white transition-colors py-1"
-              >
-                Roadmap
+                Protocol & Cap Table
               </a>
             </nav>
 
@@ -99,7 +94,7 @@ const Header = () => {
             <div className="flex items-center gap-2 sm:gap-5 text-xs font-mono">
               {/* Apple-Grade Dex Paid Pill */}
               <a
-                href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                href={DEX_PAIR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group/dexpaid btn-tactile hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-black/60 hover:bg-black/90 backdrop-blur-xl border-t border-white/25 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] hover:border-[#30d158]/50 hover:shadow-[0_0_16px_rgba(48,209,88,0.2)] transition-all cursor-pointer"
@@ -155,12 +150,9 @@ const Header = () => {
           <div className="md:hidden absolute top-full inset-x-0 h-[calc(100dvh-100%)] bg-[#080808]/98 backdrop-blur-3xl border-b border-white/10 p-5 pb-8 flex flex-col justify-between animate-fadeIn z-50 overflow-y-auto">
             <div className="space-y-2 pt-2">
               {[
-                { href: "#hero", label: "01 // Protocol Overview", sub: "$MIKA Genesis & Robinhood L2" },
+                { href: "#hero", label: "01 // $MIKA Protocol", sub: "Genesis Asset & Robinhood L2 Terminal" },
                 { href: "#upcoming-drops", label: "02 // Curated Launchpad", sub: "Friday, Sunday, Tuesday Drops" },
-                { href: "#content-vault", label: "03 // Burn-to-Unlock Vault", sub: "Holder Gates & Token Utility" },
-                { href: "#benefits", label: "04 // SCM Thesis & Origins", sub: "Agency Network & Direct Talent" },
-                { href: "#pricing", label: "05 // Tokenomics & Treasury", sub: "Cap Table & 50% Profit Burn" },
-                { href: "#roadmap", label: "06 // Protocol Roadmap", sub: "Chatbot Origins to #1 Launchpad" },
+                { href: "#protocol", label: "03 // Protocol & Cap Table", sub: "Fair Bonding Curves & 1B Tokenomics" },
               ].map((item) => (
                 <a
                   key={item.href}
@@ -181,7 +173,7 @@ const Header = () => {
 
             <div className="pt-5 border-t border-white/10 space-y-2.5 mt-4">
               <a
-                href="https://dexscreener.com/search?q=0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                href={DEX_PAIR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
@@ -189,6 +181,17 @@ const Header = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#30d158]" />
                 <span>View on DexScreener</span>
                 <span>↗</span>
+              </a>
+
+              <a
+                href={FOMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 rounded-xl bg-white/5 border border-[#d4fc50]/30 text-white font-mono text-xs flex items-center justify-center gap-2 hover:bg-[#d4fc50]/10 transition-colors"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50]" />
+                <span>Trade on FOMO App</span>
+                <span className="text-[#d4fc50]">↗</span>
               </a>
 
               <button

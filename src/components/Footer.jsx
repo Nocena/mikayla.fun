@@ -103,28 +103,45 @@ const Footer = () => {
               </h4>
               <ul className="space-y-2.5 text-xs font-sans">
                 <li>
-                  <a href="#benefits" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Explore Tokens
+                  <a href="#upcoming-drops" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    Curated Drops Feed
+                  </a>
+                </li>
+                <li>
+                  <a href="#hero" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    $MIKA Terminal & Swap
                   </a>
                 </li>
                 <li>
                   <a href="#services" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Bonding Mechanics
-                  </a>
-                </li>
-                <li>
-                  <a href="#upcoming-drops" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Upcoming Drops (Fri/Sun/Tue)
+                    Bonding Curve Lifecycle
                   </a>
                 </li>
                 <li>
                   <a href="#pricing" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    $MIKA & 50% Profit Burn
+                    Cap Table & Tokenomics
                   </a>
                 </li>
                 <li>
-                  <a href="#roadmap" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    SCM Evolution Roadmap
+                  <a
+                    href="https://dexscreener.com/robinhood/0xc05decb01594ce17cb0cfc46dff62f79092971cb601eb7d8a68699d20b82a7bb"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/70 hover:text-[#30d158] transition-colors flex items-center gap-1"
+                  >
+                    <span>DexScreener Live Pool</span>
+                    <span className="text-[10px]">↗</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/70 hover:text-[#d4fc50] transition-colors flex items-center gap-1"
+                  >
+                    <span>FOMO Trading App</span>
+                    <span className="text-[10px]">↗</span>
                   </a>
                 </li>
               </ul>
@@ -139,29 +156,24 @@ const Footer = () => {
                 <li>
                   <button
                     onClick={handleLaunchClick}
-                    className="text-[#d4fc50] font-semibold hover:underline text-left"
+                    className="text-[#d4fc50] font-semibold hover:underline text-left cursor-pointer"
                   >
                     Apply for Drops →
                   </button>
                 </li>
                 <li>
                   <a href="#services" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Dual Utility Engine
+                    Robinhood L2 Architecture
                   </a>
                 </li>
                 <li>
-                  <a href="#benefits" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Agency & Model Network
+                  <a href="#upcoming-drops" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    Weekly Cohort Schedule
                   </a>
                 </li>
                 <li>
-                  <a href="#content-vault" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    $50 Holder Gate & Burns
-                  </a>
-                </li>
-                <li>
-                  <a href="#roadmap" className="text-white/70 hover:text-[#d4fc50] transition-colors">
-                    Chatbot Monetization
+                  <a href="#pricing" className="text-white/70 hover:text-[#d4fc50] transition-colors">
+                    50% Platform Profit Burn
                   </a>
                 </li>
               </ul>
@@ -231,7 +243,7 @@ const Footer = () => {
 
           <div className="flex items-center gap-6">
             <a
-              href="https://x.com"
+              href="https://x.com/mikaylafun"
               target="_blank"
               rel="noreferrer"
               className="hover:text-[#d4fc50] transition-colors"
