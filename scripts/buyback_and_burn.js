@@ -3,7 +3,7 @@ import readline from "readline";
 
 const RPC_URL = "https://rpc.mainnet.chain.robinhood.com";
 const CURVE_ADDRESS = "0x551317514d823bda9bd2eb20d2ed331afaae45ed";
-const TOKEN_ADDRESS = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
+const TOKEN_ADDRESS = "0x123372D9de53D5bEC2988DD2386c7d3666A372a8";
 const EXPECTED_DEPLOYER = "0xb8a7a3b3422d9d551c0d7e54e24e260e4a087ecb".toLowerCase();
 
 const CURVE_ABI = [

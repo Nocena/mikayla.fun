@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { ArrowUpRight, Bell, Check, Clock, Flame, ShieldAlert } from "lucide-react";
 import LightRays from "./react-bits/LightRays";
 import SpotlightCard from "./react-bits/SpotlightCard";
@@ -91,7 +92,7 @@ export default function Hero() {
 
   const handleCopyCA = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    navigator.clipboard.writeText(tokenData.tokenAddress || "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4");
+    navigator.clipboard.writeText(tokenData.tokenAddress || "0x123372D9de53D5bEC2988DD2386c7d3666A372a8");
     setCopiedCA(true);
     setToastMessage("Copied $MIKA Contract Address to clipboard!");
     setTimeout(() => {
@@ -181,7 +182,7 @@ export default function Hero() {
               <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)]">
                 <span className="text-white/50 text-[9px] sm:text-[10px] font-medium tracking-wider">CA:</span>
                 <code className="text-white/90 font-mono text-[10px] sm:text-[11px] truncate max-w-[110px] sm:max-w-[140px]">
-                  0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4
+                  0x123372D9de53D5bEC2988DD2386c7d3666A372a8
                 </code>
                 <button
                   onClick={handleCopyCA}
@@ -215,7 +216,7 @@ export default function Hero() {
 
               {/* FOMO Terminal Capsule */}
               <a
-                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
+                href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group/fomo btn-tactile inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)] hover:border-[#d4fc50]/40 hover:shadow-[0_0_16px_rgba(212,252,80,0.15)] transition-all cursor-pointer"
@@ -289,27 +290,35 @@ export default function Hero() {
 
             {/* Quick Tactile Actions */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
+              <Link
+                to="/juicy"
+                className="btn-tactile px-6 py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-xl flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(212,252,80,0.35)] active:scale-[0.98] transition-all"
+              >
+                <Flame className="w-4 h-4 text-black" />
+                <span>ENTER MS JUICY ($JUICY)</span>
+                <span>→</span>
+              </Link>
               <a
                 href="#upcoming-drops"
-                className="btn-tactile px-6 py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-none flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(212,252,80,0.25)]"
+                className="btn-tactile px-5 py-3.5 border border-white/20 bg-white/[0.03] hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Explore Launchpad Drops</span>
+                <span>All Drops</span>
                 <span>↓</span>
               </a>
               <a
-                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
+                href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-tactile px-5 py-3.5 border border-white/20 hover:border-[#d4fc50] text-white/90 hover:text-white font-mono text-xs uppercase font-medium tracking-[0.08em] transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-white/[0.02] hover:bg-[#d4fc50]/10"
+                className="btn-tactile px-4 py-3.5 border border-white/20 hover:border-[#d4fc50] text-white/90 hover:text-white font-mono text-xs uppercase font-medium tracking-[0.08em] transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-white/[0.02] hover:bg-[#d4fc50]/10 rounded-xl"
               >
-                <span>Trade on FOMO</span>
+                <span>Trade $MIKA</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#d4fc50]" />
               </a>
               <button
                 onClick={handleOpenLaunch}
-                className="btn-tactile px-6 py-3.5 border border-white/20 bg-black/50 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-none flex items-center justify-center gap-2 cursor-pointer"
+                className="btn-tactile px-4 py-3.5 border border-white/20 bg-black/50 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>+ Apply to Launch</span>
+                <span>+ Apply</span>
               </button>
             </div>
           </div>
@@ -440,13 +449,21 @@ export default function Hero() {
               </div>
 
               {/* Action CTAs */}
-              <div className="space-y-2">
+              <div className="space-y-2.5">
+                <Link
+                  to="/juicy"
+                  className="btn-tactile w-full py-3.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_25px_rgba(212,252,80,0.4)] transition-all cursor-pointer group/juicybtn active:scale-[0.99]"
+                >
+                  <Flame className="w-4 h-4 text-black group-hover/juicybtn:scale-110 transition-transform" />
+                  <span>ENTER MS JUICY ($JUICY) SYNDICATE →</span>
+                </Link>
+
                 <button
                   onClick={handleNotifyLaunch}
                   className={`btn-tactile w-full py-2.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all ${
                     isAlertSet
                       ? "bg-white/10 text-[#d4fc50] border border-[#d4fc50]/40"
-                      : "bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_16px_rgba(212,252,80,0.3)]"
+                      : "bg-white/5 hover:bg-white/10 text-white/75 border border-white/15"
                   }`}
                 >
                   {isAlertSet ? <Check className="w-4 h-4" /> : <Bell className="w-4 h-4" />}

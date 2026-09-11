@@ -1,10 +1,20 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowLeft, Flame, Shield, Menu, X, ExternalLink } from "lucide-react";
 import { JUICY_CONFIG } from "../../constants/juicy";
+import { useWeb3Wallet } from "../../hooks/useWeb3Wallet";
 
 export default function JuicyHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const {
+    account,
+    isConnected,
+    isConnecting,
+    isCorrectNetwork,
+    connectWallet,
+    disconnectWallet,
+    switchToRobinhood,
+  } = useWeb3Wallet();
 
   const navLinks = [
     { label: "Overview", href: "#overview" },
@@ -29,14 +39,14 @@ export default function JuicyHeader() {
       <div className="max-w-[92rem] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
         {/* Left: Brand Identity & Back to Launchpad */}
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="group flex items-center gap-1 px-2 py-1 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-mono uppercase tracking-widest text-white/70 hover:text-white transition-all cursor-pointer shrink-0"
             title="Return to Mikayla Launchpad"
           >
             <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
             <span className="hidden sm:inline">Home</span>
-          </a>
+          </Link>
 
           <div className="h-4 w-[1px] bg-white/10 hidden sm:block" />
 
@@ -81,18 +91,37 @@ export default function JuicyHeader() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2 sm:gap-3 font-mono text-xs">
-          {/* Connect Wallet Mock */}
-          <button
-            onClick={() => setIsConnected(!isConnected)}
-            className={`btn-tactile hidden sm:flex px-3 py-1.5 rounded-lg border text-xs font-mono uppercase tracking-wider cursor-pointer transition-all items-center gap-1.5 ${
-              isConnected
-                ? "bg-white/10 border-[#30d158] text-[#30d158]"
-                : "bg-white/5 border-white/20 text-white/90 hover:bg-white/10"
-            }`}
-          >
-            <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? "bg-[#30d158]" : "bg-[#d4fc50]"}`} />
-            <span>{isConnected ? "0x7a...1fA0" : "Connect"}</span>
-          </button>
+          {/* Connect Wallet Button */}
+          {!isConnected ? (
+            <button
+              onClick={connectWallet}
+              disabled={isConnecting}
+              className="btn-tactile hidden sm:flex px-3 py-1.5 rounded-lg border text-xs font-mono uppercase tracking-wider cursor-pointer transition-all items-center gap-1.5 bg-white/5 border-white/20 text-white/90 hover:bg-white/10 hover:border-[#d4fc50]"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d4fc50] animate-pulse" />
+              <span>{isConnecting ? "Connecting..." : "Connect Wallet"}</span>
+            </button>
+          ) : !isCorrectNetwork ? (
+            <button
+              onClick={switchToRobinhood}
+              className="btn-tactile hidden sm:flex px-3 py-1.5 rounded-lg border text-xs font-mono uppercase tracking-wider cursor-pointer transition-all items-center gap-1.5 bg-[#ff9500]/15 border-[#ff9500]/50 text-[#ff9500] hover:bg-[#ff9500]/25"
+              title="Click to switch wallet to Robinhood Chain L2"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff9500] animate-ping" />
+              <span>Switch to RH L2</span>
+            </button>
+          ) : (
+            <button
+              onClick={disconnectWallet}
+              className="btn-tactile hidden sm:flex px-3 py-1.5 rounded-lg border text-xs font-mono uppercase tracking-wider cursor-pointer transition-all items-center gap-1.5 bg-white/10 border-[#30d158] text-[#30d158] hover:bg-white/15"
+              title="Connected on Robinhood Chain L2 · Click to disconnect"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#30d158]" />
+              <span>
+                {account.slice(0, 6)}...{account.slice(-4)}
+              </span>
+            </button>
+          )}
 
           {/* Quick Buy / Incinerator CTA */}
           <a

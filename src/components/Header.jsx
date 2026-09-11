@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import { logo } from "../assets";
 import { navigation } from "../constants";
@@ -69,7 +69,14 @@ const Header = () => {
             </a>
 
             {/* Apple Optical Typographic Navigation */}
-            <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-[0.06em] uppercase">
+            <nav className="hidden md:flex items-center gap-7 text-xs font-mono tracking-[0.06em] uppercase">
+              <Link
+                to="/juicy"
+                className="text-[#d4fc50] hover:text-white font-bold transition-colors py-1 flex items-center gap-1.5"
+              >
+                <span>$JUICY</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#d4fc50]/20 text-[#d4fc50] font-mono">NEW</span>
+              </Link>
               <a
                 href="#upcoming-drops"
                 className="text-white/60 hover:text-white transition-colors py-1"
@@ -130,7 +137,7 @@ const Header = () => {
                 }`}
               >
                 <span className={`w-1.5 h-1.5 ${isConnected ? "bg-[#30d158]" : "bg-[#d4fc50]"}`} />
-                <span>{isConnected ? "0xa4f...3Ab4" : "Connect"}</span>
+                <span>{isConnected ? "0x123...72a8" : "Connect"}</span>
               </button>
 
               {/* Mobile Menu Button */}
@@ -150,25 +157,33 @@ const Header = () => {
           <div className="md:hidden absolute top-full inset-x-0 h-[calc(100dvh-100%)] bg-[#080808]/98 backdrop-blur-3xl border-b border-white/10 p-5 pb-8 flex flex-col justify-between animate-fadeIn z-50 overflow-y-auto">
             <div className="space-y-2 pt-2">
               {[
+                { href: "/juicy", label: "★ // MS JUICY ($JUICY)", sub: "Vice Capital Syndicate · Live On-Chain Burn" },
                 { href: "#hero", label: "01 // $MIKA Protocol", sub: "Genesis Asset & Robinhood L2 Terminal" },
                 { href: "#upcoming-drops", label: "02 // Curated Launchpad", sub: "Friday, Sunday, Tuesday Drops" },
                 { href: "#protocol", label: "03 // Protocol & Cap Table", sub: "Fair Bonding Curves & 1B Tokenomics" },
-              ].map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={handleClick}
-                  className="block p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#d4fc50]/30 hover:bg-white/5 transition-all"
-                >
-                  <div className="text-sm font-mono font-medium text-white flex items-center justify-between">
-                    <span>{item.label}</span>
-                    <span className="text-[#d4fc50] text-xs">→</span>
-                  </div>
-                  <div className="text-[11px] font-mono text-white/40 mt-0.5">
-                    {item.sub}
-                  </div>
-                </a>
-              ))}
+              ].map((item) => {
+                const isInternal = item.href.startsWith("/");
+                const Component = isInternal ? Link : "a";
+                const linkProps = isInternal
+                  ? { to: item.href, onClick: handleClick }
+                  : { href: item.href, onClick: handleClick };
+
+                return (
+                  <Component
+                    key={item.href}
+                    {...linkProps}
+                    className="block p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#d4fc50]/30 hover:bg-white/5 transition-all"
+                  >
+                    <div className="text-sm font-mono font-medium text-white flex items-center justify-between">
+                      <span>{item.label}</span>
+                      <span className="text-[#d4fc50] text-xs">→</span>
+                    </div>
+                    <div className="text-[11px] font-mono text-white/40 mt-0.5">
+                      {item.sub}
+                    </div>
+                  </Component>
+                );
+              })}
             </div>
 
             <div className="pt-5 border-t border-white/10 space-y-2.5 mt-4">

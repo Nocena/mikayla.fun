@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Copy,
   Check,
@@ -14,7 +15,7 @@ import SpotlightCard from "./react-bits/SpotlightCard";
 import { useTokenData } from "../hooks/useTokenData";
 import LaunchNotifyModal from "./LaunchNotifyModal";
 
-const MIKA_CA = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
+const MIKA_CA = "0x123372D9de53D5bEC2988DD2386c7d3666A372a8";
 const JUICY_X_URL = "https://x.com/msjuicy_plenty";
 const JUICY_REPOST_URL = "https://x.com/mikaylafun/status/2098092424337711392?s=20";
 
@@ -181,6 +182,35 @@ export default function UpcomingDrops() {
           </div>
         </div>
 
+        {/* Featured Juicy Syndicate Banner */}
+        <div className="mb-7 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#d4fc50]/15 via-black/80 to-[#d4fc50]/10 border border-[#d4fc50]/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-[0_0_25px_rgba(212,252,80,0.12)]">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-[#d4fc50] text-black flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(212,252,80,0.4)]">
+              <Flame className="w-6 h-6 text-black fill-black" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-[#d4fc50]">
+                  Ms Juicy P ($JUICY) Syndicate Subpage Live
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] text-[9px] font-mono font-bold animate-pulse">
+                  PUBLIC ACCESS · ZERO PASSWORD
+                </span>
+              </div>
+              <p className="text-xs text-white/75 font-sans mt-0.5 max-w-2xl">
+                Burn $MIKA on-chain with wallet signature to incinerate supply & unlock exclusive high-resolution videos, snippets, and master tapes.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/juicy"
+            className="btn-tactile px-6 py-3 rounded-xl bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs uppercase tracking-wider shrink-0 flex items-center gap-2 shadow-[0_0_20px_rgba(212,252,80,0.3)] transition-all cursor-pointer w-full sm:w-auto justify-center"
+          >
+            <span>ENTER $JUICY SUBPAGE</span>
+            <span>→</span>
+          </Link>
+        </div>
+
         {/* Launchpad Grid: High media presence, zero nested box clutter, effortless typography */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
 
@@ -258,7 +288,7 @@ export default function UpcomingDrops() {
                     className="flex items-center gap-1.5 text-white/80 hover:text-[#d4fc50] transition-colors cursor-pointer"
                     title="Copy Contract Address"
                   >
-                    <code className="text-[10px]">0xa4f9...3Ab4</code>
+                    <code className="text-[10px]">0x1233...72a8</code>
                     {copiedCA ? <Check className="w-3 h-3 text-[#d4fc50]" /> : <Copy className="w-3 h-3" />}
                   </button>
                 </div>
@@ -266,7 +296,7 @@ export default function UpcomingDrops() {
 
               {/* Action Button */}
               <a
-                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
+                href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-tactile w-full py-2.5 rounded-xl bg-[#d4fc50] hover:bg-white text-black text-xs font-mono font-bold uppercase tracking-wider text-center flex items-center justify-center gap-1.5 shadow-[0_0_14px_rgba(212,252,80,0.25)] transition-colors"
@@ -372,18 +402,27 @@ export default function UpcomingDrops() {
                 </div>
               </div>
 
-              {/* Action Button */}
-              <button
-                onClick={() => handleWhitelist("drop-friday", "Ms Juicy P (Drop #01)")}
-                className={`btn-tactile w-full py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                  whitelisted["drop-friday"]
-                    ? "bg-white/10 text-[#d4fc50] border border-[#d4fc50]/40"
-                    : "bg-[#d4fc50] hover:bg-white hover:text-black text-black border border-white/15 shadow-[0_0_12px_rgba(212,252,80,0.2)]"
-                }`}
-              >
-                {whitelisted["drop-friday"] ? <Check className="w-3.5 h-3.5" /> : <Bell className="w-3.5 h-3.5" />}
-                <span>{whitelisted["drop-friday"] ? "Alert Set ✓" : "Notify on Launch"}</span>
-              </button>
+              {/* Action Buttons */}
+              <div className="space-y-2">
+                <Link
+                  to="/juicy"
+                  className="btn-tactile w-full py-3 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all cursor-pointer flex items-center justify-center gap-2 bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_18px_rgba(212,252,80,0.35)] group/btn active:scale-[0.99]"
+                >
+                  <Flame className="w-3.5 h-3.5 text-black group-hover/btn:scale-110 transition-transform" />
+                  <span>Enter Ms Juicy ($JUICY) →</span>
+                </Link>
+                <button
+                  onClick={() => handleWhitelist("drop-friday", "Ms Juicy P (Drop #01)")}
+                  className={`btn-tactile w-full py-2 rounded-xl text-[11px] font-mono font-bold tracking-wider uppercase transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    whitelisted["drop-friday"]
+                      ? "bg-white/10 text-[#d4fc50] border border-[#d4fc50]/40"
+                      : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+                  }`}
+                >
+                  {whitelisted["drop-friday"] ? <Check className="w-3 h-3" /> : <Bell className="w-3 h-3" />}
+                  <span>{whitelisted["drop-friday"] ? "Alert Set ✓" : "Notify on Launch"}</span>
+                </button>
+              </div>
             </SpotlightCard>
           )}
 

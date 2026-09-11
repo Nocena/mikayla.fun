@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Rocket,
   Sparkles,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 const FloatingSideMenu = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [hoveredId, setHoveredId] = useState(null);
@@ -93,6 +95,17 @@ const FloatingSideMenu = () => {
 
   // Section navigation items with meticulously tailored icons
   const sectionItems = [
+    {
+      id: "juicy",
+      label: "Ms Juicy P ($JUICY)",
+      icon: <Flame className="w-4 h-4 text-[#d4fc50]" />,
+      action: () => navigate("/juicy"),
+      badge: (
+        <span className="px-1.5 py-0.5 text-[8px] font-mono font-bold bg-[#d4fc50] text-black rounded">
+          LIVE
+        </span>
+      ),
+    },
     {
       id: "hero",
       label: "Terminal & $MIKA",

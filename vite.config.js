@@ -8,6 +8,17 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'framer-motion',
+      'lucide-react',
+      'ethers',
+      'scroll-lock',
+    ],
+  },
   build: {
     rollupOptions: {
       output: {

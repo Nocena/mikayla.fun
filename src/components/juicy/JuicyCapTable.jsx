@@ -207,7 +207,7 @@ export default function JuicyCapTable() {
               <span>{copied ? "COPIED TO CLIPBOARD" : "COPY CONTRACT"}</span>
             </button>
             <a
-              href={`${JUICY_CONFIG.explorerUrl}/token/${JUICY_CONFIG.contractAddress}`}
+              href={JUICY_CONFIG.explorerUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-tactile px-4 py-2.5 rounded-xl bg-[#ccff00] hover:bg-white text-black font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(204,255,0,0.3)]"

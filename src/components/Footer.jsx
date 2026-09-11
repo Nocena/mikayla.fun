@@ -135,7 +135,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"
+                    href="https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/70 hover:text-[#d4fc50] transition-colors flex items-center gap-1"

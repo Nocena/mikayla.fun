@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-export const MIKA_CA = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
+export const MIKA_CA = "0x123372D9de53D5bEC2988DD2386c7d3666A372a8";
 export const ROBINHOOD_RPC_URL = "https://rpc.mainnet.chain.robinhood.com";
-export const DEX_PAIR_URL = "https://dexscreener.com/robinhood/0xc05decb01594ce17cb0cfc46dff62f79092971cb601eb7d8a68699d20b82a7bb";
+export const DEX_PAIR_URL = `https://dexscreener.com/search?q=${MIKA_CA}`;
 export const FOMO_URL = `https://fomo.family/token/${MIKA_CA}`;
 export const DEX_SEARCH_URL = `https://dexscreener.com/search?q=${MIKA_CA}`;
 

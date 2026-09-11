@@ -77,7 +77,7 @@ export default function JuicyTradingTerminal() {
               </span>
             </div>
             <a
-              href={`${JUICY_CONFIG.explorerUrl}/tx/${swapReceipt.txHash}`}
+              href={`${JUICY_CONFIG.explorerBaseUrl || "https://robinhoodchain.blockscout.com"}/tx/${swapReceipt.txHash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#ccff00] hover:underline flex items-center gap-1"

@@ -114,7 +114,7 @@ export default function JuicyHero() {
                 className="btn-tactile px-4 py-4 rounded-lg border border-white/15 bg-black/80 hover:bg-black text-xs font-mono text-white/80 hover:text-white flex items-center gap-2 cursor-pointer"
                 title="Copy verified contract address"
               >
-                <DecryptedText text="0x7a82...1fA0" animateOn="hover" speed={25} />
+                <DecryptedText text="0x1233...72a8" animateOn="hover" speed={25} />
                 {copiedCA ? (
                   <Check className="w-3.5 h-3.5 text-[#30d158]" />
                 ) : (

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowUpRight, Copy, Check, Shield } from "lucide-react";
 import { JUICY_CONFIG } from "../../constants/juicy";
 
@@ -100,12 +101,12 @@ export default function JuicyFooter() {
                 </a>
               </li>
               <li>
-                <a
-                  href="/"
+                <Link
+                  to="/"
                   className="text-[#d4fc50] hover:underline flex items-center gap-1 font-bold"
                 >
                   <span>← Mikayla.fun Home</span>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

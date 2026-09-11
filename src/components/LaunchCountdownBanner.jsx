@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Sparkles, ArrowRight, Clock, X, Flame, Check } from "lucide-react";
 import ShinyText from "./react-bits/ShinyText";
 
@@ -112,13 +113,13 @@ const LaunchCountdownBanner = () => {
           </div>
 
           {/* Mobile Right Quick Action */}
-          <button
-            onClick={scrollToDrop}
-            className="md:hidden btn-tactile text-[10px] font-mono font-bold px-2 py-1 rounded bg-[#d4fc50] text-black shrink-0 flex items-center gap-1 cursor-pointer"
+          <Link
+            to="/juicy"
+            className="md:hidden btn-tactile text-[10px] font-mono font-bold px-2.5 py-1 rounded bg-[#d4fc50] text-black shrink-0 flex items-center gap-1 cursor-pointer"
           >
-            <span>Drop</span>
+            <span>$JUICY</span>
             <ArrowRight className="w-3 h-3" />
-          </button>
+          </Link>
         </div>
 
         {/* Center: Live Real-Time Countdown */}
@@ -179,14 +180,14 @@ const LaunchCountdownBanner = () => {
             <span>50% Profit Burns $MIKA</span>
           </div>
 
-          {/* View Drop CTA */}
-          <button
-            onClick={scrollToDrop}
-            className="btn-tactile inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#d4fc50] hover:bg-white text-black font-bold text-[11px] uppercase tracking-wider shadow-[0_0_16px_rgba(212,252,80,0.3)] cursor-pointer transition-all"
+          {/* Enter Syndicate CTA */}
+          <Link
+            to="/juicy"
+            className="btn-tactile inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#d4fc50] hover:bg-white text-black font-bold text-[11px] uppercase tracking-wider shadow-[0_0_16px_rgba(212,252,80,0.3)] cursor-pointer transition-all"
           >
-            <span>View Drop</span>
+            <span>Enter $JUICY</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
 
           {/* Dismiss button */}
           <button

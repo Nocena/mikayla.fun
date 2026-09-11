@@ -35,7 +35,7 @@ const roadmapData = [
       "Proved product-market fit on Solana as the undisputed pioneer of the Sex Capital Market. Today marking genesis deployment on Robinhood Chain with the $MIKA protocol token, fair bonding curve, and a permanent 50% platform profit burn sink.",
     specs: [
       { label: "Genesis Token", value: "$MIKA Live Today" },
-      { label: "Official CA", value: "0xa4f9145d8d02...3Ab4" },
+      { label: "Official CA", value: "0x123372D9de53...72a8" },
       { label: "Platform Sink", value: "50% Profit Burn to $MIKA" },
       { label: "Settlement", value: "Robinhood Chain L2" },
     ],
