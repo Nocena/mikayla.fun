@@ -1,9 +1,9 @@
 // Onchain Staking Configuration for Robinhood Chain L2
-// Deployed contract: 0x54F35DE15Fdd410417f4591afEe36a6Bad2F5cfa
+// Deployed contract: 0xc0F1586199f0d3a15092BebD2e45a3177077B978
 import MikaStakingVaultArtifact from "./MikaStakingVault.json";
 
 export const STAKING_CONFIG = {
-  contractAddress: "0x54F35DE15Fdd410417f4591afEe36a6Bad2F5cfa",
+  contractAddress: "0xc0F1586199f0d3a15092BebD2e45a3177077B978",
   tokenAddress: "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4",
   tokenSymbol: "$MIKA",
   chainName: "Robinhood Chain L2",
