@@ -5,15 +5,19 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Protocol from "./components/Protocol";
 import UpcomingDrops from "./components/UpcomingDrops";
+import StakingSection from "./components/StakingSection";
 import ClickSpark from "./components/react-bits/ClickSpark";
 import FloatingSideMenu from "./components/FloatingSideMenu";
+import AgeVerificationModal from "./components/AgeVerificationModal";
 
 const App = () => {
   return (
     <ClickSpark sparkColor="#d4fc50" sparkCount={9} sparkRadius={24} duration={400}>
+      <AgeVerificationModal />
       <div className="overflow-x-clip min-h-screen bg-[#080808] text-[#f4f4f2] pb-28 lg:pb-0">
         <Header />
         <Hero />
+        <StakingSection />
         <UpcomingDrops />
         <Protocol />
         <Footer />

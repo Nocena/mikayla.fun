@@ -31,6 +31,8 @@ export function useWeb3Wallet() {
   const [chainId, setChainId] = useState(null);
   const [balance, setBalance] = useState("0");
   const [rawBalance, setRawBalance] = useState(0n);
+  const [signer, setSigner] = useState(null);
+  const [provider, setProvider] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [txState, setTxState] = useState({
     status: "idle", // "idle" | "signing" | "confirming" | "success" | "error"
@@ -61,59 +63,6 @@ export function useWeb3Wallet() {
       console.warn("Could not fetch $MIKA balance:", err);
     }
   }, [account]);
-
-  // Connect wallet
-  const connectWallet = useCallback(async () => {
-    if (!hasProvider) {
-      alert("No Web3 wallet detected. Please install MetaMask, Rabby, or Coinbase Wallet.");
-      return null;
-    }
-
-    setIsConnecting(true);
-    setTxState({ status: "idle", txHash: null, error: null });
-
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.send("eth_requestAccounts", []);
-      if (accounts && accounts.length > 0) {
-        const activeAcc = accounts[0];
-        setAccount(activeAcc);
-
-        const network = await provider.getNetwork();
-        const currentChainId = Number(network.chainId);
-        setChainId(currentChainId);
-
-        await fetchBalance(activeAcc);
-
-        if (currentChainId !== ROBINHOOD_CHAIN.chainIdDec) {
-          await switchToRobinhood();
-        }
-
-        setIsConnecting(false);
-        return activeAcc;
-      }
-    } catch (err) {
-      console.error("Wallet connection error:", err);
-      setIsConnecting(false);
-      setTxState({
-        status: "error",
-        txHash: null,
-        error: err?.message || "Failed to connect wallet",
-      });
-      return null;
-    }
-
-    setIsConnecting(false);
-    return null;
-  }, [hasProvider, fetchBalance]);
-
-  // Disconnect wallet
-  const disconnectWallet = useCallback(() => {
-    setAccount(null);
-    setBalance("0");
-    setRawBalance(0n);
-    setTxState({ status: "idle", txHash: null, error: null });
-  }, []);
 
   // Switch network to Robinhood Chain L2
   const switchToRobinhood = useCallback(async () => {
@@ -162,6 +111,65 @@ export function useWeb3Wallet() {
         return false;
       }
     }
+  }, []);
+
+  // Connect wallet
+  const connectWallet = useCallback(async () => {
+    if (!hasProvider) {
+      alert("No Web3 wallet detected. Please install MetaMask, Rabby, or Coinbase Wallet.");
+      return null;
+    }
+
+    setIsConnecting(true);
+    setTxState({ status: "idle", txHash: null, error: null });
+
+    try {
+      const browserProvider = new ethers.BrowserProvider(window.ethereum);
+      const accounts = await browserProvider.send("eth_requestAccounts", []);
+      if (accounts && accounts.length > 0) {
+        const activeAcc = accounts[0];
+        setAccount(activeAcc);
+
+        const activeSigner = await browserProvider.getSigner();
+        setProvider(browserProvider);
+        setSigner(activeSigner);
+
+        const network = await browserProvider.getNetwork();
+        const currentChainId = Number(network.chainId);
+        setChainId(currentChainId);
+
+        await fetchBalance(activeAcc);
+
+        if (currentChainId !== ROBINHOOD_CHAIN.chainIdDec) {
+          await switchToRobinhood();
+        }
+
+        setIsConnecting(false);
+        return activeAcc;
+      }
+    } catch (err) {
+      console.error("Wallet connection error:", err);
+      setIsConnecting(false);
+      setTxState({
+        status: "error",
+        txHash: null,
+        error: err?.message || "Failed to connect wallet",
+      });
+      return null;
+    }
+
+    setIsConnecting(false);
+    return null;
+  }, [hasProvider, fetchBalance, switchToRobinhood]);
+
+  // Disconnect wallet
+  const disconnectWallet = useCallback(() => {
+    setAccount(null);
+    setSigner(null);
+    setProvider(null);
+    setBalance("0");
+    setRawBalance(0n);
+    setTxState({ status: "idle", txHash: null, error: null });
   }, []);
 
   // Burn tokens on-chain with wallet signature
@@ -280,10 +288,19 @@ export function useWeb3Wallet() {
 
     window.ethereum
       .request?.({ method: "eth_accounts" })
-      .then((accounts) => {
+      .then(async (accounts) => {
         if (accounts && accounts.length > 0) {
-          setAccount(accounts[0]);
-          fetchBalance(accounts[0]);
+          try {
+            const bp = new ethers.BrowserProvider(window.ethereum);
+            const s = await bp.getSigner();
+            setProvider(bp);
+            setSigner(s);
+            setAccount(accounts[0]);
+            fetchBalance(accounts[0]);
+          } catch (e) {
+            setAccount(accounts[0]);
+            fetchBalance(accounts[0]);
+          }
         }
       })
       .catch(() => {});
@@ -303,6 +320,8 @@ export function useWeb3Wallet() {
 
   return {
     account,
+    signer,
+    provider,
     chainId,
     balance,
     rawBalance,

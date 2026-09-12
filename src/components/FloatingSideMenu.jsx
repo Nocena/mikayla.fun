@@ -11,6 +11,7 @@ import {
   Search,
   ArrowUpRight,
   ArrowUp,
+  Lock,
 } from "lucide-react";
 
 const FloatingSideMenu = () => {
@@ -103,6 +104,17 @@ const FloatingSideMenu = () => {
       badge: (
         <span className="px-1.5 py-0.5 text-[8px] font-mono font-bold bg-[#d4fc50] text-black rounded">
           LIVE
+        </span>
+      ),
+    },
+    {
+      id: "vault",
+      label: "VIP Cipher Vault",
+      icon: <Lock className="w-4 h-4 text-emerald-400" />,
+      action: () => navigate("/vault"),
+      badge: (
+        <span className="px-1.5 py-0.5 text-[8px] font-mono font-bold bg-emerald-400/20 text-emerald-300 rounded border border-emerald-400/30">
+          STAKE
         </span>
       ),
     },

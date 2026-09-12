@@ -43,6 +43,12 @@ export const navigation = [
     url: "#trading",
   },
   {
+    id: "vault",
+    title: "Creator Vaults",
+    url: "/vault",
+    isRoute: true,
+  },
+  {
     id: "2",
     title: "Protocol",
     url: "#how-it-works",

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import App from "./App.jsx";
 import JuicyPage from "./pages/JuicyPage.jsx";
+import VaultPage from "./pages/VaultPage.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import "./index.css";
 
@@ -12,6 +13,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Router>
       <ScrollToTop />
       <Routes>
+        <Route path="/vault" element={<VaultPage />} />
+        <Route path="/vault/*" element={<VaultPage />} />
         <Route path="/juicy" element={<JuicyPage />} />
         <Route path="/juicy/*" element={<JuicyPage />} />
         <Route path="/" element={<App />} />

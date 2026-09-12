@@ -28,3 +28,6 @@ dist-ssr
 .vercel
 .agents/
 skills-lock.json
+
+# Local vault video downloads (large media files >100MB)
+public/vault/videos/

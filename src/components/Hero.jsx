@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowUpRight, Bell, Check, Clock, Flame, ShieldAlert } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowUpRight, Bell, Check, Clock, Flame, ShieldAlert, FolderLock, Unlock, Sparkles, ShieldCheck } from "lucide-react";
 import LightRays from "./react-bits/LightRays";
 import SpotlightCard from "./react-bits/SpotlightCard";
 import HeroScrollCanvas from "./HeroScrollCanvas";
@@ -27,8 +27,17 @@ const getTargetTimestamp = () => {
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const navigate = useNavigate();
   const [scrollProgress, setScrollProgress] = useState(0);
   const tokenData = useTokenData();
+
+  const handleDemoTier = (tier) => {
+    try {
+      localStorage.setItem("mika_simulated_tier", tier);
+      localStorage.setItem("mika_age_verified", "true");
+    } catch {}
+    navigate("/vault");
+  };
 
   const [toastMessage, setToastMessage] = useState(null);
   const [copiedCA, setCopiedCA] = useState(false);
@@ -171,9 +180,9 @@ export default function Hero() {
           <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-center">
             {/* Monospace Architectural Tag */}
             <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
-              <span>[ 01 // ROBINHOOD PROTOCOL ]</span>
+              <span>[ 01 // NON-CUSTODIAL STAKING VAULT ]</span>
               <span className="text-white/30 hidden sm:inline">|</span>
-              <span className="text-white/60 hidden sm:inline text-[10px]">SOLANA → ROBINHOOD EXPANSION</span>
+              <span className="text-white/60 hidden sm:inline text-[10px]">16 CREATOR ARCHIVES · 3-DAY UNBONDING</span>
             </div>
 
             {/* Official CA, DEX PAID & Non-Overlaying Burn Counter Capsule */}
@@ -238,13 +247,13 @@ export default function Hero() {
 
             {/* Bold Editorial Headline */}
             <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-serif text-white tracking-display leading-[1.05] mb-4">
-              Sex Capital Markets.<br />
-              <span className="italic font-light text-[#d4fc50]">Tokenized on Robinhood.</span>
+              Stake $MIKA.<br />
+              <span className="italic font-light text-[#d4fc50]">Unlock 16 Creator Vaults.</span>
             </h1>
 
-            {/* Crucial Explanation of Current Token ($MIKA) */}
-            <p className="text-xs sm:text-sm text-white/75 max-w-xl leading-relaxed font-sans font-light mb-6 border-l border-white/15 pl-3">
-              Solana's premier SCM launchpad is expanding to Robinhood Chain L2. <strong className="text-white font-medium">50% of all launch and platform profits are permanently routed on-chain to buy back and burn $MIKA supply forever.</strong>
+            {/* Crucial Explanation of Current Token ($MIKA) and Staking Vault */}
+            <p className="text-xs sm:text-sm text-white/75 max-w-xl leading-relaxed font-sans font-light mb-6 border-l border-[#d4fc50]/40 pl-3">
+              We collaborate directly with verified top creators who receive continuous protocol revenue. Stake $MIKA to unlock <strong className="text-white font-medium">exclusive private sets, raw unedited takes, and studio voice memos</strong> while retaining 100% non-custodial custody with a swift 3-day unbonding cooldown.
             </p>
 
             {/* Metrics Matrix (Verified Live Market & Onchain Values) */}
@@ -291,20 +300,20 @@ export default function Hero() {
             {/* Quick Tactile Actions */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
               <Link
-                to="/juicy"
-                className="btn-tactile px-6 py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-xl flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(212,252,80,0.35)] active:scale-[0.98] transition-all"
+                to="/vault"
+                className="btn-tactile px-6 py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-xl flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(212,252,80,0.4)] active:scale-[0.98] transition-all"
               >
-                <Flame className="w-4 h-4 text-black" />
-                <span>ENTER MS JUICY ($JUICY)</span>
+                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                <span>ENTER CREATOR VAULT (16 ARCHIVES)</span>
                 <span>→</span>
               </Link>
-              <a
-                href="#upcoming-drops"
-                className="btn-tactile px-5 py-3.5 border border-white/20 bg-white/[0.03] hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 cursor-pointer"
+              <Link
+                to="/juicy"
+                className="btn-tactile px-4 py-3.5 border border-[#d4fc50]/40 bg-[#d4fc50]/10 hover:bg-[#d4fc50]/20 text-[#d4fc50] font-mono font-bold text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>All Drops</span>
-                <span>↓</span>
-              </a>
+                <Flame className="w-3.5 h-3.5" />
+                <span>$JUICY</span>
+              </Link>
               <a
                 href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
                 target="_blank"
@@ -314,29 +323,23 @@ export default function Hero() {
                 <span>Trade $MIKA</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#d4fc50]" />
               </a>
-              <button
-                onClick={handleOpenLaunch}
-                className="btn-tactile px-4 py-3.5 border border-white/20 bg-black/50 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>+ Apply</span>
-              </button>
             </div>
           </div>
 
           {/* ========================================================= */}
-          {/* RIGHT COLUMN: NEXT FAIR LAUNCH TEASER (MS JUICY P)        */}
+          {/* RIGHT COLUMN: CREATOR STAKING VAULT MEGA FEATURE CARD      */}
           {/* ========================================================= */}
           <div className="lg:col-span-6 xl:col-span-5">
             <SpotlightCard
-              className="p-5 sm:p-6 bg-[#0c0e0c]/90 border-t border-[#d4fc50]/50 border-x border-b border-[#d4fc50]/20 rounded-2xl shadow-[inset_0_1px_0_rgba(212,252,80,0.15),0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl group"
-              spotlightColor="rgba(212, 252, 80, 0.12)"
+              className="p-5 sm:p-6 bg-[#0c0e0c]/90 border-t border-[#d4fc50]/60 border-x border-b border-[#d4fc50]/25 rounded-2xl shadow-[inset_0_1px_0_rgba(212,252,80,0.2),0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-xl group relative overflow-hidden"
+              spotlightColor="rgba(212, 252, 80, 0.15)"
             >
-              {/* Teaser Header Bar */}
+              {/* Vault Header Bar */}
               <div className="flex items-center justify-between pb-3 mb-3.5 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#d4fc50] animate-pulse shadow-[0_0_8px_#d4fc50]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#d4fc50] animate-pulse shadow-[0_0_10px_#d4fc50]" />
                   <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#d4fc50]">
-                    Next Launch Teaser
+                    Live Staking Vault · 16 Archives
                   </span>
                 </div>
                 <div className="px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 text-[10px] font-mono text-white/70">
@@ -344,141 +347,106 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* High-Impact Visual Poster (Artwork: Only "MS JUICY P", zero overlay text) */}
-              <div className="relative aspect-[16/9] rounded-xl overflow-hidden mb-3.5 bg-black border border-white/10 group-hover:border-[#d4fc50]/40 transition-colors shadow-lg">
+              {/* High-Impact Visual Poster */}
+              <div className="relative aspect-[16/9] rounded-xl overflow-hidden mb-3.5 bg-black border border-white/15 group-hover:border-[#d4fc50]/50 transition-colors shadow-xl">
                 <img
-                  src="/creators/msjuicy_banner.jpg"
-                  alt="Ms Juicy P"
+                  src="/mika_vault_staking_hype.jpg"
+                  alt="Creator Staking Vault"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/25" />
 
-              {/* Creator Profile & Status Bar */}
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-full overflow-hidden border border-[#d4fc50] bg-black shrink-0 shadow-[0_0_10px_rgba(212,252,80,0.3)]">
-                    <img src="/creators/msjuicy.jpg" alt="Ms Juicy P" className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-white flex items-center gap-1.5">
-                      <span>Ms Juicy P</span>
-                      <span className="text-xs text-[#30d158]" title="Verified Creator">✓</span>
-                    </div>
-                    <a
-                      href={JUICY_X_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] font-mono text-white/60 hover:text-[#d4fc50] transition-colors"
-                    >
-                      @msjuicy_plenty
-                    </a>
-                  </div>
+                {/* Corner Floating Badges */}
+                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/85 backdrop-blur-md border border-amber-500/40 text-[10px] font-mono font-bold text-amber-300">
+                  <span>18+ ADULTS ONLY</span>
                 </div>
 
-                <div className="flex flex-col items-end gap-1">
-                  <span className="text-[10px] font-mono text-white/60 px-2 py-0.5 rounded bg-black/70 border border-white/15">
-                    [Ticker Embargoed]
-                  </span>
-                  <span className="text-[9px] font-mono text-white/40">
-                    Anti-Sniper Protection
-                  </span>
+                <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/85 backdrop-blur-md border border-[#30d158]/40 text-[10px] font-mono font-bold text-[#30d158]">
+                  3-DAY UNBONDING
+                </div>
+
+                <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/85 backdrop-blur-md border border-[#d4fc50]/40 text-[10px] font-mono font-bold text-[#d4fc50]">
+                  50% PROTOCOL REVENUE SHARE
                 </div>
               </div>
 
-              {/* Creator Credentials & Endorsement Row */}
-              <div className="flex items-center justify-between text-xs font-mono mb-3 py-1.5 px-2.5 rounded-lg bg-black/50 border border-white/10">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-[#d4fc50]/10 border border-[#d4fc50]/30 text-[10px] font-bold text-[#d4fc50]">
-                    DROP #01 · FRI 5PM UTC
-                  </span>
-                  <a
-                    href={JUICY_X_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-[#d4fc50] transition-colors text-[11px] flex items-center gap-1"
-                  >
-                    <span>80K+ on X</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                </div>
-                <a
-                  href={JUICY_REPOST_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[#30d158] hover:text-[#d4fc50] font-medium transition-colors text-[11px]"
-                  title="Verified announcement repost on X"
-                >
-                  <span>Reposted on X</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </a>
+              {/* Title & Click-Baity Teaser */}
+              <div className="mb-3.5">
+                <h3 className="text-lg sm:text-xl font-bold text-white font-sans tracking-tight mb-1 flex items-center gap-2">
+                  <span>Stake $50 To Unlock Creator Archives</span>
+                  <Sparkles className="w-4 h-4 text-[#d4fc50] shrink-0" />
+                </h3>
+                <p className="text-xs text-white/75 font-sans leading-relaxed">
+                  Direct revenue-sharing partner archives. Stake $MIKA to gain access to private photo shoots, raw unedited camera rolls, and green-room audio tapes.
+                </p>
               </div>
 
-              {/* Real-time Countdown Display */}
-              <div className="p-3 bg-black/70 border border-white/10 rounded-xl mb-3 text-center">
-                <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1.5 flex items-center justify-center gap-1.5">
-                  <Clock className="w-3 h-3 text-[#d4fc50]" />
-                  <span>Fair Launch T-Minus (Friday 5:00 PM UTC)</span>
+              {/* 3 Tiers Quick Breakdown Strip */}
+              <div className="grid grid-cols-3 gap-2 mb-3.5 text-center font-mono">
+                <div className="p-2.5 rounded-xl bg-black/60 border border-amber-500/30">
+                  <div className="text-[10px] font-bold text-amber-400 uppercase">Bronze</div>
+                  <div className="text-sm font-bold text-white mt-0.5">$50</div>
+                  <div className="text-[9px] text-white/50">4 Folders</div>
                 </div>
-
-                <div className="grid grid-cols-4 gap-1.5 font-mono">
-                  <div className="p-1.5 rounded-lg bg-black/60 border border-white/10">
-                    <div className="text-base sm:text-lg font-bold text-white">
-                      {String(timeLeft.days).padStart(2, "0")}
-                    </div>
-                    <div className="text-[8px] uppercase text-white/40">Days</div>
-                  </div>
-                  <div className="p-1.5 rounded-lg bg-black/60 border border-white/10">
-                    <div className="text-base sm:text-lg font-bold text-white">
-                      {String(timeLeft.hours).padStart(2, "0")}
-                    </div>
-                    <div className="text-[8px] uppercase text-white/40">Hours</div>
-                  </div>
-                  <div className="p-1.5 rounded-lg bg-black/60 border border-white/10">
-                    <div className="text-base sm:text-lg font-bold text-white">
-                      {String(timeLeft.minutes).padStart(2, "0")}
-                    </div>
-                    <div className="text-[8px] uppercase text-white/40">Mins</div>
-                  </div>
-                  <div className="p-1.5 rounded-lg bg-black/60 border border-[#d4fc50]/30 shadow-[0_0_10px_rgba(212,252,80,0.15)]">
-                    <div className="text-base sm:text-lg font-bold text-[#d4fc50]">
-                      {String(timeLeft.seconds).padStart(2, "0")}
-                    </div>
-                    <div className="text-[8px] uppercase text-[#d4fc50]/70">Secs</div>
-                  </div>
+                <div className="p-2.5 rounded-xl bg-black/60 border border-white/20">
+                  <div className="text-[10px] font-bold text-white uppercase">Silver</div>
+                  <div className="text-sm font-bold text-white mt-0.5">$100</div>
+                  <div className="text-[9px] text-white/50">8 Folders (Half)</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-black/60 border border-[#d4fc50]/40 shadow-[0_0_12px_rgba(212,252,80,0.15)]">
+                  <div className="text-[10px] font-bold text-[#d4fc50] uppercase">Gold VIP</div>
+                  <div className="text-sm font-bold text-[#d4fc50] mt-0.5">$200</div>
+                  <div className="text-[9px] text-[#d4fc50]/80">ALL 16 Folders</div>
                 </div>
               </div>
 
-              {/* Action CTAs */}
+              {/* Verified Trust & Guarantee Row */}
+              <div className="flex items-center justify-between text-xs font-mono mb-3.5 py-1.5 px-3 rounded-lg bg-black/50 border border-white/10">
+                <span className="text-white/60 text-[11px] flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#30d158]" />
+                  <span>100% Non-Custodial Vault</span>
+                </span>
+                <span className="text-[#d4fc50] text-[11px] font-semibold">
+                  3-Day Cooldown · Zero Fee
+                </span>
+              </div>
+
+              {/* Primary Action Button */}
               <div className="space-y-2.5">
                 <Link
-                  to="/juicy"
-                  className="btn-tactile w-full py-3.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_25px_rgba(212,252,80,0.4)] transition-all cursor-pointer group/juicybtn active:scale-[0.99]"
+                  to="/vault"
+                  className="btn-tactile w-full py-3.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_30px_rgba(212,252,80,0.4)] transition-all cursor-pointer group/vaultbtn active:scale-[0.99]"
                 >
-                  <Flame className="w-4 h-4 text-black group-hover/juicybtn:scale-110 transition-transform" />
-                  <span>ENTER MS JUICY ($JUICY) SYNDICATE →</span>
+                  <FolderLock className="w-4 h-4 text-black group-hover/vaultbtn:scale-110 transition-transform" />
+                  <span>ENTER VAULT & UNLOCK ARCHIVES →</span>
                 </Link>
 
-                <button
-                  onClick={handleNotifyLaunch}
-                  className={`btn-tactile w-full py-2.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                    isAlertSet
-                      ? "bg-white/10 text-[#d4fc50] border border-[#d4fc50]/40"
-                      : "bg-white/5 hover:bg-white/10 text-white/75 border border-white/15"
-                  }`}
-                >
-                  {isAlertSet ? <Check className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
-                  <span>{isAlertSet ? "Launch Notification Active ✓" : "Notify Me on Launch"}</span>
-                </button>
-
-                <div className="flex items-center justify-between text-[11px] font-mono text-white/50 pt-0.5 px-1">
-                  <span>Anti-Sniper Shield Active</span>
-                  <a
-                    href="#upcoming-drops"
-                    className="text-[#d4fc50] hover:underline flex items-center gap-0.5"
-                  >
-                    <span>View All Cohort Drops</span>
-                    <span>↓</span>
-                  </a>
+                {/* Instant Simulator Triggers */}
+                <div className="pt-1 flex items-center justify-between gap-1 text-[10px] font-mono">
+                  <span className="text-white/40 shrink-0">Demo Test:</span>
+                  <div className="flex items-center gap-1.5 overflow-x-auto">
+                    <button
+                      type="button"
+                      onClick={() => handleDemoTier("bronze")}
+                      className="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 transition-colors"
+                    >
+                      ⚡ Bronze ($50)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDemoTier("silver")}
+                      className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-colors"
+                    >
+                      ⚡ Silver ($100)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDemoTier("gold")}
+                      className="px-2 py-0.5 rounded bg-[#d4fc50]/15 hover:bg-[#d4fc50]/30 border border-[#d4fc50]/40 text-[#d4fc50] transition-colors"
+                    >
+                      ⚡ Gold ($200)
+                    </button>
+                  </div>
                 </div>
               </div>
             </SpotlightCard>
