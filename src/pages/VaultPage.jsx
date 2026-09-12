@@ -80,6 +80,7 @@ export default function VaultPage() {
 
   // Staking input state
   const [stakeInput, setStakeInput] = useState("900000");
+  const [selectedTier, setSelectedTier] = useState("bronze");
   const [unstakeInput, setUnstakeInput] = useState("");
   const [activeTab, setActiveTab] = useState("folders"); // "folders" | "manage"
   const [filterTier, setFilterTier] = useState("all"); // "all" | "bronze" | "silver" | "gold"
@@ -138,6 +139,8 @@ export default function VaultPage() {
       return 0n;
     }
   })();
+
+  const activeTargetTier = getUserTier(parsedStakeWei) || selectedTier;
 
   const parsedUnstakeWei = (() => {
     try {
@@ -358,6 +361,245 @@ export default function VaultPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* ON-PAGE STAKING SUITE (DIRECT VAULT UNLOCK) */}
+        <div className="mb-8 rounded-3xl border border-[#d4fc50]/30 bg-gradient-to-b from-[#14161f]/95 via-[#0d0f14]/95 to-black/95 p-5 sm:p-7 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(212,252,80,0.08)] relative overflow-hidden">
+          {/* Ambient glowing radial light */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-[#d4fc50]/10 blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />
+
+          {/* Header Section */}
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+            <div>
+              <div className="flex items-center gap-2.5 mb-2 flex-wrap">
+                <span className="px-3 py-1 rounded-full bg-[#d4fc50]/15 border border-[#d4fc50]/40 text-[#d4fc50] text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,252,80,0.2)]">
+                  <Sparkles className="w-3 h-3" />
+                  <span>ONCHAIN VAULT STAKING · 3-DAY UNBONDING</span>
+                </span>
+                {userTier && (
+                  <span className="px-2.5 py-1 rounded-full bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] text-[10px] font-mono font-bold uppercase flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>ACTIVE: {userTier.toUpperCase()} PASS</span>
+                  </span>
+                )}
+              </div>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight font-sans">
+                Stake $MIKA To Unlock Creator Archives
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-300 font-sans mt-1 max-w-2xl leading-relaxed">
+                Select a tier below to unlock verified partner creator archives. Retain <strong className="text-white">100% custody</strong> in the verified contract on Robinhood Chain L2 with a swift <strong className="text-white">3-day unbonding cooldown</strong>.
+              </p>
+            </div>
+
+            {/* Current Staked Wallet Status */}
+            <div className="flex flex-col sm:flex-row md:flex-col items-start md:items-end gap-1.5 shrink-0">
+              <div className="text-xs font-mono text-white/50">
+                CURRENT WALLET STAKE:
+              </div>
+              <div className="text-lg sm:text-xl font-mono font-bold text-white flex items-center gap-1.5">
+                <span>{activeStakedFormatted}</span>
+                <span className="text-xs text-[#d4fc50] font-normal">$MIKA</span>
+              </div>
+              {activeStaked > 0n && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("manage")}
+                  className="text-[11px] font-mono text-[#d4fc50] hover:underline flex items-center gap-1 cursor-pointer pt-0.5"
+                >
+                  <span>Manage Cooldown & Withdraw</span>
+                  <ChevronRight className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Tier Selection Cards (Bronze / Silver / Gold) */}
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 my-6">
+            {/* Bronze Tier Card */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedTier("bronze");
+                setStakeInput(STAKING_CONFIG.tiers.bronze.tokenAmount.toString());
+              }}
+              className={`p-4 rounded-2xl text-left transition-all cursor-pointer relative overflow-hidden border ${
+                activeTargetTier === "bronze"
+                  ? "bg-amber-500/15 border-amber-500/60 shadow-[0_0_25px_rgba(245,158,11,0.25)] ring-1 ring-amber-400"
+                  : "bg-white/[0.03] border-white/10 hover:border-amber-500/40 hover:bg-white/[0.05]"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  Bronze Pass
+                </span>
+                <span className="text-xs font-mono font-bold text-white/80">$50 USD</span>
+              </div>
+              <div className="text-lg sm:text-xl font-mono font-bold text-amber-300 mb-1">
+                900,000 <span className="text-xs text-white/60">$MIKA</span>
+              </div>
+              <div className="text-xs text-neutral-300 font-sans">
+                Unlocks <strong className="text-white font-bold">4 Starter Folders</strong>
+              </div>
+            </button>
+
+            {/* Silver Tier Card */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedTier("silver");
+                setStakeInput(STAKING_CONFIG.tiers.silver.tokenAmount.toString());
+              }}
+              className={`p-4 rounded-2xl text-left transition-all cursor-pointer relative overflow-hidden border ${
+                activeTargetTier === "silver"
+                  ? "bg-slate-200/15 border-slate-300/70 shadow-[0_0_25px_rgba(255,255,255,0.2)] ring-1 ring-slate-300"
+                  : "bg-white/[0.03] border-white/10 hover:border-slate-300/40 hover:bg-white/[0.05]"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-slate-300/20 text-slate-200 border border-slate-300/40">
+                  Silver Pass
+                </span>
+                <span className="text-xs font-mono font-bold text-white/80">$100 USD</span>
+              </div>
+              <div className="text-lg sm:text-xl font-mono font-bold text-white mb-1">
+                1,800,000 <span className="text-xs text-white/60">$MIKA</span>
+              </div>
+              <div className="text-xs text-neutral-300 font-sans">
+                Unlocks <strong className="text-white font-bold">8 Folders (Half Vault)</strong>
+              </div>
+            </button>
+
+            {/* Gold VIP Card */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedTier("gold");
+                setStakeInput(STAKING_CONFIG.tiers.gold.tokenAmount.toString());
+              }}
+              className={`p-4 rounded-2xl text-left transition-all cursor-pointer relative overflow-hidden border ${
+                activeTargetTier === "gold"
+                  ? "bg-[#d4fc50]/15 border-[#d4fc50]/80 shadow-[0_0_30px_rgba(212,252,80,0.3)] ring-1 ring-[#d4fc50]"
+                  : "bg-white/[0.03] border-white/10 hover:border-[#d4fc50]/40 hover:bg-white/[0.05]"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-[#d4fc50]/20 text-[#d4fc50] border border-[#d4fc50]/50">
+                  Gold VIP Pass
+                </span>
+                <span className="text-xs font-mono font-bold text-[#d4fc50]">$200 USD</span>
+              </div>
+              <div className="text-lg sm:text-xl font-mono font-bold text-[#d4fc50] mb-1">
+                3,600,000 <span className="text-xs text-white/60">$MIKA</span>
+              </div>
+              <div className="text-xs text-neutral-300 font-sans">
+                Unlocks <strong className="text-[#d4fc50] font-bold">All 16 Archives</strong> + Protocol Drops
+              </div>
+            </button>
+          </div>
+
+          {/* Form Row: Input + Action Button */}
+          <form onSubmit={onStakeSubmit} className="relative z-10 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+              {/* Input Box (7 cols on desktop) */}
+              <div className="md:col-span-7 relative">
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={stakeInput}
+                    onChange={(e) => {
+                      setStakeInput(e.target.value);
+                    }}
+                    placeholder="900000"
+                    className="w-full bg-black/90 border border-white/20 rounded-2xl pl-4 pr-28 py-4 text-white font-mono text-sm sm:text-base focus:outline-none focus:border-[#d4fc50] transition-colors shadow-inner"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                    <span className="text-xs font-mono text-[#d4fc50] font-bold pr-1">$MIKA</span>
+                    <button
+                      type="button"
+                      onClick={() => setStakeInput(ethers.formatUnits(walletTokenBalance, 18))}
+                      className="text-[10px] font-mono px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold transition-colors cursor-pointer"
+                    >
+                      MAX
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between text-[11px] font-mono text-white/50 px-1 pt-1.5">
+                  <span>Wallet Balance: <strong className="text-white font-bold">{walletTokenBalanceFormatted} $MIKA</strong></span>
+                  <a
+                    href="https://fomo.fund"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#d4fc50] hover:underline flex items-center gap-0.5"
+                  >
+                    <span>Buy $MIKA</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Action Button (5 cols on desktop) */}
+              <div className="md:col-span-5">
+                <button
+                  type="submit"
+                  disabled={txLoading}
+                  className="btn-tactile w-full py-4 rounded-2xl bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs sm:text-sm uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(212,252,80,0.35)] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                >
+                  {txLoading ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin text-black" />
+                      <span>Processing Onchain...</span>
+                    </>
+                  ) : !isConnected ? (
+                    <>
+                      <FolderLock className="w-4 h-4 text-black" />
+                      <span>Connect Wallet To Stake</span>
+                    </>
+                  ) : !isCorrectNetwork ? (
+                    <span>Switch to Robinhood Chain</span>
+                  ) : !isApproved ? (
+                    <>
+                      <ShieldCheck className="w-4 h-4 text-black" />
+                      <span>Step 1: Approve $MIKA</span>
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4 text-black" />
+                      <span>Step 2: Stake & Unlock Vault →</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+
+          {/* Reassurance Footer Badges */}
+          <div className="relative z-10 pt-4 mt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-white/50">
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="flex items-center gap-1 text-emerald-400">
+                <Clock className="w-3.5 h-3.5" />
+                <span>3-Day Swift Unbonding</span>
+              </span>
+              <span className="flex items-center gap-1 text-white/70">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#d4fc50]" />
+                <span>100% Non-Custodial Vault</span>
+              </span>
+              <span className="flex items-center gap-1 text-white/70">
+                <Sparkles className="w-3.5 h-3.5 text-[#d4fc50]" />
+                <span>Zero Staking Fees</span>
+              </span>
+            </div>
+
+            <a
+              href={`${STAKING_CONFIG.blockExplorer}/address/${STAKING_CONFIG.contractAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/40 hover:text-[#d4fc50] flex items-center gap-1 transition-colors"
+            >
+              <span>Audited: {STAKING_CONFIG.contractAddress.slice(0, 6)}...{STAKING_CONFIG.contractAddress.slice(-4)}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
 
         {/* Authenticity Notice */}
         <div className="mb-8 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
@@ -1273,21 +1515,82 @@ export default function VaultPage() {
                       </div>
                     </div>
 
-                    {/* Conversion CTAs */}
-                    <div className="w-full max-w-md pt-1">
+                    {/* Direct In-Modal Staking Action */}
+                    <div className="w-full max-w-md pt-1 space-y-2.5">
                       <button
-                        onClick={() => {
-                          setStakeInput(
-                            STAKING_CONFIG.tiers[activeFolderModal.tierRequired].tokenAmount.toString()
+                        type="button"
+                        disabled={txLoading}
+                        onClick={async () => {
+                          if (!isConnected) {
+                            await connectWallet();
+                            return;
+                          }
+                          if (!isCorrectNetwork) {
+                            await switchToRobinhood();
+                            return;
+                          }
+                          const reqAmountRaw = BigInt(
+                            STAKING_CONFIG.tiers[activeFolderModal.tierRequired].tokenAmountRaw
                           );
-                          setActiveTab("manage");
-                          setActiveFolderModal(null);
+                          if (!isApproved) {
+                            await handleApprove();
+                          } else {
+                            await handleStake(reqAmountRaw);
+                          }
                         }}
-                        className="btn-tactile w-full py-3.5 rounded-2xl bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(212,252,80,0.35)] cursor-pointer active:scale-98 text-center"
+                        className="btn-tactile w-full py-4 rounded-2xl bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs sm:text-sm uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(212,252,80,0.4)] cursor-pointer active:scale-98 text-center flex items-center justify-center gap-2"
                       >
-                        Stake {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].name} ($
-                        {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].usdValue}) →
+                        {txLoading ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin text-black" />
+                            <span>Processing Onchain...</span>
+                          </>
+                        ) : !isConnected ? (
+                          <>
+                            <FolderLock className="w-4 h-4 text-black" />
+                            <span>
+                              Connect Wallet To Stake {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].name} ($
+                              {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].usdValue})
+                            </span>
+                          </>
+                        ) : !isCorrectNetwork ? (
+                          <span>Switch to Robinhood Chain</span>
+                        ) : !isApproved ? (
+                          <>
+                            <ShieldCheck className="w-4 h-4 text-black" />
+                            <span>
+                              Step 1: Approve {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].tokenAmountFormatted}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Lock className="w-4 h-4 text-black" />
+                            <span>
+                              Step 2: Stake & Unlock {activeFolderModal.title.split(" - ")[0]} Archive →
+                            </span>
+                          </>
+                        )}
                       </button>
+
+                      <div className="flex items-center justify-between text-[11px] font-mono text-white/50 px-1">
+                        <span>
+                          Wallet: <strong className="text-white font-bold">{walletTokenBalanceFormatted} $MIKA</strong>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setStakeInput(
+                              STAKING_CONFIG.tiers[activeFolderModal.tierRequired].tokenAmount.toString()
+                            );
+                            setActiveTab("manage");
+                            setActiveFolderModal(null);
+                          }}
+                          className="text-[#d4fc50] hover:underline cursor-pointer flex items-center gap-1"
+                        >
+                          <span>Custom Staking Deck</span>
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
+                      </div>
                     </div>
 
                     {/* Dual Reassurance Cards: 3-Day Unbonding + 100% Non-Custodial */}

@@ -21,6 +21,7 @@ export function useStaking(account, signer) {
   const [txMessage, setTxMessage] = useState(null);
   const [txHash, setTxHash] = useState(null);
   const [error, setError] = useState(null);
+  const timerRef = useRef(null);
 
   // Ensure any previous simulation storage is completely cleared
   useEffect(() => {
