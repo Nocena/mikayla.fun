@@ -182,7 +182,7 @@ export default function StakingSection() {
             </div>
 
             {/* Action CTA */}
-            <div className="space-y-2 w-full pt-4 border-t border-white/5">
+            <div className="w-full pt-4 border-t border-white/5">
               <Link
                 to="/vault"
                 className={`w-full py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs font-mono font-bold uppercase tracking-wider transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg ${tier.btnBg}`}
@@ -190,19 +190,6 @@ export default function StakingSection() {
                 <span>Unlock {tier.title}</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  try {
-                    localStorage.setItem("mika_simulated_tier", tier.key);
-                    localStorage.setItem("mika_age_verified", "true");
-                  } catch {}
-                  navigate("/vault");
-                }}
-                className="w-full py-2 rounded-xl text-[11px] font-mono text-white/60 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors cursor-pointer text-center block"
-              >
-                ⚡ Test Demo: Simulate {tier.title}
-              </button>
             </div>
           </div>
         ))}

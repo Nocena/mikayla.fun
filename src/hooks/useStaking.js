@@ -22,24 +22,13 @@ export function useStaking(account, signer) {
   const [txHash, setTxHash] = useState(null);
   const [error, setError] = useState(null);
 
-  // Simulated Staking state (for interactive testing without gas/wallet tokens)
-  const [simulatedTier, setSimulatedTier] = useState(() => {
+  // Ensure any previous simulation storage is completely cleared
+  useEffect(() => {
     try {
-      return localStorage.getItem("mika_simulated_tier") || null;
-    } catch {
-      return null;
-    }
-  });
-  const [simulatedCooldown, setSimulatedCooldown] = useState(() => {
-    try {
-      const saved = localStorage.getItem("mika_simulated_cooldown");
-      return saved ? parseInt(saved, 10) : 0;
-    } catch {
-      return 0;
-    }
-  });
-
-  const timerRef = useRef(null);
+      localStorage.removeItem("mika_simulated_tier");
+      localStorage.removeItem("mika_simulated_cooldown");
+    } catch {}
+  }, []);
 
   // Read-only JSON-RPC provider on Robinhood Chain L2
   const getReadProvider = useCallback(() => {
@@ -280,86 +269,7 @@ export function useStaking(account, signer) {
     }
   };
 
-  // Live countdown ticker for simulated cooldown
-  useEffect(() => {
-    if (simulatedCooldown > 0) {
-      const cdInterval = setInterval(() => {
-        setSimulatedCooldown((prev) => {
-          const nextVal = prev <= 1 ? 0 : prev - 1;
-          try {
-            if (nextVal === 0) localStorage.removeItem("mika_simulated_cooldown");
-            else localStorage.setItem("mika_simulated_cooldown", String(nextVal));
-          } catch {}
-          return nextVal;
-        });
-      }, 1000);
-      return () => clearInterval(cdInterval);
-    }
-  }, [simulatedCooldown]);
-
-  // Simulation controls for interactive demonstration & testing
-  const simulateStake = useCallback((tier) => {
-    if (!tier) {
-      resetSimulation();
-      return;
-    }
-    try {
-      localStorage.setItem("mika_simulated_tier", tier);
-      localStorage.removeItem("mika_simulated_cooldown");
-    } catch {}
-    setSimulatedTier(tier);
-    setSimulatedCooldown(0);
-    const tierName = STAKING_CONFIG.tiers[tier]?.name || tier.toUpperCase();
-    setTxMessage(`⚡ Demo Mode: Simulated ${tierName} Activated!`);
-    setTimeout(() => setTxMessage(null), 3500);
-  }, []);
-
-  const simulateInitiateUnstake = useCallback(() => {
-    const cdSeconds = 259200; // 3 days
-    try {
-      localStorage.setItem("mika_simulated_cooldown", String(cdSeconds));
-    } catch {}
-    setSimulatedCooldown(cdSeconds);
-    setTxMessage("⚡ Demo Mode: 3-Day Unbonding Cooldown Triggered (259,200s)");
-    setTimeout(() => setTxMessage(null), 3500);
-  }, []);
-
-  const resetSimulation = useCallback(() => {
-    try {
-      localStorage.removeItem("mika_simulated_tier");
-      localStorage.removeItem("mika_simulated_cooldown");
-    } catch {}
-    setSimulatedTier(null);
-    setSimulatedCooldown(0);
-    setTxMessage("⚡ Demo Mode: Simulation Cleared (Reverted to Live Wallet)");
-    setTimeout(() => setTxMessage(null), 3000);
-  }, []);
-
-  // Compute effective balances based on live onchain vs simulated mode
-  const isSimulated = Boolean(simulatedTier);
-
-  let effectiveStaked = activeStaked;
-  let effectivePending = pendingUnstake;
-  let effectiveCooldown = cooldownRemainingSeconds;
-
-  if (isSimulated) {
-    const tierRaw = BigInt(STAKING_CONFIG.tiers[simulatedTier]?.tokenAmountRaw || "0");
-    if (simulatedCooldown > 0) {
-      effectivePending = tierRaw;
-      effectiveStaked = 0n;
-      effectiveCooldown = simulatedCooldown;
-    } else {
-      effectiveStaked = tierRaw;
-      effectivePending = 0n;
-      effectiveCooldown = 0;
-    }
-  }
-
-  const effectiveIsVip = isSimulated
-    ? effectiveStaked >= BigInt(STAKING_CONFIG.minVipStakeRaw)
-    : isVipActive;
-
-  // Helper formatting
+  // Helper formatting for unbonding cooldown
   const formatCountdown = (totalSeconds) => {
     if (totalSeconds <= 0) return "0d 0h 0m 0s";
     const days = Math.floor(totalSeconds / 86400);
@@ -371,21 +281,21 @@ export function useStaking(account, signer) {
 
   return {
     loading,
-    activeStaked: effectiveStaked,
-    activeStakedFormatted: Number(ethers.formatUnits(effectiveStaked, 18)).toLocaleString(
+    activeStaked,
+    activeStakedFormatted: Number(ethers.formatUnits(activeStaked, 18)).toLocaleString(
       undefined,
       { maximumFractionDigits: 2 }
     ),
-    pendingUnstake: effectivePending,
-    pendingUnstakeFormatted: Number(ethers.formatUnits(effectivePending, 18)).toLocaleString(
+    pendingUnstake,
+    pendingUnstakeFormatted: Number(ethers.formatUnits(pendingUnstake, 18)).toLocaleString(
       undefined,
       { maximumFractionDigits: 2 }
     ),
     availableAtTimestamp,
-    canWithdrawNow: isSimulated ? simulatedCooldown === 0 && effectivePending > 0n : canWithdrawNow,
-    cooldownRemainingSeconds: effectiveCooldown,
-    cooldownFormatted: formatCountdown(effectiveCooldown),
-    isVipActive: effectiveIsVip,
+    canWithdrawNow,
+    cooldownRemainingSeconds,
+    cooldownFormatted: formatCountdown(cooldownRemainingSeconds),
+    isVipActive,
     walletTokenBalance,
     walletTokenBalanceFormatted: Number(
       ethers.formatUnits(walletTokenBalance, 18)
@@ -407,11 +317,5 @@ export function useStaking(account, signer) {
     handleInitiateUnstake,
     handleCancelUnstake,
     handleWithdraw,
-    // Simulated staking exports
-    isSimulated,
-    simulatedTier,
-    simulateStake,
-    simulateInitiateUnstake,
-    resetSimulation,
   };
 }

@@ -31,13 +31,7 @@ export default function Hero() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const tokenData = useTokenData();
 
-  const handleDemoTier = (tier) => {
-    try {
-      localStorage.setItem("mika_simulated_tier", tier);
-      localStorage.setItem("mika_age_verified", "true");
-    } catch {}
-    navigate("/vault");
-  };
+
 
   const [toastMessage, setToastMessage] = useState(null);
   const [copiedCA, setCopiedCA] = useState(false);
@@ -412,7 +406,7 @@ export default function Hero() {
               </div>
 
               {/* Primary Action Button */}
-              <div className="space-y-2.5">
+              <div>
                 <Link
                   to="/vault"
                   className="btn-tactile w-full py-3.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 bg-[#d4fc50] hover:bg-white text-black shadow-[0_0_30px_rgba(212,252,80,0.4)] transition-all cursor-pointer group/vaultbtn active:scale-[0.99]"
@@ -420,34 +414,6 @@ export default function Hero() {
                   <FolderLock className="w-4 h-4 text-black group-hover/vaultbtn:scale-110 transition-transform" />
                   <span>ENTER VAULT & UNLOCK ARCHIVES →</span>
                 </Link>
-
-                {/* Instant Simulator Triggers */}
-                <div className="pt-1 flex items-center justify-between gap-1 text-[10px] font-mono">
-                  <span className="text-white/40 shrink-0">Demo Test:</span>
-                  <div className="flex items-center gap-1.5 overflow-x-auto">
-                    <button
-                      type="button"
-                      onClick={() => handleDemoTier("bronze")}
-                      className="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 transition-colors"
-                    >
-                      ⚡ Bronze ($50)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDemoTier("silver")}
-                      className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-colors"
-                    >
-                      ⚡ Silver ($100)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDemoTier("gold")}
-                      className="px-2 py-0.5 rounded bg-[#d4fc50]/15 hover:bg-[#d4fc50]/30 border border-[#d4fc50]/40 text-[#d4fc50] transition-colors"
-                    >
-                      ⚡ Gold ($200)
-                    </button>
-                  </div>
-                </div>
               </div>
             </SpotlightCard>
           </div>

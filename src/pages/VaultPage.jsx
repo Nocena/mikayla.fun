@@ -76,11 +76,6 @@ export default function VaultPage() {
     handleInitiateUnstake,
     handleCancelUnstake,
     handleWithdraw,
-    isSimulated,
-    simulatedTier,
-    simulateStake,
-    simulateInitiateUnstake,
-    resetSimulation,
   } = useStaking(account, signer);
 
   // Staking input state
@@ -171,21 +166,12 @@ export default function VaultPage() {
 
   const onUnstakeSubmit = async (e) => {
     e.preventDefault();
-    if (isSimulated) {
-      simulateInitiateUnstake();
-      setUnstakeInput("");
-      return;
-    }
     if (!parsedUnstakeWei || parsedUnstakeWei === 0n) return;
     await handleInitiateUnstake(parsedUnstakeWei);
     setUnstakeInput("");
   };
 
   const onCancelUnstakeClick = async () => {
-    if (isSimulated) {
-      simulateStake(simulatedTier);
-      return;
-    }
     await handleCancelUnstake();
   };
 
@@ -326,77 +312,7 @@ export default function VaultPage() {
           </div>
         </div>
 
-        {/* Interactive Simulated Staking Controls Toolbar */}
-        <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-neutral-900/95 via-black/90 to-[#d4fc50]/15 border border-[#d4fc50]/40 shadow-[0_0_30px_rgba(212,252,80,0.12)] flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="w-10 h-10 rounded-xl bg-[#d4fc50] text-black flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(212,252,80,0.4)]">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-[#d4fc50]">
-                  Interactive Staking Demo Suite
-                </span>
-                <span className={`px-2 py-0.5 rounded-full text-[9px] font-mono font-bold ${
-                  isSimulated
-                    ? "bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] animate-pulse"
-                    : "bg-white/10 text-white/60 border border-white/15"
-                }`}>
-                  {isSimulated ? `SIMULATING ${simulatedTier?.toUpperCase()} TIER` : "LIVE ONCHAIN MODE"}
-                </span>
-              </div>
-              <p className="text-xs text-white/70 font-sans mt-0.5">
-                Simulate instant staking tiers without gas or tokens to test folder access, media lightboxes, and 3-day unbonding cooldowns.
-              </p>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-2 flex-wrap justify-center shrink-0">
-            <button
-              type="button"
-              onClick={() => simulateStake("bronze")}
-              className={`btn-tactile px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                simulatedTier === "bronze"
-                  ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)] scale-105"
-                  : "bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/25"
-              }`}
-            >
-              ⚡ Bronze ($50 · 4 Folders)
-            </button>
-            <button
-              type="button"
-              onClick={() => simulateStake("silver")}
-              className={`btn-tactile px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                simulatedTier === "silver"
-                  ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)] scale-105"
-                  : "bg-white/10 border border-white/20 text-white hover:bg-white/20"
-              }`}
-            >
-              ⚡ Silver ($100 · 8 Folders)
-            </button>
-            <button
-              type="button"
-              onClick={() => simulateStake("gold")}
-              className={`btn-tactile px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                simulatedTier === "gold"
-                  ? "bg-[#d4fc50] text-black shadow-[0_0_20px_rgba(212,252,80,0.5)] scale-105"
-                  : "bg-[#d4fc50]/15 border border-[#d4fc50]/40 text-[#d4fc50] hover:bg-[#d4fc50]/25"
-              }`}
-            >
-              ⚡ Gold VIP ($200 · All 16)
-            </button>
-            {isSimulated && (
-              <button
-                type="button"
-                onClick={resetSimulation}
-                className="btn-tactile px-3 py-2 rounded-xl text-xs font-mono text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 transition-colors cursor-pointer"
-                title="Reset simulation back to real wallet balance"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-        </div>
 
         {/* Transaction / Error Feedback */}
         <AnimatePresence>
@@ -951,7 +867,7 @@ export default function VaultPage() {
 
                   <button
                     type="submit"
-                    disabled={txLoading || (!isSimulated && !unstakeInput)}
+                    disabled={txLoading || !unstakeInput}
                     className="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-mono font-bold text-sm transition-all disabled:opacity-30"
                   >
                     Initiate 3-Day Unstake
@@ -1358,7 +1274,7 @@ export default function VaultPage() {
                     </div>
 
                     {/* Conversion CTAs */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md pt-1">
+                    <div className="w-full max-w-md pt-1">
                       <button
                         onClick={() => {
                           setStakeInput(
@@ -1367,19 +1283,10 @@ export default function VaultPage() {
                           setActiveTab("manage");
                           setActiveFolderModal(null);
                         }}
-                        className="btn-tactile w-full py-3.5 rounded-2xl bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(212,252,80,0.35)] cursor-pointer active:scale-98"
+                        className="btn-tactile w-full py-3.5 rounded-2xl bg-[#d4fc50] hover:bg-white text-black font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(212,252,80,0.35)] cursor-pointer active:scale-98 text-center"
                       >
                         Stake {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].name} ($
                         {STAKING_CONFIG.tiers[activeFolderModal.tierRequired].usdValue}) →
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          simulateStake(activeFolderModal.tierRequired);
-                        }}
-                        className="btn-tactile w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-[#d4fc50] font-mono font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
-                      >
-                        ⚡ Preview Archive (Demo)
                       </button>
                     </div>
 
