@@ -183,11 +183,11 @@ export function useStaking(account, signer) {
     }
   };
 
-  // 3. Initiate 7-Day Unstake
+  // 3. Initiate 3-Day Unstake
   const handleInitiateUnstake = async (amountWei) => {
     if (!signer) throw new Error("Wallet not connected");
     setTxLoading(true);
-    setTxMessage("Initiating 7-day unstaking cooldown...");
+    setTxMessage("Initiating 3-day unstaking cooldown...");
     setError(null);
 
     try {
@@ -198,10 +198,10 @@ export function useStaking(account, signer) {
       );
       const tx = await vaultContract.initiateUnstake(amountWei);
       setTxHash(tx.hash);
-      setTxMessage("Confirming unstake request...");
+      setTxMessage("Confirming unstake request on Robinhood Chain L2...");
       await tx.wait();
       await refreshStakeInfo();
-      setTxMessage("Unstake initiated. 7-day cooldown active.");
+      setTxMessage("Unstake initiated. 3-day cooldown active.");
       return tx;
     } catch (err) {
       console.error("Initiate unstake error:", err);

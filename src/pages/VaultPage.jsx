@@ -14,6 +14,8 @@ import {
   AlertTriangle,
   Sparkles,
   ArrowUpRight,
+  ArrowDownRight,
+  RotateCcw,
   CheckCircle2,
   XCircle,
   FolderLock,
@@ -82,6 +84,7 @@ export default function VaultPage() {
   const [stakeInput, setStakeInput] = useState("900000");
   const [selectedTier, setSelectedTier] = useState("bronze");
   const [unstakeInput, setUnstakeInput] = useState("");
+  const [onPageAction, setOnPageAction] = useState("stake"); // "stake" | "unstake"
   const [activeTab, setActiveTab] = useState("folders"); // "folders" | "manage"
   const [filterTier, setFilterTier] = useState("all"); // "all" | "bronze" | "silver" | "gold"
   const [mediaFilter, setMediaFilter] = useState("all"); // "all" | "video" | "photo" | "audio"
@@ -169,9 +172,27 @@ export default function VaultPage() {
 
   const onUnstakeSubmit = async (e) => {
     e.preventDefault();
+    if (!isConnected) {
+      await connectWallet();
+      return;
+    }
+    if (!isCorrectNetwork) {
+      await switchToRobinhood();
+      return;
+    }
     if (!parsedUnstakeWei || parsedUnstakeWei === 0n) return;
     await handleInitiateUnstake(parsedUnstakeWei);
     setUnstakeInput("");
+  };
+
+  const setUnstakePercent = (pct) => {
+    if (activeStaked <= 0n) return;
+    if (pct === 100) {
+      setUnstakeInput(ethers.formatUnits(activeStaked, 18));
+    } else {
+      const fraction = (activeStaked * BigInt(pct)) / 100n;
+      setUnstakeInput(ethers.formatUnits(fraction, 18));
+    }
   };
 
   const onCancelUnstakeClick = async () => {
@@ -374,7 +395,11 @@ export default function VaultPage() {
               <div className="flex items-center gap-2.5 mb-2 flex-wrap">
                 <span className="px-3 py-1 rounded-full bg-[#d4fc50]/15 border border-[#d4fc50]/40 text-[#d4fc50] text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,252,80,0.2)]">
                   <Sparkles className="w-3 h-3" />
-                  <span>ONCHAIN VAULT STAKING · 3-DAY UNBONDING</span>
+                  <span>
+                    {onPageAction === "stake"
+                      ? "ONCHAIN VAULT STAKING · 3-DAY UNBONDING"
+                      : "3-DAY NON-CUSTODIAL UNBONDING"}
+                  </span>
                 </span>
                 {userTier && (
                   <span className="px-2.5 py-1 rounded-full bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] text-[10px] font-mono font-bold uppercase flex items-center gap-1">
@@ -384,10 +409,22 @@ export default function VaultPage() {
                 )}
               </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight font-sans">
-                Stake $MIKA To Unlock Creator Archives
+                {onPageAction === "stake"
+                  ? "Stake $MIKA To Unlock Creator Archives"
+                  : "Initiate 3-Day Unbonding Cooldown"}
               </h2>
               <p className="text-xs sm:text-sm text-neutral-300 font-sans mt-1 max-w-2xl leading-relaxed">
-                Select a tier below to unlock verified partner creator archives. Retain <strong className="text-white">100% custody</strong> in the verified contract on Robinhood Chain L2 with a swift <strong className="text-white">3-day unbonding cooldown</strong>.
+                {onPageAction === "stake"
+                  ? (
+                    <>
+                      Select a tier below to unlock verified partner creator archives. Retain <strong className="text-white">100% custody</strong> in the verified contract on Robinhood Chain L2 with a swift <strong className="text-white">3-day unbonding cooldown</strong>.
+                    </>
+                  )
+                  : (
+                    <>
+                      Request unbonding for any portion of your staked $MIKA. Cooldown takes <strong className="text-white">3 days (259,200s)</strong>. Your tokens remain safe in the contract until the countdown ends, and you can cancel anytime.
+                    </>
+                  )}
               </p>
             </div>
 
@@ -403,18 +440,245 @@ export default function VaultPage() {
               {activeStaked > 0n && (
                 <button
                   type="button"
-                  onClick={() => setActiveTab("manage")}
-                  className="text-[11px] font-mono text-[#d4fc50] hover:underline flex items-center gap-1 cursor-pointer pt-0.5"
+                  onClick={() => {
+                    setOnPageAction("unstake");
+                    if (!unstakeInput) {
+                      setUnstakeInput(ethers.formatUnits(activeStaked, 18));
+                    }
+                  }}
+                  className="text-[11px] font-mono text-amber-400 hover:underline flex items-center gap-1 cursor-pointer pt-0.5"
                 >
-                  <span>Manage Cooldown & Withdraw</span>
+                  <span>Initiate Unstake (3 Days)</span>
                   <ChevronRight className="w-3 h-3" />
                 </button>
               )}
             </div>
           </div>
 
-          {/* Tier Selection Cards (Bronze / Silver / Gold) */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 my-6">
+          {/* Action Switcher: Stake / Upgrade vs Initiate 3-Day Unstake */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 pt-4 border-b border-white/10 pb-4">
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/70 border border-white/10 backdrop-blur-xl">
+              <button
+                type="button"
+                onClick={() => setOnPageAction("stake")}
+                className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  onPageAction === "stake"
+                    ? "bg-[#d4fc50] text-black shadow-[0_0_15px_rgba(212,252,80,0.3)]"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>⚡ Stake / Upgrade</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setOnPageAction("unstake");
+                  if (!unstakeInput && activeStaked > 0n) {
+                    setUnstakeInput(ethers.formatUnits(activeStaked, 18));
+                  }
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  onPageAction === "unstake"
+                    ? "bg-amber-400 text-black shadow-[0_0_15px_rgba(251,191,36,0.3)]"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Clock className="w-3.5 h-3.5" />
+                <span>⏳ Initiate 3-Day Unstake</span>
+                {activeStaked > 0n && (
+                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                    onPageAction === "unstake" ? "bg-black/20 text-black" : "bg-amber-400/20 text-amber-300 border border-amber-400/30"
+                  }`}>
+                    {activeStakedFormatted}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("manage")}
+              className="text-xs font-mono text-white/50 hover:text-[#d4fc50] flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Full Staking Deck Tab</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Active Unbonding Countdown Banner (Visible whenever pendingUnstake > 0n) */}
+          {pendingUnstake > 0n && (
+            <div className="relative z-10 my-4 p-4 sm:p-5 rounded-2xl bg-amber-950/30 border border-amber-400/40 backdrop-blur-xl shadow-[0_0_30px_rgba(245,158,11,0.15)]">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 animate-pulse">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+                      <span>3-Day Unbonding Cooldown Active</span>
+                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                    </div>
+                    <div className="text-[11px] text-white/60 font-sans">
+                      Unbonding <strong className="text-white font-mono">{pendingUnstakeFormatted} $MIKA</strong> · Non-custodial release in progress
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-right self-end sm:self-auto">
+                  <div className="text-[10px] font-mono text-white/40 uppercase">Time Remaining:</div>
+                  <div className="text-lg font-mono font-bold text-[#d4fc50]">{cooldownFormatted}</div>
+                </div>
+              </div>
+
+              {/* Countdown Progress Bar */}
+              <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden mb-3">
+                <div
+                  className="bg-gradient-to-r from-amber-400 to-[#d4fc50] h-full transition-all duration-1000"
+                  style={{
+                    width: `${Math.max(
+                      5,
+                      ((259200 - cooldownRemainingSeconds) / 259200) * 100
+                    )}%`,
+                  }}
+                />
+              </div>
+
+              {/* Action Buttons: Cancel Cooldown vs Withdraw */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={onCancelUnstakeClick}
+                  disabled={txLoading}
+                  className="btn-tactile px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Cancel Cooldown & Restore VIP</span>
+                </button>
+
+                {canWithdrawNow ? (
+                  <button
+                    type="button"
+                    onClick={handleWithdraw}
+                    disabled={txLoading}
+                    className="btn-tactile px-5 py-2 rounded-xl bg-[#30d158] hover:bg-[#28b84d] text-black text-xs font-mono font-bold transition-all shadow-[0_0_20px_rgba(48,209,88,0.5)] flex items-center gap-1.5 cursor-pointer animate-bounce"
+                  >
+                    <ArrowDownRight className="w-4 h-4 text-black" />
+                    <span>Withdraw {pendingUnstakeFormatted} $MIKA to Wallet</span>
+                  </button>
+                ) : (
+                  <span className="text-[11px] font-mono text-white/40 flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-[#d4fc50]" />
+                    <span>Withdraw activates when countdown reaches 00:00:00</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {onPageAction === "unstake" ? (
+            /* UNSTAKE SUITE */
+            <div className="relative z-10 py-3 space-y-4">
+              <div className="p-4 rounded-2xl bg-black/40 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-amber-400" />
+                    <span>Select Amount To Unstake</span>
+                  </h3>
+                  <p className="text-xs text-neutral-300 mt-1 max-w-2xl leading-relaxed">
+                    Unstake any portion of your staked tokens. Your tokens remain safe in the smart contract during the 3-day (259,200s) cooldown. You can cancel at any moment to immediately restore your VIP status, or withdraw them to your wallet once completed.
+                  </p>
+                </div>
+                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-right shrink-0">
+                  <span className="text-[10px] font-mono text-white/40 block">ACTIVE STAKE:</span>
+                  <span className="text-sm font-mono font-bold text-white">
+                    {activeStakedFormatted} <span className="text-xs text-[#d4fc50]">$MIKA</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Fast Percentage Selector Buttons */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono text-white/60 block">Quick Amount Select:</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {[25, 50, 75, 100].map((pct) => (
+                    <button
+                      key={pct}
+                      type="button"
+                      onClick={() => setUnstakePercent(pct)}
+                      disabled={activeStaked <= 0n}
+                      className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono font-bold text-white transition-colors disabled:opacity-30 cursor-pointer text-center hover:border-amber-400/40"
+                    >
+                      {pct === 100 ? "100% (ALL)" : `${pct}%`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Unstake Form */}
+              <form onSubmit={onUnstakeSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+                  <div className="md:col-span-7 relative">
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={unstakeInput}
+                        onChange={(e) => setUnstakeInput(e.target.value)}
+                        placeholder="Amount to unstake"
+                        className="w-full bg-black/90 border border-white/20 rounded-2xl pl-4 pr-28 py-4 text-white font-mono text-sm sm:text-base focus:outline-none focus:border-amber-400 transition-colors shadow-inner"
+                      />
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                        <span className="text-xs font-mono text-amber-300 font-bold pr-1">$MIKA</span>
+                        <button
+                          type="button"
+                          onClick={() => setUnstakeInput(ethers.formatUnits(activeStaked, 18))}
+                          className="text-[10px] font-mono px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold transition-colors cursor-pointer"
+                        >
+                          ALL
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-[11px] font-mono text-white/50 px-1 pt-1.5">
+                      <span>Staked Available: <strong className="text-white font-bold">{activeStakedFormatted} $MIKA</strong></span>
+                      <span className="text-amber-400/80">3-Day Onchain Lock</span>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-5">
+                    <button
+                      type="submit"
+                      disabled={txLoading || activeStaked <= 0n || !unstakeInput || parsedUnstakeWei === 0n}
+                      className="btn-tactile w-full py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-black font-mono font-bold text-xs sm:text-sm uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(251,191,36,0.35)] disabled:opacity-40 cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                    >
+                      {txLoading ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 animate-spin text-black" />
+                          <span>Processing Unstake...</span>
+                        </>
+                      ) : !isConnected ? (
+                        <span>Connect Wallet To Unstake</span>
+                      ) : !isCorrectNetwork ? (
+                        <span>Switch to Robinhood Chain</span>
+                      ) : activeStaked <= 0n ? (
+                        <span>No $MIKA Staked</span>
+                      ) : (
+                        <>
+                          <Clock className="w-4 h-4 text-black" />
+                          <span>Initiate 3-Day Unstake →</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          ) : (
+            /* STAKE SUITE */
+            <>
+              {/* Tier Selection Cards (Bronze / Silver / Gold) */}
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 my-6">
             {/* Bronze Tier Card */}
             <button
               type="button"
@@ -571,6 +835,8 @@ export default function VaultPage() {
               </div>
             </div>
           </form>
+          </>
+          )}
 
           {/* Reassurance Footer Badges */}
           <div className="relative z-10 pt-4 mt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-white/50">
