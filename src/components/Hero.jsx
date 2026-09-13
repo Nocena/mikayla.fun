@@ -95,7 +95,7 @@ export default function Hero() {
 
   const handleCopyCA = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    navigator.clipboard.writeText(tokenData.tokenAddress || "0x123372D9de53D5bEC2988DD2386c7d3666A372a8");
+    navigator.clipboard.writeText(tokenData.tokenAddress || "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4");
     setCopiedCA(true);
     setToastMessage("Copied $MIKA Contract Address to clipboard!");
     setTimeout(() => {
@@ -165,18 +165,19 @@ export default function Hero() {
       </AnimatePresence>
 
       {/* Main 2-Column Launchpad Hero Stage */}
-      <div className="max-w-[90rem] mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 max-w-[90rem] mx-auto px-4 sm:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
           {/* ========================================================= */}
-          {/* LEFT COLUMN: EDITORIAL, TOKEN EXPLANATION, DEX PAID, BURNS */}
+          {/* LEFT COLUMN: HERO HEADLINE, LIVE STATS & QUICK ACTIONS    */}
           {/* ========================================================= */}
           <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-center">
-            {/* Monospace Architectural Tag */}
-            <div className="flex items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] text-[#d4fc50] uppercase mb-4 border-l-2 border-[#d4fc50] pl-2.5 sm:pl-3 py-0.5">
-              <span>[ 01 // NON-CUSTODIAL STAKING VAULT ]</span>
-              <span className="text-white/30 hidden sm:inline">|</span>
-              <span className="text-white/60 hidden sm:inline text-[10px]">16 CREATOR ARCHIVES · 3-DAY UNBONDING</span>
+            {/* Minimalist Micro-Brand Status */}
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] animate-pulse" />
+              <span className="text-[10px] sm:text-[11px] font-mono font-medium tracking-[0.15em] uppercase text-white/50">
+                Mikayla Protocol · Robinhood Chain Genesis
+              </span>
             </div>
 
             {/* Official CA, DEX PAID & Non-Overlaying Burn Counter Capsule */}
@@ -185,7 +186,7 @@ export default function Hero() {
               <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)]">
                 <span className="text-white/50 text-[9px] sm:text-[10px] font-medium tracking-wider">CA:</span>
                 <code className="text-white/90 font-mono text-[10px] sm:text-[11px] truncate max-w-[110px] sm:max-w-[140px]">
-                  0x123372D9de53D5bEC2988DD2386c7d3666A372a8
+                  {tokenData.tokenAddress || "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
                 </code>
                 <button
                   onClick={handleCopyCA}
@@ -219,7 +220,7 @@ export default function Hero() {
 
               {/* FOMO Terminal Capsule */}
               <a
-                href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
+                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group/fomo btn-tactile inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 backdrop-blur-2xl border-t border-white/20 border-x border-b border-white/10 text-xs font-mono shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.3)] hover:border-[#d4fc50]/40 hover:shadow-[0_0_16px_rgba(212,252,80,0.15)] transition-all cursor-pointer"
@@ -236,7 +237,7 @@ export default function Hero() {
               </a>
 
               {/* Clean, Non-Overlaying Onchain Burn Counter Capsule */}
-              <AppleBurnBadge />
+              <AppleBurnBadge tokenData={tokenData} />
             </div>
 
             {/* Bold Editorial Headline */}
@@ -258,17 +259,17 @@ export default function Hero() {
                   {tokenData.marketCapFormatted}
                 </div>
                 <div className="text-[10px] font-mono text-white/40 mt-0.5">
-                  FOMO & Uniswap
+                  Uniswap V4 Pool
                 </div>
               </div>
               <div>
                 <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">24H Change</div>
-                <div className="text-base sm:text-xl font-mono font-bold text-[#30d158] flex items-center gap-1">
-                  <span>+{tokenData.priceChange24h.toFixed(1)}%</span>
-                  <span className="text-xs text-[#30d158]">▲</span>
+                <div className={`text-base sm:text-xl font-mono font-bold flex items-center gap-1 ${tokenData.priceChange24h >= 0 ? "text-[#30d158]" : "text-[#ff453a]"}`}>
+                  <span>{tokenData.priceChange24h >= 0 ? `+${tokenData.priceChange24h.toFixed(1)}%` : `${tokenData.priceChange24h.toFixed(1)}%`}</span>
+                  <span className="text-xs">{tokenData.priceChange24h >= 0 ? "▲" : "▼"}</span>
                 </div>
                 <div className="text-[10px] font-mono text-white/40 mt-0.5">
-                  Vol: {tokenData.volume24hFormatted || "$177.1K"} · 415 Holders
+                  Vol: {tokenData.volume24hFormatted || "$57.7K"} · 415 Holders
                 </div>
               </div>
               <a
@@ -282,8 +283,8 @@ export default function Hero() {
                   <span className="text-white/30 group-hover/burnstat:text-white transition-colors">↗</span>
                 </div>
                 <div className="text-base sm:text-xl font-mono font-bold text-white flex items-baseline gap-1.5">
-                  <span>{tokenData.totalBurnedFormatted || "16.4M"}</span>
-                  <span className="text-[10px] font-mono text-white/40 font-normal">({tokenData.percentBurned || "1.64%"})</span>
+                  <span>{tokenData.totalBurnedFormatted || "24.8M"}</span>
+                  <span className="text-[10px] font-mono text-white/40 font-normal">({tokenData.percentBurned || "2.48%"})</span>
                 </div>
                 <div className="text-[10px] font-mono text-white/40 mt-0.5">
                   Permanent Deflation
@@ -298,8 +299,8 @@ export default function Hero() {
                 className="btn-tactile px-6 py-3.5 bg-[#d4fc50] text-[#080808] font-mono font-bold text-xs uppercase tracking-widest hover:bg-white cursor-pointer rounded-xl flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(212,252,80,0.4)] active:scale-[0.98] transition-all"
               >
                 <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
-                <span>ENTER CREATOR VAULT (16 ARCHIVES)</span>
-                <span>→</span>
+                <span>Enter Creator Vault (16 Archives)</span>
+                <span className="font-sans">→</span>
               </Link>
               <Link
                 to="/juicy"
@@ -309,7 +310,7 @@ export default function Hero() {
                 <span>$JUICY</span>
               </Link>
               <a
-                href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
+                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-tactile px-4 py-3.5 border border-white/20 hover:border-[#d4fc50] text-white/90 hover:text-white font-mono text-xs uppercase font-medium tracking-[0.08em] transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-white/[0.02] hover:bg-[#d4fc50]/10 rounded-xl"

@@ -15,7 +15,7 @@ import SpotlightCard from "./react-bits/SpotlightCard";
 import { useTokenData } from "../hooks/useTokenData";
 import LaunchNotifyModal from "./LaunchNotifyModal";
 
-const MIKA_CA = "0x123372D9de53D5bEC2988DD2386c7d3666A372a8";
+const MIKA_CA = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
 const JUICY_X_URL = "https://x.com/msjuicy_plenty";
 const JUICY_REPOST_URL = "https://x.com/mikaylafun/status/2098092424337711392?s=20";
 
@@ -288,7 +288,7 @@ export default function UpcomingDrops() {
                     className="flex items-center gap-1.5 text-white/80 hover:text-[#d4fc50] transition-colors cursor-pointer"
                     title="Copy Contract Address"
                   >
-                    <code className="text-[10px]">0x1233...72a8</code>
+                    <code className="text-[10px]">0xa4f9...3Ab4</code>
                     {copiedCA ? <Check className="w-3 h-3 text-[#d4fc50]" /> : <Copy className="w-3 h-3" />}
                   </button>
                 </div>
@@ -296,7 +296,7 @@ export default function UpcomingDrops() {
 
               {/* Action Button */}
               <a
-                href={tokenData.fomoUrl || "https://fomo.family/token/0x123372D9de53D5bEC2988DD2386c7d3666A372a8"}
+                href={tokenData.fomoUrl || "https://fomo.family/token/0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-tactile w-full py-2.5 rounded-xl bg-[#d4fc50] hover:bg-white text-black text-xs font-mono font-bold uppercase tracking-wider text-center flex items-center justify-center gap-1.5 shadow-[0_0_14px_rgba(212,252,80,0.25)] transition-colors"

@@ -145,7 +145,7 @@ const Header = () => {
                 }`}
               >
                 <span className={`w-1.5 h-1.5 ${isConnected ? "bg-[#30d158]" : "bg-[#d4fc50]"}`} />
-                <span>{isConnected ? "0x123...72a8" : "Connect"}</span>
+                <span>{isConnected ? "Connected" : "Connect"}</span>
               </button>
 
               {/* Mobile Menu Button */}

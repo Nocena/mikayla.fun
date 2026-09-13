@@ -1,17 +1,17 @@
 // Protocol Burn Data - Centralized source of truth
-// Verified onchain via Robinhood Chain RPC (Initial 1,000,000,000 supply - 983,554,429 remaining)
+// Verified onchain via Robinhood Chain RPC (Initial 1,000,000,000 supply - 975,228,142 remaining)
 
 export const BURN_DATA = {
   // Primary Summary Metrics (Exact onchain)
-  totalBurned: "22.0M",
-  totalBurnedExact: "22,008,280",
-  percentSupply: "2.20%",
-  totalSupplyRemaining: "977,991,719",
+  totalBurned: "24.8M",
+  totalBurnedExact: "24,771,858",
+  percentSupply: "2.48%",
+  totalSupplyRemaining: "975,228,142",
   ethSpentTotal: "0.31 ETH+",
   statusNote: "50% of all platform & launch profits buy back & burn $MIKA",
 
   // Aliases for backwards compatibility
-  burnedAmount: "22.0M",
+  burnedAmount: "24.8M",
   burnTxUrl: "https://robinhoodchain.blockscout.com/tx/0xd02491f157a37d48491dc820a449233047e723bea89e344fbe1e419933ba5125",
 
   // Verified Onchain Burn Ledger

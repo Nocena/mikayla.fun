@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 
-export const MIKA_TOKEN_ADDRESS = "0x123372D9de53D5bEC2988DD2386c7d3666A372a8";
+export const MIKA_TOKEN_ADDRESS = "0xa4f9145d8d02B74DD30c44d94e7C479Eb6103Ab4";
 
 export const ROBINHOOD_CHAIN = {
   chainIdHex: "0x1237",
